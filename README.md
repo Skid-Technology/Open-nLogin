@@ -1,4 +1,4 @@
-<h1 align="center">nLogin Open Source</h1>
+<h1 align="center">nLogin (Premium) Open Source</h1>
 
 ---
 Please download, and fork this as soon as possible before a DMCA takedown!
