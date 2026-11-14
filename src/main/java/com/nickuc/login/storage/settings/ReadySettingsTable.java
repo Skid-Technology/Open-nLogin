@@ -13,7 +13,7 @@ public class ReadySettingsTable {
       try {
          return this.hikariDataSource.getConnection();
       } catch (Exception input) {
-         throw new SQLException("[Database] Unable to get a pooled connection.", input);
+         throw new RuntimeException("[Database] Unable to get a pooled connection.", input);
       }
    }
 

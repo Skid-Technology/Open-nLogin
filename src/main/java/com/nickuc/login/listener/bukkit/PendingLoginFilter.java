@@ -70,4 +70,9 @@ public class PendingLoginFilter implements LinkedSessionHandler {
    public PendingLoginFilter(BukkitLoader target, @Nullable Player input) {
       this(target, input, false);
    }
+
+   @Override
+   public void run() {
+      this.dispatchTask();
+   }
 }

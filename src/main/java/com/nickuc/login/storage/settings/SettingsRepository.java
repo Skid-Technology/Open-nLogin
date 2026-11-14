@@ -11,6 +11,8 @@ import io.netty.channel.Channel;
 import java.util.Arrays;
 
 import org.bukkit.entity.Player;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.spawn.SpawnState;
 
 public class SettingsRepository {
    public final SharedPacketInterceptor sharedPacketInterceptor = new SharedPacketInterceptor(this);
@@ -47,5 +49,13 @@ public class SettingsRepository {
 
    public SettingsRepository(PasswordStore target) {
       this.passwordStore = target;
+   }
+
+   public static boolean isState(SettingsRepository repo) {
+      return repo.getState();
+   }
+
+   public static void handleSettingsRepository(SettingsRepository repo, PacketSendEvent target, int input) {
+      repo.handlePacketSendEvent(target, input);
    }
 }

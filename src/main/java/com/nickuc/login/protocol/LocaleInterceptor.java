@@ -10,6 +10,8 @@ import java.util.Locale;
 
 
 public class LocaleInterceptor implements LenientCommandHandler {
+   public final LoginDao loginDao;
+
    @Override
    public void dispatchPacketReceiveEvent(PacketReceiveEvent target) {
       Object input = target.getPlayer();
@@ -46,7 +48,7 @@ public class LocaleInterceptor implements LenientCommandHandler {
                            System.arraycopy(request, 1, source, 0, source.length);
                         }
 
-                        response.performVerifiedServerAdapter(output, context, request[0], source);
+                        response.dispatchVerifiedServerAdapter(output, context, request[0], source);
                      }
                   }
                }
@@ -55,7 +57,7 @@ public class LocaleInterceptor implements LenientCommandHandler {
       }
    }
 
-   private LocaleInterceptor(LoginDao target) {
+   public LocaleInterceptor(LoginDao target) {
       this.loginDao = target;
    }
 }

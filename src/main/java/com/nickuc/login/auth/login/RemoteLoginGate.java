@@ -30,8 +30,7 @@ public class RemoteLoginGate<T> implements DirectPacketAdapter<T> {
       return input;
    }
 
-   @Override
-   public Class<T> getClass() {
+   public Class<T> fetchClass() {
       return this.value;
    }
 

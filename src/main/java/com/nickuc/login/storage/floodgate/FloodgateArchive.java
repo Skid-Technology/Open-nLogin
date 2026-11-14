@@ -7,6 +7,8 @@ import com.nickuc.login.platform.connection.SecondaryConnectionContract;
 import com.nickuc.login.premium.ReadyBedrockResolver;
 import com.nickuc.login.protocol.ProxyCodec;
 import com.nickuc.login.bungee.BungeePlatform;
+import com.nickuc.login.storage.login.LoginCollection;
+import com.nickuc.login.storage.password.PasswordStore;
 
 
 public class FloodgateArchive implements InternalAccountHandler {

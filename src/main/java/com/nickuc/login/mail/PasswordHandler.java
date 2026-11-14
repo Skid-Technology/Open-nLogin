@@ -237,8 +237,8 @@ public abstract class PasswordHandler implements nLoginAPI {
          String output = input.getName();
          int context = input.getMojangId() != null ? 1 : 0;
          String data;
-         if (QuickPremiumOption.CURRENT_QUICKPREMIUMOPTION.retrieveState() && !Pbkdf2Linker.isState(output, (boolean)context)) {
-            data = Pbkdf2Linker.handleMessage(output, (boolean)context);
+         if (QuickPremiumOption.CURRENT_QUICKPREMIUMOPTION.retrieveState() && !Pbkdf2Linker.isState(output, (context != 0))) {
+            data = Pbkdf2Linker.handleMessage(output, (context != 0));
          } else {
             data = output;
          }

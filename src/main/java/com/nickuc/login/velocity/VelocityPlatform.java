@@ -65,7 +65,7 @@ public class VelocityPlatform extends DiscordForwarder implements ListenerContra
       }
 
       Player input = target.findObject();
-      Optional output = input.getCurrentServer();
+      Optional<ServerConnection> output = input.getCurrentServer();
       return output.isPresent() && output.<Boolean>map(instance -> !instance.getServer().getPlayersConnected().isEmpty()).get();
    }
 

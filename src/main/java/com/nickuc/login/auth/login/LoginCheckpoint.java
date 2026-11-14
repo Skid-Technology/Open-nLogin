@@ -8,7 +8,7 @@ import java.util.Arrays;
 import javax.annotation.Nullable;
 
 public class LoginCheckpoint {
-   public static <T> T computeObject(Method instance, Object... target) {
+   public static <T> T computeObject(Method instance, Object... target) throws InvocationTargetException, IllegalAccessException {
       return loadObject(instance, null, target);
    }
 
@@ -23,7 +23,7 @@ public class LoginCheckpoint {
       return null;
    }
 
-   public static <T> Constructor<T> buildConstructor(Class<?> instance, Class<?>... target) {
+   public static <T> Constructor<T> buildConstructor(Class<?> instance, Class<?>... target) throws NoSuchMethodException {
       Constructor input = instance.getDeclaredConstructor(target);
       input.setAccessible(true);
       return input;
@@ -43,7 +43,7 @@ public class LoginCheckpoint {
       return null;
    }
 
-   public static <T> T loadObject(Method instance, Object target, Object... input) {
+   public static <T> T loadObject(Method instance, Object target, Object... input) throws InvocationTargetException, IllegalAccessException {
       return (T)instance.invoke(target, input);
    }
 
@@ -61,7 +61,7 @@ public class LoginCheckpoint {
       }
    }
 
-   public static Method processMethod(Class<?> instance, String target, Class<?>... input) {
+   public static Method processMethod(Class<?> instance, String target, Class<?>... input) throws NoSuchMethodException {
       Method output = instance.getDeclaredMethod(target, input);
       output.setAccessible(true);
       return output;
@@ -134,7 +134,7 @@ public class LoginCheckpoint {
       }
    }
 
-   public static Field resolveField(Class<?> instance, String target) {
+   public static Field resolveField(Class<?> instance, String target) throws NoSuchFieldException {
       Field input = instance.getDeclaredField(target);
       input.setAccessible(true);
       return input;

@@ -4,6 +4,10 @@ import com.github.retrooper.packetevents.protocol.ConnectionState;
 import com.nickuc.login.platform.proxy.SilentProxyState;
 
 public class SettingsBridge {
+   public static int[] values = new int[256];
+   public static int[] activeValues = new int[256];
+   public static int[] pendingValues = new int[256];
+
    static {
       try {
          activeValues[ConnectionState.CONFIGURATION.ordinal()] = 1;

@@ -87,6 +87,10 @@ public enum VerifiedNoticeKind implements TightSenderAdapter {
       return this.closedLoginBarrier;
    }
 
+   public String A() {
+      return this.getMessage();
+   }
+
    @Override
    public List<LoginLocator> loadCollection() {
       return this.closedLoginBarrier.loadCollection();

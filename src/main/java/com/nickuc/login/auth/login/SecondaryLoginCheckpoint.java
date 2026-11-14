@@ -14,4 +14,8 @@ public class SecondaryLoginCheckpoint extends VerifiedLoginGate {
       super(target, input);
       this.name = output;
    }
+
+   public static SecondaryLoginCheckpoint getSecondaryLoginCheckpoint() {
+      return secondaryLoginCheckpoint;
+   }
 }

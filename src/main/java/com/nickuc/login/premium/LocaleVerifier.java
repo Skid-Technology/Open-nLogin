@@ -1,5 +1,7 @@
 package com.nickuc.login.premium;
 
+import java.util.List;
+
 import com.nickuc.login.auth.login.DeadLoginFlow;
 import com.nickuc.login.auth.login.IncomingLoginGate;
 import com.nickuc.login.auth.login.LenientLoginFlow;
@@ -203,7 +205,7 @@ public class LocaleVerifier {
       UUID input = DeadLoginFlow.buildUniqueId(target.getString("id"));
       String output = target.getString("name");
       JSONArray context = target.getJSONArray("properties");
-      ArrayList data = new ArrayList();
+      List<LenientLoginFlow> data = new ArrayList<>();
 
       for (int value = 0; value < context.length(); value++) {
          JSONObject result = context.getJSONObject(value);

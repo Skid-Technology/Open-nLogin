@@ -17,4 +17,14 @@ public enum LoginOption {
       this.marker = output;
       this.function = context;
    }
+
+
+   public static java.util.function.Function<Long, Long> resolveFunction(LoginOption opt) {
+      return opt.function;
+   }
+
+   public static char computeMarker(LoginOption opt) {
+      return opt.marker;
+   }
+
 }

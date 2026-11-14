@@ -6,6 +6,8 @@ import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import com.nickuc.login.tasks.LoginJob;
 import java.util.HashSet;
 import java.util.Set;
+import com.nickuc.login.storage.login.LoginSource;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 public class PasswordHashStore extends LoginSource {
    private static final Set<String> players = new HashSet<>();
@@ -28,5 +30,9 @@ public class PasswordHashStore extends LoginSource {
 
    public PasswordHashStore(PasswordStore target) {
       super(target, "monitor", "nlogin.admin", false, true);
+   }
+
+   public static Set<String> getSet() {
+      return players;
    }
 }

@@ -8,6 +8,8 @@ import com.github.retrooper.packetevents.netty.channel.ChannelHelper;
 import com.github.retrooper.packetevents.protocol.player.User;
 
 public class PacketHandler extends PacketListenerAbstract {
+   public final RootMessageHandler rootMessageHandler;
+
    public void onPacketSend(PacketSendEvent target) {
       if (!target.isCancelled()) {
          try {

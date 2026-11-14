@@ -15,6 +15,9 @@ import com.nickuc.login.security.hashing.PendingPasswordHashHasher;
 import com.nickuc.login.session.LimboCoordinator;
 import com.nickuc.login.updater.NoticeCatalog;
 import java.io.File;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.listener.proxy.BungeeGuard;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 
 public class BungeeDao implements SilentPacketAdapter, DirectPlayerContract {

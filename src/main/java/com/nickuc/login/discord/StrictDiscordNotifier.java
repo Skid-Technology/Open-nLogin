@@ -68,7 +68,7 @@ public class StrictDiscordNotifier extends LoginSource {
             }
          }
 
-         BiConsumer source = (inputValue, outputValue) -> {
+         BiConsumer<Boolean, String> source = (inputValue, outputValue) -> {
             if (this.loadState()) {
                if (inputValue) {
                   CachedSettingsGateway.handleOutgoingSenderAdapter(target, "");

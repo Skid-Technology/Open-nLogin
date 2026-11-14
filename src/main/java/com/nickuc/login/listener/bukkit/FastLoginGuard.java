@@ -9,6 +9,8 @@ import com.nickuc.login.storage.spawn.SpawnCollection;
 import org.bukkit.entity.Player;
 
 public class FastLoginGuard extends SecondaryMojangProcessor {
+   public final SpawnCollection spawnCollection;
+
    public void lockableNewAction(LockableNewActionEvent<?> target) {
       BukkitPlatform input = this.spawnCollection.passwordStore.findObject();
       input.callEvent(target);

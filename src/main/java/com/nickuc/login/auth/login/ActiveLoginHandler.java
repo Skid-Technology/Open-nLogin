@@ -21,4 +21,14 @@ public class ActiveLoginHandler implements DirectPacketAdapter<UUID> {
    public Class<?> loadClass() {
       return UUID.class;
    }
+
+   @Override
+   public JSONObject buildJSONObject(@Nonnull UUID target) {
+      return this.handleJSONObject(target);
+   }
+
+   @Override
+   public UUID loadObject(@Nonnull JSONObject target) {
+      return this.resolveUniqueId(target);
+   }
 }

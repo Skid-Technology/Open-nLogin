@@ -13,7 +13,7 @@ public class AuthenticatedLoginService {
    static {
       try {
          silentCommandHandler = new BungeeLink();
-      } catch (ReflectiveOperationException target) {
+      } catch (Throwable target) {
       }
 
       if (silentCommandHandler == null) {

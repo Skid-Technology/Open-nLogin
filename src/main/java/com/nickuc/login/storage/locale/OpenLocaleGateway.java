@@ -1,5 +1,7 @@
 package com.nickuc.login.storage.locale;
 
+import com.nickuc.login.premium.SettingsLinker;
+
 import com.nickuc.login.account.LoudProxyState;
 import com.nickuc.login.auth.settings.CachedSettingsProcessor;
 import com.nickuc.login.discord.DiscordNotifier;
@@ -21,6 +23,9 @@ import java.lang.invoke.MutableCallSite;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
+import com.nickuc.login.storage.password.PasswordHashRepository;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 
 public abstract class OpenLocaleGateway implements ServerAdapter {
@@ -97,4 +102,10 @@ public abstract class OpenLocaleGateway implements ServerAdapter {
    public abstract void handleTask();
 
    public abstract void sendTask();
+
+   @Override
+   public SettingsLinker resolveSettingsLinker() {
+      PasswordStore target = this.indirectSessionHandler.findDiscordNotifier();
+      return target != null ? target.findSettingsLinker() : null;
+   }
 }

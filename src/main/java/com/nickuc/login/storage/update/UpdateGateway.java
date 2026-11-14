@@ -10,7 +10,13 @@ import com.nickuc.login.premium.SpawnLookup;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collections;
+import com.nickuc.login.storage.notice.DirectNoticeCatalog;
+import com.nickuc.login.storage.password.PasswordHashRepository;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.settings.LocalSettingsRepository;
+import com.nickuc.login.storage.spawn.SpawnState;
 
 public class UpdateGateway extends PasswordHashRepository {
    private final DirectNoticeCatalog directNoticeCatalog;
@@ -37,10 +43,8 @@ public class UpdateGateway extends PasswordHashRepository {
 
       try {
          IndirectPasswordResolver context = this.passwordStore.findIndirectPasswordResolver();
-         PrimaryLoginHandler data = this.sharedListenerContract
-            .buildPrimaryLoginHandler("SELECT * FROM `" + SpawnState.CURRENT_SPAWNSTATE.a(new Object[0]) + "`");
-
-         try {
+         try (PrimaryLoginHandler data = this.sharedListenerContract
+            .buildPrimaryLoginHandler("SELECT * FROM `" + SpawnState.CURRENT_SPAWNSTATE.a(new Object[0]) + "`")) {
             ResultSet value = data.resolveObject();
 
             while (value.next() && this.passwordStore.resolveState()) {
@@ -73,133 +77,52 @@ public class UpdateGateway extends PasswordHashRepository {
                   this.pendingTimestamp++;
                }
             }
-         } catch (Throwable secondaryResult) {
-            if (data != null) {
-               try {
-                  data.close();
-               } catch (Throwable primaryData) {
-                  secondaryResult.addSuppressed(primaryData);
-               }
-            }
-
-            throw secondaryResult;
+         } catch (SQLException e) {
+            throw new RuntimeException(e);
          }
 
-         if (data != null) {
-            data.close();
-         }
-
-         PrivateLoginHandler localInput = this.sharedListenerContract.getPrivateLoginHandler();
-
-         try {
+         try (PrivateLoginHandler localInput = this.sharedListenerContract.getPrivateLoginHandler()) {
             Connection localOutput = localInput.retrieveConnection();
-            PreparedStatement localContext = localOutput.prepareStatement("SELECT * FROM `" + SpawnState.INCOMING_SPAWNSTATE.a(new Object[0]) + "`");
+            try (PreparedStatement localContext = localOutput.prepareStatement("SELECT * FROM `" + SpawnState.INCOMING_SPAWNSTATE.a(new Object[0]) + "`");
+                 ResultSet localData = localContext.executeQuery()) {
+               while (localData.next() && this.passwordStore.resolveState()) {
+                  String localValue = localData.getString(SpawnState.SECONDARY_SPAWNSTATE.a(new Object[0]));
+                  byte[] source = localData.getBytes(SpawnState.DIRECT_SPAWNSTATE.a(new Object[0]));
 
-            try {
-               ResultSet localData = localContext.executeQuery();
-
-               try {
-                  while (localData.next() && this.passwordStore.resolveState()) {
-                     String localValue = localData.getString(SpawnState.SECONDARY_SPAWNSTATE.a(new Object[0]));
-                     byte[] source = localData.getBytes(SpawnState.DIRECT_SPAWNSTATE.a(new Object[0]));
-
-                     try {
-                        PreparedStatement entry = localOutput.prepareStatement(
-                           String.format(
-                              "UPDATE `%s` SET `%s` = ? WHERE `%s` = ?",
-                              SpawnState.INCOMING_SPAWNSTATE.a(new Object[0]),
-                              SpawnState.DIRECT_SPAWNSTATE.a(new Object[0]),
-                              SpawnState.SECONDARY_SPAWNSTATE.a(new Object[0])
-                           )
-                        );
-
-                        try {
-                           entry.setBytes(1, source);
-                           entry.setString(2, localValue);
-                           int record = entry.executeUpdate();
-                           if (record == 0) {
-                              PreparedStatement item = localOutput.prepareStatement(
-                                 String.format(
-                                    "INSERT INTO `%s` (`%s`, `%s`) VALUES (?, ?)",
-                                    SpawnState.INCOMING_SPAWNSTATE.a(new Object[0]),
-                                    SpawnState.SECONDARY_SPAWNSTATE.a(new Object[0]),
-                                    SpawnState.DIRECT_SPAWNSTATE.a(new Object[0])
-                                 )
-                              );
-
-                              try {
-                                 item.setString(1, localValue);
-                                 item.setBytes(2, source);
-                                 item.execute();
-                              } catch (Throwable primaryValue) {
-                                 if (item != null) {
-                                    try {
-                                       item.close();
-                                    } catch (Throwable primaryContext) {
-                                       primaryValue.addSuppressed(primaryContext);
-                                    }
-                                 }
-
-                                 throw primaryValue;
-                              }
-
-                              if (item != null) {
-                                 item.close();
-                              }
-                           }
-                        } catch (Throwable primaryResult) {
-                           if (entry != null) {
-                              try {
-                                 entry.close();
-                              } catch (Throwable primaryOutput) {
-                                 primaryResult.addSuppressed(primaryOutput);
-                              }
-                           }
-
-                           throw primaryResult;
-                        }
-
-                        if (entry != null) {
-                           entry.close();
-                        }
-                     } catch (Exception secondaryTarget) {
-                        throw new RuntimeException("Unable to update or insert data with key \"" + localValue + "\"!", secondaryTarget);
-                     }
-                  }
-               } catch (Throwable secondaryInput) {
-                  if (localData != null) {
-                     try {
-                        localData.close();
-                     } catch (Throwable primaryInput) {
-                        secondaryInput.addSuppressed(primaryInput);
-                     }
-                  }
-
-                  throw secondaryInput;
-               }
-
-               if (localData != null) {
-                  localData.close();
-               }
-            } catch (Throwable secondaryOutput) {
-               if (localContext != null) {
                   try {
-                     localContext.close();
-                  } catch (Throwable primaryTarget) {
-                     secondaryOutput.addSuppressed(primaryTarget);
+                     try (PreparedStatement entry = localOutput.prepareStatement(
+                        String.format(
+                           "UPDATE `%s` SET `%s` = ? WHERE `%s` = ?",
+                           SpawnState.INCOMING_SPAWNSTATE.a(new Object[0]),
+                           SpawnState.DIRECT_SPAWNSTATE.a(new Object[0]),
+                           SpawnState.SECONDARY_SPAWNSTATE.a(new Object[0])
+                        )
+                     )) {
+                        entry.setBytes(1, source);
+                        entry.setString(2, localValue);
+                        int record = entry.executeUpdate();
+                        if (record == 0) {
+                           try (PreparedStatement item = localOutput.prepareStatement(
+                              String.format(
+                                 "INSERT INTO `%s` (`%s`, `%s`) VALUES (?, ?)",
+                                 SpawnState.INCOMING_SPAWNSTATE.a(new Object[0]),
+                                 SpawnState.SECONDARY_SPAWNSTATE.a(new Object[0]),
+                                 SpawnState.DIRECT_SPAWNSTATE.a(new Object[0])
+                              )
+                           )) {
+                              item.setString(1, localValue);
+                              item.setBytes(2, source);
+                              item.execute();
+                           }
+                        }
+                     }
+                  } catch (Exception secondaryTarget) {
+                     throw new RuntimeException("Unable to update or insert data with key \"" + localValue + "\"!", secondaryTarget);
                   }
                }
-
-               throw secondaryOutput;
             }
-
-            if (localContext != null) {
-               localContext.close();
-            }
-         } finally {
-            if (Collections.singletonList(localInput).get(0) != null) {
-               localInput.close();
-            }
+         } catch (SQLException e) {
+            throw new RuntimeException(e);
          }
       } finally {
          this.sharedListenerContract.executeTask();

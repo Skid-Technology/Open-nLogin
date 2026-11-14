@@ -13,6 +13,8 @@ import javax.annotation.Nullable;
 import org.geysermc.cumulus.form.CustomForm;
 import org.geysermc.cumulus.form.CustomForm.Builder;
 import org.geysermc.floodgate.api.player.FloodgatePlayer;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 public class FloodgateTable {
    private final ReadyBedrockResolver readyBedrockResolver;
@@ -126,7 +128,7 @@ public class FloodgateTable {
          return false;
       }
 
-      int element = result[1] != -1 ? 1 : 0;
+      boolean element = result[1] != -1;
       data.closedOrInvalidResultHandler(() -> this.processVerifiedServerAdapter(target, input, output));
       data.validResultHandler(
          dataValue -> {

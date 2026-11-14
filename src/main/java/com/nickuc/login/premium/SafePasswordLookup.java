@@ -29,16 +29,20 @@ import java.util.UUID;
 public class SafePasswordLookup extends StoredSettingsGateway {
    public static byte[] buildPayload(InputStream instance, int target) {
       byte[] input = new byte[target];
-      int output = instance.read(input);
-      if (output != target) {
-         throw new IllegalArgumentException("Wanted to read " + target + " bytes but was able to read only " + output);
-      } else {
-         return input;
+      try {
+         int output = instance.read(input);
+         if (output != target) {
+            throw new IllegalArgumentException("Wanted to read " + target + " bytes but was able to read only " + output);
+         } else {
+            return input;
+         }
+      } catch (IOException e) {
+         throw new RuntimeException(e);
       }
    }
 
    @Override
-   public void performSet(ResultSet target) {
+   public void performSet(ResultSet target) throws java.sql.SQLException {
       this.activeName = target.getString("name");
       byte[] input = target.getBytes("password");
       if (input.length != 0) {
@@ -142,7 +146,7 @@ public class SafePasswordLookup extends StoredSettingsGateway {
 
             Properties item = new Properties();
             entry.forEach(targetValue -> {
-               String[] inputValue = targetValue.split("=");
+               String[] inputValue = ((String) targetValue).split("=");
                if (inputValue.length == 2) {
                   item.setProperty(inputValue[0], inputValue[1]);
                }

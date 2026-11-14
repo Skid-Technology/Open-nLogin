@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Player.Spigot;
 
 public class BungeeLink implements SilentCommandHandler {
-   public BungeeLink() {
+   public BungeeLink() throws NoSuchMethodException {
       Objects.requireNonNull(Spigot.class.getMethod("sendMessage", ChatMessageType.class, Array.newInstance(BaseComponent.class, 0).getClass()));
    }
 

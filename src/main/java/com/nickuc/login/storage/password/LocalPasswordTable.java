@@ -6,52 +6,28 @@ import com.nickuc.login.platform.listener.SharedListenerContract;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.Properties;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
+import com.nickuc.login.storage.notice.DirectNoticeCatalog;
+import com.nickuc.login.storage.settings.BusySettingsArchive;
 
 public class LocalPasswordTable {
    public static boolean canState(SharedListenerContract instance, String target) {
       Connection input = instance.resolveConnection();
 
       try {
-         ResultSet output = input.getMetaData().getTables(input.getCatalog(), null, "%", null);
-
-         byte context;
-         label108: {
-            try {
-               while (output.next()) {
-                  if (output.getString(3).equalsIgnoreCase(target)) {
-                     context = 1;
-                     break label108;
-                  }
+         try (ResultSet output = input.getMetaData().getTables(input.getCatalog(), null, "%", null)) {
+            while (output.next()) {
+               if (output.getString(3).equalsIgnoreCase(target)) {
+                  return true;
                }
-
-               context = 0;
-            } catch (Throwable entry) {
-               if (output != null) {
-                  try {
-                     output.close();
-                  } catch (Throwable source) {
-                     entry.addSuppressed(source);
-                  }
-               }
-
-               throw entry;
             }
-
-            if (output != null) {
-               output.close();
-            }
-
-            return (boolean)context;
+            return false;
          }
-
-         if (output != null) {
-            output.close();
-         }
-
-         return (boolean)context;
+      } catch (SQLException e) {
+         throw new RuntimeException(e);
       } finally {
          instance.sendConnection(input);
       }
@@ -75,32 +51,15 @@ public class LocalPasswordTable {
    public static boolean validateState(SharedListenerContract instance, String target, String input) {
       Connection output = instance.resolveConnection();
 
-      boolean data;
       try {
-         ResultSet context = output.getMetaData().getColumns(output.getCatalog(), null, target, input);
-
-         try {
-            data = context.next();
-         } catch (Throwable record) {
-            if (context != null) {
-               try {
-                  context.close();
-               } catch (Throwable entry) {
-                  record.addSuppressed(entry);
-               }
-            }
-
-            throw record;
+         try (ResultSet context = output.getMetaData().getColumns(output.getCatalog(), null, target, input)) {
+            return context.next();
          }
-
-         if (context != null) {
-            context.close();
-         }
+      } catch (SQLException e) {
+         throw new RuntimeException(e);
       } finally {
          instance.sendConnection(output);
       }
-
-      return data;
    }
 
    public static BusySettingsArchive createBusySettingsArchive(
@@ -121,15 +80,19 @@ public class LocalPasswordTable {
    }
 
    public static boolean isState(ResultSet instance, String target) {
-      ResultSetMetaData input = instance.getMetaData();
-      int output = input.getColumnCount();
+      try {
+         ResultSetMetaData input = instance.getMetaData();
+         int output = input.getColumnCount();
 
-      for (int context = 1; context <= output; context++) {
-         if (target.equals(input.getColumnName(context))) {
-            return true;
+         for (int context = 1; context <= output; context++) {
+            if (target.equals(input.getColumnName(context))) {
+               return true;
+            }
          }
-      }
 
-      return false;
+         return false;
+      } catch (SQLException e) {
+         throw new RuntimeException(e);
+      }
    }
 }

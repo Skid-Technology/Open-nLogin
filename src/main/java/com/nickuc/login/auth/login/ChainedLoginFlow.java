@@ -10,41 +10,19 @@ import java.util.zip.InflaterOutputStream;
 
 public class ChainedLoginFlow {
    public static void executeFile(File instance, File target) {
-      ZipFile input = new ZipFile(instance);
-
-      try {
+      try (ZipFile input = new ZipFile(instance)) {
          input.extractAll(target.toString());
-      } catch (Throwable value) {
-         try {
-            input.close();
-         } catch (Throwable data) {
-            value.addSuppressed(data);
-         }
-
-         throw value;
+      } catch (Exception value) {
+         throw new RuntimeException(value);
       }
-
-      input.close();
    }
 
    public static byte[] loadPayload(byte[] instance) {
       try {
          ByteArrayOutputStream target = new ByteArrayOutputStream();
-         DeflaterOutputStream input = new DeflaterOutputStream(target);
-
-         try {
+         try (DeflaterOutputStream input = new DeflaterOutputStream(target)) {
             input.write(instance);
-         } catch (Throwable value) {
-            try {
-               input.close();
-            } catch (Throwable data) {
-               value.addSuppressed(data);
-            }
-
-            throw value;
          }
-
-         input.close();
          return target.toByteArray();
       } catch (IOException result) {
          throw new RuntimeException("Unable to compress with Gzip!", result);
@@ -52,25 +30,15 @@ public class ChainedLoginFlow {
    }
 
    public static void sendFile(File instance, File target) {
-      ZipFile input = new ZipFile(target);
-
-      try {
+      try (ZipFile input = new ZipFile(target)) {
          if (instance.isDirectory()) {
             input.addFolder(instance);
          } else {
             input.addFile(instance);
          }
-      } catch (Throwable value) {
-         try {
-            input.close();
-         } catch (Throwable data) {
-            value.addSuppressed(data);
-         }
-
-         throw value;
+      } catch (Exception value) {
+         throw new RuntimeException(value);
       }
-
-      input.close();
    }
 
    public static void dispatchCollection(List<File> instance, File target) {
@@ -78,9 +46,7 @@ public class ChainedLoginFlow {
          throw new IllegalArgumentException("Input collection cannot be empty!");
       }
 
-      ZipFile input = new ZipFile(target);
-
-      try {
+      try (ZipFile input = new ZipFile(target)) {
          for (File context : instance) {
             if (context.isDirectory()) {
                input.addFolder(context);
@@ -88,38 +54,18 @@ public class ChainedLoginFlow {
                input.addFile(context);
             }
          }
-      } catch (Throwable value) {
-         try {
-            input.close();
-         } catch (Throwable data) {
-            value.addSuppressed(data);
-         }
-
-         throw value;
+      } catch (Exception value) {
+         throw new RuntimeException(value);
       }
-
-      input.close();
    }
 
    public static byte[] resolvePayload(byte[] instance) {
       try {
          ByteArrayOutputStream target = new ByteArrayOutputStream();
-         InflaterOutputStream input = new InflaterOutputStream(target);
-
-         try {
+         try (InflaterOutputStream input = new InflaterOutputStream(target)) {
             input.write(instance);
             input.flush();
-         } catch (Throwable value) {
-            try {
-               input.close();
-            } catch (Throwable data) {
-               value.addSuppressed(data);
-            }
-
-            throw value;
          }
-
-         input.close();
          return target.toByteArray();
       } catch (IOException result) {
          throw new RuntimeException("Unable to decompress with Gzip!", result);

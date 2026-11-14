@@ -50,7 +50,7 @@ public class DiscordVerifier implements IncomingAccountHandler {
             target, this.activePasswordHashLoader = new PasswordHashLoader("email.yml", output), "premium/2fa/email/email_%s.yml", input
          );
          StrictPremiumOption.savePasswordStore(target);
-         PasswordHashBridge context = target.a();
+         PasswordHashBridge context = target.fetchPasswordHashBridge();
          boolean data = CachedSettingsGateway.loadState();
 
          try {

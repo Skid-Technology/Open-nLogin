@@ -7,6 +7,8 @@ import com.nickuc.login.platform.account.InternalAccountHandler;
 import com.nickuc.login.platform.connection.SecondaryConnectionContract;
 import com.nickuc.login.premium.ReadyBedrockResolver;
 import com.nickuc.login.velocity.VelocityPlatform;
+import com.nickuc.login.storage.login.LoginCollection;
+import com.nickuc.login.storage.password.PasswordStore;
 
 
 public class FloodgateStore implements InternalAccountHandler {

@@ -74,7 +74,7 @@ public enum InternalLoginOption {
       return this.passwordHashCommand;
    }
 
-   public void performVerifiedServerAdapter(VerifiedServerAdapter target, LimboCoordinator input, String output, String... context) {
+   public void dispatchVerifiedServerAdapter(VerifiedServerAdapter target, LimboCoordinator input, String output, String... context) {
       if (!(this.passwordHashCommand instanceof LocaleCollection)) {
          throw new IllegalStateException("The command " + this + " cannot be spoofed!");
       }

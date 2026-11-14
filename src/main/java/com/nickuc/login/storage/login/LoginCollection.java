@@ -13,6 +13,7 @@ import com.nickuc.login.premium.Pbkdf2Linker;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
+import com.nickuc.login.storage.password.PasswordStore;
 
 
 public class LoginCollection {
@@ -72,7 +73,7 @@ public class LoginCollection {
             if (input.length > 0) {
                input = RootLoginHandler.handlePayload(input, data.getPrivate());
             }
-         } catch (GeneralSecurityException request) {
+         } catch (Exception request) {
             PasswordHashContainer.handleMessage("Unable to sign addon challenge for " + target.getName(), request);
             return;
          }

@@ -11,6 +11,10 @@ import java.util.regex.Pattern;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.notice.DirectNoticeCatalog;
+import com.nickuc.login.storage.password.PasswordRepository;
+import com.nickuc.login.storage.password.PrimaryPasswordDao;
 
 public class CurrentSettingsGateway extends InternalSettingsGateway {
    private static final Pattern pattern = Pattern.compile("/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/");
@@ -22,9 +26,9 @@ public class CurrentSettingsGateway extends InternalSettingsGateway {
 
       try {
          input = target.getString("uuid");
-         output = pattern.matcher(input).matches();
+         output = (byte)(pattern.matcher(input).matches() ? 1 : 0);
          String context = target.getString("pin");
-         this.dispatchMessage(input, context, (boolean)output);
+         this.dispatchMessage(input, context, (output != 0));
       } catch (Exception data) {
          PasswordHashContainer.processMessage(
             "[" + this.messageOption.getName() + "] " + (input == null ? "Unknown" : input + "'s") + " data could not be converted [uuid: " + output + "].", data

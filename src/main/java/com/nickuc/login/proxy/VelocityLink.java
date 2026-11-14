@@ -93,4 +93,9 @@ public class VelocityLink implements StrictCommandHandler {
       this.scheduledTask = target.getServer().getScheduler().buildTask(target, this.runnable).delay(input, context).schedule();
       return this;
    }
+
+   @Override
+   public void run() {
+      this.performTask();
+   }
 }

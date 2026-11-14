@@ -15,6 +15,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 
 public class PendingSettingsInterceptor implements LenientCommandHandler {
+   public final PasswordService passwordService;
+
    @Override
    public void dispatchPacketReceiveEvent(PacketReceiveEvent target) {
       Channel input = (Channel)target.getChannel();

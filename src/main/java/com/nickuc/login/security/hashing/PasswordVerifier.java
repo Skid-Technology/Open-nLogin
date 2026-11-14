@@ -82,7 +82,7 @@ public class PasswordVerifier implements LinkedServerAdapter {
                   }
 
                   context.close();
-                  return (boolean)reference;
+                  return (reference != 0);
                }
 
                context.close();
@@ -94,7 +94,7 @@ public class PasswordVerifier implements LinkedServerAdapter {
          }
 
          context.close();
-         return (boolean)reference;
+         return (reference != 0);
       } catch (Exception content) {
          PasswordHashContainer.processMessage("[" + messageOption.getName() + "] Unable to verify the password!", content);
          return false;
@@ -104,7 +104,11 @@ public class PasswordVerifier implements LinkedServerAdapter {
    private static byte[] loadPayload(String instance) {
       byte[] target = instance.getBytes(StandardCharsets.UTF_8);
       if (target.length > 72) {
-         target = MessageDigest.getInstance("SHA-512/256").digest(target);
+         try {
+            target = MessageDigest.getInstance("SHA-512/256").digest(target);
+         } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+         }
       }
 
       return target;

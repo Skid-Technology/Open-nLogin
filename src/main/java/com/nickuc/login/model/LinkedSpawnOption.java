@@ -13,4 +13,10 @@ public enum LinkedSpawnOption {
    LinkedSpawnOption(TightSenderAdapter output) {
       this.tightSenderAdapter = output;
    }
+
+
+   public static com.nickuc.login.platform.sender.TightSenderAdapter handleTightSenderAdapter(LinkedSpawnOption option) {
+      return option.tightSenderAdapter;
+   }
+
 }

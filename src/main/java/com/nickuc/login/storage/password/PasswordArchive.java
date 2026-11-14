@@ -5,6 +5,8 @@ import com.zaxxer.hikari.HikariConfig;
 import com.nickuc.login.platform.session.IndirectSessionHandler;
 import java.util.Properties;
 import java.util.function.Consumer;
+import com.nickuc.login.storage.settings.BusySettingsArchive;
+import com.nickuc.login.storage.notice.DirectNoticeCatalog;
 
 public class PasswordArchive extends BusySettingsArchive {
    @Override

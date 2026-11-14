@@ -12,6 +12,8 @@ import com.nickuc.login.proxy.ProxyForwarder;
 import com.nickuc.login.proxy.SecondaryProxyBridge;
 import com.nickuc.login.proxy.StrictSpawnGateway;
 import com.nickuc.login.security.hashing.PasswordHashProvider;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 
 public class ProxyRepository implements ServerAdapter {

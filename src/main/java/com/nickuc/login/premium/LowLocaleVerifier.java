@@ -155,7 +155,7 @@ public class LowLocaleVerifier extends LocaleCollection {
          }
       }
 
-      input.sort((instance, targetValue) -> instance.findMessage().compareToIgnoreCase(targetValue.findMessage()));
+      input.sort((instance, targetValue) -> ((LoginSource)instance).findMessage().compareToIgnoreCase(((LoginSource)targetValue).findMessage()));
       this.entries = input;
    }
 

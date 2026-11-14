@@ -6,6 +6,8 @@ import com.nickuc.login.protocol.LenientCommandHandler;
 import org.bukkit.entity.Player;
 
 public class PendingMessageListener implements LenientCommandHandler {
+   public final LocalLoginListener localLoginListener;
+
    @Override
    public void dispatchPacketReceiveEvent(PacketReceiveEvent target) {
       WrapperPlayClientPluginMessage input = new WrapperPlayClientPluginMessage(target);

@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 
-public class PacketLink implements LoudPacketAdapter {
+public class PacketLink implements LoudPacketAdapter, Runnable {
    @Nullable
    private CachedLoginProcessor cachedLoginProcessor;
    @Nullable
@@ -115,5 +115,10 @@ public class PacketLink implements LoudPacketAdapter {
    @Override
    public void updateTask() {
       this.activeEnabled = true;
+   }
+
+   @Override
+   public void run() {
+      this.updateTask();
    }
 }

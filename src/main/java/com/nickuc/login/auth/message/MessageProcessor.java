@@ -19,12 +19,11 @@ import javax.annotation.CheckReturnValue;
 public class MessageProcessor {
    public static boolean checkState(String instance, File target) {
       InputStream input = FastMessageHandler.createInputStream(instance);
+      if (input == null) {
+         return false;
+      }
 
       try {
-         if (input == null) {
-            throw new IOException("Unable to find stream in the requested path! " + instance);
-         }
-
          if (!isState(target)) {
             return false;
          }
@@ -32,41 +31,39 @@ public class MessageProcessor {
          updateInputStream(input, target);
          return true;
       } finally {
-         if (Collections.singletonList(input).get(0) != null) {
+         try {
             input.close();
+         } catch (IOException ignored) {
          }
       }
    }
 
    @CheckReturnValue
    public static BufferedInputStream createBufferedInputStream(File instance, OpenOption... target) {
-      return new BufferedInputStream(Files.newInputStream(instance.toPath(), target));
+      try {
+         return new BufferedInputStream(Files.newInputStream(instance.toPath(), target));
+      } catch (IOException e) {
+         throw new RuntimeException(e);
+      }
    }
 
    @CheckReturnValue
    public static BufferedOutputStream handleBufferedOutputStream(File instance, int target, OpenOption... input) {
-      return new BufferedOutputStream(Files.newOutputStream(instance.toPath(), input), target);
+      try {
+         return new BufferedOutputStream(Files.newOutputStream(instance.toPath(), input), target);
+      } catch (IOException e) {
+         throw new RuntimeException(e);
+      }
    }
 
    public static boolean verifyState(File instance, File target) {
       if (isState(target)) {
-         BufferedInputStream input = createBufferedInputStream(instance);
-
-         try {
-            BufferedOutputStream output = computeBufferedOutputStream(target);
-
-            try {
-               FastMessageHandler.processInputStream(input, output);
-               return true;
-            } finally {
-               if (Collections.singletonList(output).get(0) != null) {
-                  output.close();
-               }
-            }
-         } finally {
-            if (Collections.singletonList(input).get(0) != null) {
-               input.close();
-            }
+         try (BufferedInputStream input = createBufferedInputStream(instance);
+              BufferedOutputStream output = computeBufferedOutputStream(target)) {
+            FastMessageHandler.processInputStream(input, output);
+            return true;
+         } catch (IOException e) {
+            throw new RuntimeException(e);
          }
       } else {
          return false;
@@ -74,15 +71,11 @@ public class MessageProcessor {
    }
 
    public static String handleMessage(File instance) {
-      BufferedInputStream target = createBufferedInputStream(instance);
-
-      try {
+      try (BufferedInputStream target = createBufferedInputStream(instance)) {
          byte[] input = FastMessageHandler.handlePayload(target);
          return new String(Base64.getEncoder().encode(input));
-      } finally {
-         if (Collections.singletonList(target).get(0) != null) {
-            target.close();
-         }
+      } catch (Exception e) {
+         throw new RuntimeException(e);
       }
    }
 
@@ -109,20 +102,20 @@ public class MessageProcessor {
    }
 
    public static void updateInputStream(InputStream instance, File target) {
-      BufferedOutputStream input = computeBufferedOutputStream(target);
-
-      try {
+      try (BufferedOutputStream input = computeBufferedOutputStream(target)) {
          FastMessageHandler.processInputStream(instance, input);
-      } finally {
-         if (Collections.singletonList(input).get(0) != null) {
-            input.close();
-         }
+      } catch (IOException e) {
+         throw new RuntimeException(e);
       }
    }
 
    @CheckReturnValue
    public static BufferedInputStream handleBufferedInputStream(File instance, int target, OpenOption... input) {
-      return new BufferedInputStream(Files.newInputStream(instance.toPath(), input), target);
+      try {
+         return new BufferedInputStream(Files.newInputStream(instance.toPath(), input), target);
+      } catch (IOException e) {
+         throw new RuntimeException(e);
+      }
    }
 
    public static boolean validateState(File instance) {
@@ -140,25 +133,27 @@ public class MessageProcessor {
 
    @CheckReturnValue
    public static BufferedOutputStream computeBufferedOutputStream(File instance, OpenOption... target) {
-      return new BufferedOutputStream(Files.newOutputStream(instance.toPath(), target));
+      try {
+         return new BufferedOutputStream(Files.newOutputStream(instance.toPath(), target));
+      } catch (IOException e) {
+         throw new RuntimeException(e);
+      }
    }
 
-   public static String createMessage(File instance, MessageDigest target) {
-      BufferedInputStream input = createBufferedInputStream(instance);
-
-      try {
+   public static String createMessage(File instance, MessageDigest target) throws IOException {
+      try (BufferedInputStream input = createBufferedInputStream(instance)) {
          return FastMessageHandler.createMessage(input, target);
-      } finally {
-         if (Collections.singletonList(input).get(0) != null) {
-            input.close();
-         }
       }
    }
 
    public static boolean validateState(File instance, long target) {
-      BasicFileAttributes output = Files.readAttributes(instance.toPath(), BasicFileAttributes.class);
-      long context = output.creationTime().toMillis();
-      return System.currentTimeMillis() - context >= target;
+      try {
+         BasicFileAttributes output = Files.readAttributes(instance.toPath(), BasicFileAttributes.class);
+         long context = output.creationTime().toMillis();
+         return System.currentTimeMillis() - context >= target;
+      } catch (IOException e) {
+         throw new RuntimeException(e);
+      }
    }
 
    public static boolean canState(File instance, boolean target) {
@@ -167,7 +162,11 @@ public class MessageProcessor {
       }
 
       File input = instance.getParentFile();
-      return input != null && !input.exists() && !input.mkdirs() ? false : instance.createNewFile();
+      try {
+         return input != null && !input.exists() && !input.mkdirs() ? false : instance.createNewFile();
+      } catch (IOException e) {
+         throw new RuntimeException(e);
+      }
    }
 
    public static String resolveMessage(File instance) {

@@ -15,19 +15,19 @@ import javax.crypto.Cipher;
 public class RootLoginHandler {
    private static final SecureRandom secureRandom = new SecureRandom();
 
-   public static byte[] handlePayload(byte[] instance, Key target) {
+   public static byte[] handlePayload(byte[] instance, Key target) throws GeneralSecurityException {
       Cipher input = Cipher.getInstance("RSA");
       input.init(1, target);
       return input.doFinal(instance);
    }
 
-   public static byte[] handlePayloadForPayload(byte[] instance, Key target) {
+   public static byte[] handlePayloadForPayload(byte[] instance, Key target) throws GeneralSecurityException {
       Cipher input = Cipher.getInstance("RSA");
       input.init(2, target);
       return input.doFinal(instance);
    }
 
-   public static byte[] handlePayloadAndPayload(byte[] instance, Key target) {
+   public static byte[] handlePayloadAndPayload(byte[] instance, Key target) throws GeneralSecurityException {
       byte[] input = new byte[instance.length + 4];
       byte[] output = new byte[4];
       secureRandom.nextBytes(output);
@@ -44,18 +44,18 @@ public class RootLoginHandler {
       return Base64.getEncoder().encodeToString(activeHandlePayload(instance, target));
    }
 
-   public static PrivateKey processPrivateKey(byte[] instance) {
+   public static PrivateKey processPrivateKey(byte[] instance) throws GeneralSecurityException {
       KeyFactory target = KeyFactory.getInstance("RSA");
       PKCS8EncodedKeySpec input = new PKCS8EncodedKeySpec(instance);
       return target.generatePrivate(input);
    }
 
-   public static byte[] getPayload(byte[] instance, Key target) {
+   public static byte[] getPayload(byte[] instance, Key target) throws GeneralSecurityException {
       byte[] input = handlePayloadForPayload(instance, target);
       return Arrays.copyOfRange(input, 4, input.length);
    }
 
-   public static PublicKey processPublicKey(byte[] instance) {
+   public static PublicKey processPublicKey(byte[] instance) throws GeneralSecurityException {
       KeyFactory target = KeyFactory.getInstance("RSA");
       X509EncodedKeySpec input = new X509EncodedKeySpec(instance);
       return target.generatePublic(input);

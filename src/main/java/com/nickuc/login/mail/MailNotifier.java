@@ -211,4 +211,9 @@ public class MailNotifier implements RootListenerContract {
          this.enabled = true;
       }
    }
+
+   public void aE() {
+      this.enabled = false;
+      this.storedLoginGate = null;
+   }
 }

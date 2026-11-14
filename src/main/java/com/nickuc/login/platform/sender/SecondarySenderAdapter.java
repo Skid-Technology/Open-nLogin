@@ -14,6 +14,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.Nullable;
+import com.nickuc.login.platform.player.PlayerContract;
+import com.nickuc.login.platform.server.VerifiedServerAdapter;
+import com.nickuc.login.platform.session.LinkedSessionHandler;
 
 public interface SecondarySenderAdapter {
    default boolean canState(VerifiedServerAdapter target, LimboCoordinator input) {
@@ -45,7 +48,7 @@ public interface SecondarySenderAdapter {
       } else {
          return input.equals(target.d(LenientMessageKind.ACTIVE_PRIMARY_LENIENTMESSAGEKIND))
             ? true
-            : PrimaryMessageOption.PRIMARY_MESSAGE_OPTION.a(new Object[0]).stream().anyMatch(targetValue -> targetValue.equalsIgnoreCase(input));
+            : ((List<String>)PrimaryMessageOption.PRIMARY_MESSAGE_OPTION.a(new Object[0])).stream().anyMatch(targetValue -> targetValue.equalsIgnoreCase(input));
       }
    }
 
@@ -64,9 +67,9 @@ public interface SecondarySenderAdapter {
                if (holder != null
                   && !this.isState(input, holder)
                   && this.checkState(holder)
-                  && !PrimaryMessageOption.REMOTE_PRIMARYMESSAGEOPTION.a(new Object[0]).contains(holder)) {
+                  && !((List<?>)PrimaryMessageOption.REMOTE_PRIMARYMESSAGEOPTION.a(new Object[0])).contains(holder)) {
                   int subject = PrimaryMessageOption.MAIN_PRIMARYMESSAGEOPTION.r();
-                  PlayerContract option = subject <= 0 ? null : dataValue -> {
+                  PlayerContract<Boolean> option = subject <= 0 ? null : (Boolean dataValue) -> {
                      if (!dataValue) {
                         this.loadLinkedSessionHandler().createStrictCommandHandler(() -> this.createVerifiedProxyCatalog(target, input, output), subject);
                      } else {
@@ -82,7 +85,7 @@ public interface SecondarySenderAdapter {
                String element = (String)input.d(LenientMessageKind.ACTIVE_VERIFIED_LENIENTMESSAGEKIND);
                if (element != null && !this.isState(input, element) && this.checkState(element)) {
                   int payload = PrimaryMessageOption.MAIN_PRIMARYMESSAGEOPTION.r();
-                  PlayerContract reference = payload <= 0 ? null : dataValue -> {
+                  PlayerContract<Boolean> reference = payload <= 0 ? null : (Boolean dataValue) -> {
                      if (!dataValue) {
                         this.loadLinkedSessionHandler().createStrictCommandHandler(() -> this.createVerifiedProxyCatalog(target, input, output), payload);
                      } else {
@@ -104,7 +107,7 @@ public interface SecondarySenderAdapter {
             }
 
             String data = this.handleMessage(target);
-            if (data != null && context.stream().anyMatch(data::equalsIgnoreCase)) {
+            if (data != null && context.stream().anyMatch(item -> data.equalsIgnoreCase(String.valueOf(item)))) {
                break;
             }
 
@@ -135,7 +138,7 @@ public interface SecondarySenderAdapter {
             }
 
             int response = PrimaryMessageOption.MAIN_PRIMARYMESSAGEOPTION.r();
-            PlayerContract source = response <= 0 ? null : resultValue -> {
+            PlayerContract<Boolean> source = response <= 0 ? null : (Boolean resultValue) -> {
                if (!resultValue) {
                   this.loadLinkedSessionHandler().createStrictCommandHandler(() -> {
                      if (context.size() > 1 && !input.isState(LenientMessageKind.ACTIVE_STORED_LENIENTMESSAGEKIND)) {

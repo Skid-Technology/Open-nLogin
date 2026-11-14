@@ -4,6 +4,10 @@ import com.nickuc.login.account.StrictMessageKind;
 import com.nickuc.login.model.SecondaryPlatformCatalog;
 
 public class InternalLoginService {
+   public static int[] values = new int[256];
+   public static int[] activeValues = new int[256];
+   public static int[] pendingValues = new int[256];
+
    static {
       try {
          values[SecondaryPlatformCatalog.ACTIVE_SECONDARYPLATFORMCATALOG.ordinal()] = 1;

@@ -71,7 +71,7 @@ public class RedisTicker extends JedisPubSub implements Closeable, Runnable {
       }
    }
 
-   private RedisTicker(PasswordHashHasher target, String input, Consumer<String> output) {
+   public RedisTicker(PasswordHashHasher target, String input, Consumer<String> output) {
       this.passwordHashHasher = target;
       this.name = input;
       this.consumer = output;
@@ -81,5 +81,10 @@ public class RedisTicker extends JedisPubSub implements Closeable, Runnable {
       if (target.equals(this.name)) {
          this.consumer.accept(input);
       }
+   }
+
+   @Override
+   public void run() {
+      this.updateTask();
    }
 }

@@ -19,7 +19,7 @@ public class BungeeInterceptor {
    private static final Field primaryField = LoginCheckpoint.loadField(InitialHandler.class, "name");
    private static final Class<?> value = ChildLoginCheckpoint.loadClass("net.md_5.bungee.protocol.packet.LoginRequest");
 
-   public static void sendPendingConnection(PendingConnection instance, String target) {
+   public static void sendPendingConnection(PendingConnection instance, String target) throws IllegalAccessException {
       if (target == null) {
          throw new IllegalArgumentException("Name cannot be null!");
       }
@@ -47,7 +47,7 @@ public class BungeeInterceptor {
       }
    }
 
-   public static void performPendingConnection(PendingConnection instance, UUID target) {
+   public static void performPendingConnection(PendingConnection instance, UUID target) throws IllegalAccessException {
       if (target == null) {
          throw new IllegalArgumentException("Unique ID cannot be null!");
       }
@@ -59,7 +59,7 @@ public class BungeeInterceptor {
    }
 
    @Nullable
-   public static UUID buildUniqueId(PendingConnection instance) {
+   public static UUID buildUniqueId(PendingConnection instance) throws IllegalAccessException {
       if (pendingField != null && activeField != null) {
          Object target = pendingField.get(instance);
          if (target == null) {

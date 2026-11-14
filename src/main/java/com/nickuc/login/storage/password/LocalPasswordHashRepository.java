@@ -23,6 +23,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import com.nickuc.login.storage.notice.DirectNoticeCatalog;
+import com.nickuc.login.storage.spawn.SpawnState;
 
 
 public class LocalPasswordHashRepository {
@@ -280,17 +282,6 @@ public class LocalPasswordHashRepository {
                response = input.loadMessage(source > 0, request);
                input.cachedPasswordHashHasher.enabled = false;
                return true;
-            } catch (SQLException message) {
-               PasswordHashContainer.handleMessage(
-                  "Unable to "
-                     + (input.resolveStateForState() ? "update" : "insert")
-                     + " "
-                     + data
-                     + " account's "
-                     + input.hashCode()
-                     + " [database modified manually?]",
-                  message
-               );
             } catch (Exception notice) {
                PasswordHashContainer.handleMessage(
                   "Unable to " + (input.resolveStateForState() ? "update" : "insert") + " " + data + " account's [corrupted data?]", notice

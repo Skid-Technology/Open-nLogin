@@ -7,6 +7,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import javax.annotation.Nullable;
+import com.nickuc.login.platform.sender.OutgoingSenderAdapter;
+import com.nickuc.login.platform.session.IndirectSessionHandler;
+import com.nickuc.login.platform.session.LinkedSessionHandler;
 
 public interface VerifiedServerAdapter extends OutgoingSenderAdapter {
    default InetSocketAddress retrieveInetSocketAddress() {

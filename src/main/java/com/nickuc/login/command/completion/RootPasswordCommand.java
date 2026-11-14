@@ -98,7 +98,7 @@ public final class RootPasswordCommand implements NestedServerAdapter, CommandEx
                   result.remove(request + ":" + response);
                   result.remove(response);
 
-                  for (String entry : data) {
+                  for (String entry : (List<String>) data) {
                      result.remove(request + ":" + entry);
                      result.remove(entry);
                   }

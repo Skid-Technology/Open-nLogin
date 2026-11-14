@@ -16,6 +16,7 @@ import com.nickuc.login.storage.login.LoginCollection;
 import com.nickuc.login.storage.password.PasswordStore;
 import com.nickuc.login.tasks.LoginMainQueueTask;
 import java.nio.charset.StandardCharsets;
+import com.nickuc.login.auth.login.SafeLoginBarrier;
 
 
 public class SettingsProcessor {
@@ -64,7 +65,7 @@ public class SettingsProcessor {
                      if (LoginMainQueueTask.verifyState(target) && data.loadTightPlatformCatalog().isState(TightPlatformCatalog.CURRENT_TIGHTPLATFORMCATALOG)) {
                         boolean dataValue = content.findStateForState();
                         int valueValue = !content.resolveCachedPasswordHashHasher().hasState("addon.data") ? 1 : 0;
-                        this.loginCollection.processVerifiedServerAdapter(target, item, (boolean)valueValue, !dataValue);
+                        this.loginCollection.processVerifiedServerAdapter(target, item, (valueValue != 0), !dataValue);
                      }
                   });
                }

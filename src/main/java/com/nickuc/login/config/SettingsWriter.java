@@ -114,7 +114,7 @@ public class SettingsWriter {
       if (!target.enabled) {
          throw new IllegalStateException(target + " is not a string list!");
       } else {
-         return target.a(this.pendingSecureLoginGate, input);
+         return target.handleCollection(this.pendingSecureLoginGate, input);
       }
    }
 
@@ -140,7 +140,7 @@ public class SettingsWriter {
       if (!target.enabled) {
          throw new IllegalStateException(target + " is not a string list!");
       } else {
-         return target.a(this.activeSecureLoginGate, input);
+         return target.handleCollection(this.activeSecureLoginGate, input);
       }
    }
 
@@ -187,7 +187,7 @@ public class SettingsWriter {
          }
       }
 
-      return (boolean)context;
+      return (context != 0);
    }
 
    private void handlePasswordHashLoader(PasswordHashLoader target, LoudProxyState input) {

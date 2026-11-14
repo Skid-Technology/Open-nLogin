@@ -14,6 +14,14 @@ public enum OutgoingPlatformCatalog {
    private final String name;
 
    @Nullable
+   public static OutgoingPlatformCatalog loadOutgoingPlatformCatalog(String instance) {
+      return computeOutgoingPlatformCatalog(instance);
+   }
+
+   public static String handleMessage(OutgoingPlatformCatalog catalog) {
+      return catalog != null ? catalog.name : "";
+   }
+
    private static OutgoingPlatformCatalog computeOutgoingPlatformCatalog(String instance) {
       switch (instance.toUpperCase(Locale.ENGLISH)) {
          case "SHA256":

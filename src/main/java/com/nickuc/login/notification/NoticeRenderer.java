@@ -22,7 +22,7 @@ public class NoticeRenderer extends LoginSource {
       } else {
          VerifiedServerAdapter output = (VerifiedServerAdapter)target;
          LimboCoordinator context = this.passwordStore.loadLimboRegistry().loadLimboCoordinator(output);
-         if (!context.d(LenientMessageKind.PRIMARY_LENIENTMESSAGEKIND)) {
+         if (!context.<Boolean>d(LenientMessageKind.PRIMARY_LENIENTMESSAGEKIND)) {
             SecondaryAccountHandler data = context.getSecondaryAccountHandler();
             if (input.length < 4) {
                data.executeMessage("§cThis action could not be performed: insufficient arguments.");

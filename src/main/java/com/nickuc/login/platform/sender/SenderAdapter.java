@@ -1,5 +1,7 @@
 package com.nickuc.login.platform.sender;
 
+import com.nickuc.login.platform.listener.ChildListenerContract;
+
 public interface SenderAdapter extends ChildListenerContract {
    void processMessage(String target, Throwable input);
 

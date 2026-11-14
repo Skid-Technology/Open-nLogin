@@ -4,6 +4,10 @@ import com.nickuc.login.account.SharedNoticeKind;
 import com.nickuc.login.model.IncomingSpawnState;
 
 public class MainLoginService {
+   public static int[] values = new int[256];
+   public static int[] activeValues = new int[256];
+   public static int[] pendingValues = new int[256];
+
    static {
       try {
          values[IncomingSpawnState.INCOMING_SPAWN_STATE.ordinal()] = 1;

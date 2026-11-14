@@ -367,7 +367,7 @@ public class BedrockLinker implements RootServerAdapter {
       PendingConnection input = target.getConnection();
       String output = input.getName();
       UUID context = input.isOnlineMode() ? input.getUniqueId() : null;
-      Consumer data = targetValue -> {
+      Consumer<String> data = targetValue -> {
          target.setCancelled(true);
          target.setCancelReason(TextComponent.fromLegacyText(targetValue));
       };
@@ -460,7 +460,7 @@ public class BedrockLinker implements RootServerAdapter {
                   }
                }
 
-               if (!source.canState(request, context, output, record, (boolean)response)) {
+               if (!source.canState(request, context, output, record, (response != 0))) {
                   data.accept(CachedSettingsGateway.computeMessage(LoudProxyState.DIRECT_LOUDPROXYSTATE));
                   return;
                }
@@ -498,7 +498,7 @@ public class BedrockLinker implements RootServerAdapter {
       InetAddress context = ((InetSocketAddress)input.getSocketAddress()).getAddress();
       SecondaryConnectionContract data = this.passwordStore.loadInternalAccountHandler().retrieveSecondaryConnectionContract();
       int value = data != null && data.isState(input.getUniqueId()) ? 1 : 0;
-      String result = this.passwordStore.getFloodgateResolver().resolveMessage(output, context, Boolean.valueOf((boolean)value));
+      String result = this.passwordStore.getFloodgateResolver().resolveMessage(output, context, Boolean.valueOf((value != 0)));
       if (result != null) {
          target.setCancelled(true);
          target.setCancelReason(TextComponent.fromLegacyText(result));

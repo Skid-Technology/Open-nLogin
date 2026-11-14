@@ -2,6 +2,7 @@ package com.nickuc.login.auth.login;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
@@ -14,19 +15,23 @@ public class OpenLoginBarrier implements Closeable {
 
    @Override
    public void close() {
-      if (this.bufferedReader != null) {
-         this.bufferedReader.close();
-         this.bufferedReader = null;
-      }
+      try {
+         if (this.bufferedReader != null) {
+            this.bufferedReader.close();
+            this.bufferedReader = null;
+         }
 
-      if (this.inputStreamReader != null) {
-         this.inputStreamReader.close();
-         this.inputStreamReader = null;
-      }
+         if (this.inputStreamReader != null) {
+            this.inputStreamReader.close();
+            this.inputStreamReader = null;
+         }
 
-      if (this.inputStream != null) {
-         this.inputStream.close();
-         this.inputStream = null;
+         if (this.inputStream != null) {
+            this.inputStream.close();
+            this.inputStream = null;
+         }
+      } catch (IOException e) {
+         throw new RuntimeException(e);
       }
    }
 
@@ -38,6 +43,10 @@ public class OpenLoginBarrier implements Closeable {
 
    @Nullable
    public String findMessage() {
-      return this.bufferedReader.readLine();
+      try {
+         return this.bufferedReader.readLine();
+      } catch (IOException e) {
+         throw new RuntimeException(e);
+      }
    }
 }

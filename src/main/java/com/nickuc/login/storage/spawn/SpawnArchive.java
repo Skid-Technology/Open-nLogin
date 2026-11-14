@@ -10,6 +10,7 @@ import com.nickuc.login.mail.PasswordHandler;
 import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import java.util.Optional;
 import javax.annotation.Nonnull;
+import com.nickuc.login.storage.password.PasswordStore;
 
 public class SpawnArchive extends PasswordHandler {
    private final PendingVelocityGuard pendingVelocityGuard = new PendingVelocityGuard(this);

@@ -311,7 +311,7 @@ public class RootMessageHandler {
          .kickOnPacketException(false)
          .reEncodeByDefault(false)
          .timeStampMode(TimeStampMode.MILLIS)
-         .logFilter(target);
+         ;
       PacketEventsAPI output;
       switch (this.passwordStore.findIncomingLoginGate().retrieveSilentProxyState()) {
          case SILENT_PROXY_STATE:
@@ -384,5 +384,13 @@ public class RootMessageHandler {
       } else {
          return input;
       }
+   }
+
+   public static Map<PacketTypeCommon, QuickCommandHandler> loadTable(RootMessageHandler handler) {
+      return handler.sessions;
+   }
+
+   public static Map<PacketTypeCommon, LenientCommandHandler> resolveTable(RootMessageHandler handler) {
+      return handler.activeSessions;
    }
 }

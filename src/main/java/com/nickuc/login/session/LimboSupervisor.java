@@ -57,6 +57,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.plugin.PluginManager;
+import com.nickuc.login.listener.proxy.BungeeGuard;
 
 public class LimboSupervisor {
    private final AtomicLong atomicLong;
@@ -149,7 +150,11 @@ public class LimboSupervisor {
       }
 
       if (this.dataFile.exists()) {
-         this.values = Files.readAllBytes(this.dataFile.toPath());
+         try {
+            this.values = Files.readAllBytes(this.dataFile.toPath());
+         } catch (IOException e) {
+            throw new RuntimeException(e);
+         }
       }
    }
 
@@ -250,7 +255,7 @@ public class LimboSupervisor {
          this.timer.schedule(new ProxyDefinition(this, target), 10000L);
       }
 
-      Set input = (Set)this.pendingCache.get(target, instance -> new HashSet());
+      Set<byte[]> input = this.pendingCache.get(target, instance -> new HashSet<>());
       synchronized (input) {
          input.forEach(inputValue -> this.handleVerifiedServerAdapter(target, inputValue));
          input.clear();
@@ -334,7 +339,7 @@ public class LimboSupervisor {
                         TightMessageKind.canState(this.BukkitPlatform, false);
                         return;
                      }
-                  } catch (IOException option) {
+                  } catch (Exception option) {
                      PasswordHashContainer.handleMessage("Unable to update " + player.getName() + " file.", option);
                   }
 
@@ -349,7 +354,7 @@ public class LimboSupervisor {
             switch (client) {
                case 0:
                   if (!value.canState(target)) {
-                     int status = input.has("use-register-spawn") ? input.getBoolean("use-register-spawn") : (!input.getBoolean("registered") ? 1 : 0);
+                     boolean status = input.has("use-register-spawn") ? input.getBoolean("use-register-spawn") : !input.getBoolean("registered");
                      target.getLinkedSessionHandler()
                         .buildStrictCommandHandler(new PlayerLimboProcessTask(() -> account.saveVerifiedServerAdapter(target, argument, status)));
                   }
@@ -600,4 +605,14 @@ public class LimboSupervisor {
          this.activeCache.put(target, this.object);
       }
    }
+
+   public static BukkitPlatform loadNLoginBukkit(LimboSupervisor supervisor) {
+      return supervisor.BukkitPlatform;
+   }
+
+
+   public static com.github.benmanes.caffeine.cache.Cache<com.nickuc.login.platform.server.VerifiedServerAdapter, Object> computeCache(LimboSupervisor supervisor) {
+      return supervisor.activeCache;
+   }
+
 }

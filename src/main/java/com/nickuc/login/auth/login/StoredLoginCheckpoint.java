@@ -5,6 +5,10 @@ import com.nickuc.login.model.IncomingSpawnState;
 import com.nickuc.login.model.PremiumState;
 
 public class StoredLoginCheckpoint {
+   public static int[] values = new int[256];
+   public static int[] activeValues = new int[256];
+   public static int[] pendingValues = new int[256];
+
    static {
       try {
          pendingValues[PremiumState.CURRENT_PREMIUMSTATE.ordinal()] = 1;

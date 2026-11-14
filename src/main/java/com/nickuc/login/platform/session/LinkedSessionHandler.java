@@ -4,8 +4,9 @@ import com.nickuc.login.auth.login.StoredLoginHandler;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import com.nickuc.login.platform.command.StrictCommandHandler;
 
-public interface LinkedSessionHandler {
+public interface LinkedSessionHandler extends Runnable {
    default StrictCommandHandler loadStrictCommandHandler(Consumer<StrictCommandHandler> target, long input, long context) {
       return this.loadStrictCommandHandler(target, input, context, TimeUnit.MILLISECONDS);
    }

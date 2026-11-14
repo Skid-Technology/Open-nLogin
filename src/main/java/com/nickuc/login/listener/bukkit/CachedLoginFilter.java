@@ -57,4 +57,9 @@ public class CachedLoginFilter implements LinkedSessionHandler {
    public StoredLoginHandler loadStoredLoginHandler() {
       return this.storedLoginHandler;
    }
+
+   @Override
+   public void run() {
+      this.dispatchTask();
+   }
 }

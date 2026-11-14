@@ -1,5 +1,7 @@
 package com.nickuc.login.discord;
 
+import com.nickuc.login.platform.command.StrictCommandHandler;
+
 import com.nickuc.login.auth.message.FastMessageHandler;
 import com.nickuc.login.auth.login.IncomingLoginGate;
 import com.nickuc.login.auth.login.LiveLoginCheckpoint;
@@ -83,14 +85,14 @@ public class ParentDiscordNotifier {
                if (!this.activeLinkedSessionHandler.checkState(2, TimeUnit.SECONDS)) {
                   PasswordHashContainer.processMessage("Awaiting active tasks...");
                   if (!this.activeLinkedSessionHandler.checkState(3, TimeUnit.SECONDS)) {
-                     Collection input = this.activeLinkedSessionHandler.getCollection();
+                     Collection<StrictCommandHandler> input = this.activeLinkedSessionHandler.getCollection();
                      if (!input.isEmpty()) {
                         PasswordHashContainer.performMessage("Forcing active tasks (" + OpenLocaleBarrier.resolveMessage(input.size()) + ") to terminate");
                         input.stream().limit(5L).forEach(instance -> PasswordHashContainer.performMessage(" - " + instance.loadMessage()));
                      }
                   }
                }
-            } catch (InterruptedException result) {
+            } catch (Exception result) {
                throw new RuntimeException(result);
             }
 
@@ -209,10 +211,13 @@ public class ParentDiscordNotifier {
             target.computePrimaryPasswordHashVerifier("signature-update", FastMessageHandler.buildPayload(instance -> instance.handleTime(System.currentTimeMillis())));
             target.sendTask();
          } else {
-            DataInputStream output = new DataInputStream(new ByteArrayInputStream(input));
-            long context = output.readLong();
-            if (System.currentTimeMillis() - context >= 691200L) {
-               this.enabled = true;
+            try {
+               DataInputStream output = new DataInputStream(new ByteArrayInputStream(input));
+               long context = output.readLong();
+               if (System.currentTimeMillis() - context >= 691200L) {
+                  this.enabled = true;
+               }
+            } catch (Exception ignored) {
             }
          }
       }
@@ -224,7 +229,11 @@ public class ParentDiscordNotifier {
 
       int result = this.updateLookup.loadLinkedPasswordHashVerifier().buildObject("bootstrap_await", 0);
       if (result > 0) {
-         Thread.sleep(result);
+         try {
+            Thread.sleep(result);
+         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+         }
       }
    }
 

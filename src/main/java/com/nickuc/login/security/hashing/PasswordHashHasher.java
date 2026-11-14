@@ -29,7 +29,7 @@ public class PasswordHashHasher implements Closeable {
       }
 
       synchronized (this.sessions) {
-         RedisTicker context = new RedisTicker(this, target, input, null);
+         RedisTicker context = new RedisTicker(this, target, input);
          this.sessions.put(target, context);
          this.indirectSessionHandler.processLinkedSessionHandler(true).buildStrictCommandHandler(context);
       }
@@ -85,5 +85,9 @@ public class PasswordHashHasher implements Closeable {
 
    public static PasswordHashHasher loadPasswordHashHasher(IndirectSessionHandler<?> instance, String target, String input, String output, boolean context) {
       return new PasswordHashHasher(instance, new JedisPooled(createHostAndPort(target), loadJedisClientConfig(input, output, context)));
+   }
+
+   public static UnifiedJedis handleUnifiedJedis(PasswordHashHasher hasher) {
+      return hasher.unifiedJedis;
    }
 }

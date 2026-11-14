@@ -209,7 +209,7 @@ public class PasswordHashDigest implements VerifiedServerAdapter {
          output = 0;
       }
 
-      return new PasswordHashDigest(instance, input, target, (boolean)output);
+      return new PasswordHashDigest(instance, input, target, (output != 0));
    }
 
    @Override
@@ -262,5 +262,9 @@ public class PasswordHashDigest implements VerifiedServerAdapter {
    @Override
    public boolean loadState() {
       return this.proxiedPlayer.isConnected();
+   }
+
+   public static ProxiedPlayer computeProxiedPlayer(PasswordHashDigest digest) {
+      return digest.proxiedPlayer;
    }
 }

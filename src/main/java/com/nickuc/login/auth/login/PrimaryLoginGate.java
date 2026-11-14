@@ -24,7 +24,7 @@ public class PrimaryLoginGate {
       }
    }
 
-   public PrimaryLoginGate(String target) {
+   public PrimaryLoginGate(String target) throws UnknownHostException {
       String[] input = target.split("/");
       String output;
       if (input.length == 2) {
@@ -37,13 +37,13 @@ public class PrimaryLoginGate {
 
       this.inetAddress = InetAddress.getByName(output);
       if (this.inetAddress instanceof Inet4Address) {
-         this.enabled = (boolean)(input.length == 2 && this.activeCount != 32 ? 0 : 1);
+         this.enabled = !(input.length == 2 && this.activeCount != 32);
       } else {
          if (!(this.inetAddress instanceof Inet6Address)) {
             throw new IllegalArgumentException("Unsupported inet address! " + this.inetAddress.getClass().getCanonicalName());
          }
 
-         this.enabled = (boolean)(input.length == 2 && this.activeCount != 128 ? 0 : 1);
+         this.enabled = !(input.length == 2 && this.activeCount != 128);
       }
 
       this.count = this.enabled ? -1 : this.activeCount / 8;

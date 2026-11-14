@@ -14,7 +14,7 @@ import java.util.Properties;
 
 public class PasswordImporter extends StoredSettingsGateway {
    @Override
-   public void performSet(ResultSet target) {
+   public void performSet(ResultSet target) throws java.sql.SQLException {
       this.activeName = target.getString("name");
       String input = SafeLoginBarrier.computeMessage(target.getString("password"));
       this.updateMessage(this.activeName, input, null, null);

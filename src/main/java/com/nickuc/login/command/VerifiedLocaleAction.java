@@ -207,7 +207,7 @@ public class VerifiedLocaleAction implements PacketAdapter {
          throw new RuntimeException("Cannot invoke " + target.getClass().getCanonicalName() + "#getTitle", data);
       }
 
-      return input.stream().filter(Objects::nonNull).noneMatch(targetValue -> LocalLocaleFlow.handleMessage(targetValue).contains(output));
+      return ((List<String>) input).stream().filter(Objects::nonNull).noneMatch(targetValue -> LocalLocaleFlow.handleMessage(targetValue).contains(output));
    }
 
    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -225,7 +225,7 @@ public class VerifiedLocaleAction implements PacketAdapter {
          Location context = target.getTo();
          if (context == null || !(output.getY() > context.getY()) || gameMode != null && input.getGameMode() == gameMode) {
             LimboCoordinator data = this.limboRegistry.loadLimboCoordinator(this.BukkitPlatform.b().processVerifiedServerAdapter(input));
-            if (!data.loadTightPlatformCatalog().isState(TightPlatformCatalog.LOCAL_TIGHTPLATFORMCATALOG) || data.d(LenientMessageKind.SAFE_LENIENTMESSAGEKIND)
+            if (!data.loadTightPlatformCatalog().isState(TightPlatformCatalog.LOCAL_TIGHTPLATFORMCATALOG) || data.<Boolean>d(LenientMessageKind.SAFE_LENIENTMESSAGEKIND)
                )
              {
                target.setTo(output);

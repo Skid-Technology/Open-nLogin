@@ -44,4 +44,34 @@ public class OpenPasswordTranslator {
    public static PasswordTranslator getPasswordTranslator() {
       return new PasswordTranslator();
    }
+
+   public static String buildMessage(OpenPasswordTranslator translator) {
+      return translator.primaryName;
+   }
+
+
+   public static com.nickuc.login.storage.platform.IncomingPlatformCatalog loadIncomingPlatformCatalog(OpenPasswordTranslator translator) {
+      return translator.incomingPlatformCatalog;
+   }
+
+   public static int computeCount(OpenPasswordTranslator translator) {
+      return translator.count;
+   }
+
+   public static String resolveMessage(OpenPasswordTranslator translator) {
+      return translator.pendingName;
+   }
+
+   public static String computeMessage(OpenPasswordTranslator translator) {
+      return translator.name;
+   }
+
+   public static String createMessage(OpenPasswordTranslator translator) {
+      return translator.currentName;
+   }
+
+   public static String computeMessageForMessage(OpenPasswordTranslator translator) {
+      return translator.activeName;
+   }
+
 }

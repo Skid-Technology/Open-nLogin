@@ -13,6 +13,8 @@ import javax.annotation.Nullable;
 
 
 public class CachedPasswordHashHasher {
+   public final SpawnLookup spawnLookup;
+
    public final HashMap<String, Object> sessions;
    public boolean enabled;
    public String name;

@@ -33,4 +33,26 @@ public class PrimaryLoginService {
          }
       }
    }
+
+
+   public static long[] loadValues() {
+      return pendingValues;
+   }
+
+   public static long[][] findValues() {
+      return values;
+   }
+
+   public static Object[] resolveValues() {
+      return activeValues;
+   }
+
+   public static int[] getValues() {
+      return currentValues;
+   }
+
+   public static boolean[] fetchValues() {
+      return primaryValues;
+   }
+
 }

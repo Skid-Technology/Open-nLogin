@@ -5,6 +5,10 @@ import com.nickuc.login.model.PremiumState;
 import com.nickuc.login.model.ProxyState;
 
 public class ClosedLoginCheckpoint {
+   public static int[] values = new int[256];
+   public static int[] activeValues = new int[256];
+   public static int[] pendingValues = new int[256];
+
    static {
       try {
          values[PremiumState.MAIN_PREMIUMSTATE.ordinal()] = 1;

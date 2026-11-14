@@ -17,6 +17,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import com.nickuc.login.storage.password.PasswordStore;
 
 public class SpawnCollection extends PasswordHandler {
    private final FastLoginGuard fastLoginGuard = new FastLoginGuard(this);

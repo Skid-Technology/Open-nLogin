@@ -56,12 +56,12 @@ public enum StrictPremiumOption implements InternalListenerContract {
       }
 
       List result = SECONDARY_STRICTPREMIUMOPTION.b(new Object[0]);
-      result.removeIf(instanceValue -> instanceValue == null || instanceValue.trim().isEmpty());
-      result.replaceAll(instanceValue -> instanceValue.trim().toLowerCase(Locale.ENGLISH));
+      ((List<String>) result).removeIf(instanceValue -> instanceValue == null || instanceValue.trim().isEmpty());
+      ((List<String>) result).replaceAll(instanceValue -> instanceValue.trim().toLowerCase(Locale.ENGLISH));
       VerifiedPasswordHashHasher.processInternalListenerContract(SECONDARY_STRICTPREMIUMOPTION, result);
       List request = DIRECT_STRICTPREMIUMOPTION.b(new Object[0]);
-      request.removeIf(instanceValue -> instanceValue == null || instanceValue.trim().isEmpty());
-      request.replaceAll(instanceValue -> instanceValue.trim().toLowerCase(Locale.ENGLISH));
+      ((List<String>) request).removeIf(instanceValue -> instanceValue == null || instanceValue.trim().isEmpty());
+      ((List<String>) request).replaceAll(instanceValue -> instanceValue.trim().toLowerCase(Locale.ENGLISH));
       VerifiedPasswordHashHasher.processInternalListenerContract(DIRECT_STRICTPREMIUMOPTION, request);
    }
 

@@ -42,6 +42,8 @@ import javax.annotation.Nullable;
 import org.geysermc.floodgate.api.player.FloodgatePlayer;
 
 public class FloodgateLinker implements LenientCommandHandler {
+   public final SettingsRegistry settingsRegistry;
+
    private final SecureRandom secureRandom;
 
    private void saveUser(
@@ -146,7 +148,7 @@ public class FloodgateLinker implements LenientCommandHandler {
       }
    }
 
-   private FloodgateLinker(SettingsRegistry target) {
+   public FloodgateLinker(SettingsRegistry target) {
       this.settingsRegistry = target;
       this.secureRandom = new SecureRandom();
    }

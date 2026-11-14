@@ -5,6 +5,8 @@ import com.nickuc.login.auth.login.PrimaryLoginHandler;
 import com.nickuc.login.config.PasswordHashLoader;
 import com.nickuc.login.platform.sender.OutgoingSenderAdapter;
 import java.sql.ResultSet;
+import com.nickuc.login.storage.password.PasswordHashRepository;
+import com.nickuc.login.storage.password.PasswordStore;
 
 public abstract class InternalSettingsGateway extends PasswordHashRepository {
    private final String name;
@@ -42,9 +44,7 @@ public abstract class InternalSettingsGateway extends PasswordHashRepository {
       }
 
       this.processMessage(this.activeName);
-      PrimaryLoginHandler target = this.sharedListenerContract.buildPrimaryLoginHandler("SELECT * FROM `" + this.activeName + "`");
-
-      try {
+      try (PrimaryLoginHandler target = this.sharedListenerContract.buildPrimaryLoginHandler("SELECT * FROM `" + this.activeName + "`")) {
          ResultSet input = target.resolveObject();
 
          while (input.next() && this.passwordStore.resolveState()) {
@@ -54,20 +54,8 @@ public abstract class InternalSettingsGateway extends PasswordHashRepository {
                this.pendingTimestamp++;
             }
          }
-      } catch (Throwable response) {
-         if (target != null) {
-            try {
-               target.close();
-            } catch (Throwable result) {
-               response.addSuppressed(result);
-            }
-         }
-
-         throw response;
-      }
-
-      if (target != null) {
-         target.close();
+      } catch (Exception e) {
+         throw new RuntimeException(e);
       }
    }
 

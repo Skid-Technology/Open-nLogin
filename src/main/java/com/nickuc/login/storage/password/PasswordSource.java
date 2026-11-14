@@ -7,10 +7,12 @@ import java.sql.ResultSet;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.UUID;
+import com.nickuc.login.storage.settings.StoredSettingsGateway;
+import com.nickuc.login.storage.notice.DirectNoticeCatalog;
 
 public class PasswordSource extends StoredSettingsGateway {
    @Override
-   public void performSet(ResultSet target) {
+   public void performSet(ResultSet target) throws java.sql.SQLException {
       this.activeName = target.getString("username");
       UUID input = DeadLoginFlow.buildUniqueId(target.getString("uuid"));
       String output = target.getString("password");

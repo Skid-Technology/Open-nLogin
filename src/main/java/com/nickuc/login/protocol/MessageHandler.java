@@ -20,6 +20,8 @@ import java.util.Locale;
 import net.kyori.adventure.text.Component;
 
 public class MessageHandler implements LenientCommandHandler, QuickCommandHandler {
+   public final LoginDao loginDao;
+
    @Override
    public void dispatchPacketReceiveEvent(PacketReceiveEvent target) {
       Object input = target.getPlayer();
@@ -59,7 +61,7 @@ public class MessageHandler implements LenientCommandHandler, QuickCommandHandle
                         System.arraycopy(request, 1, source, 0, source.length);
                      }
 
-                     response.performVerifiedServerAdapter(output, context, request[0], source);
+                     response.dispatchVerifiedServerAdapter(output, context, request[0], source);
                   }
                } else if (LoginDao.processPasswordStore(this.loginDao).getFloodgateResolver().verifyState(output, value)) {
                   target.setCancelled(true);
@@ -69,7 +71,7 @@ public class MessageHandler implements LenientCommandHandler, QuickCommandHandle
       }
    }
 
-   private MessageHandler(LoginDao target) {
+   public MessageHandler(LoginDao target) {
       this.loginDao = target;
    }
 

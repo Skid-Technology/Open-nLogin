@@ -1,5 +1,7 @@
 package com.nickuc.login.premium;
 
+import java.util.List;
+
 import com.nickuc.login.account.InternalLoginOption;
 import com.nickuc.login.account.LoudProxyState;
 import com.nickuc.login.account.QuickPremiumOption;
@@ -137,7 +139,7 @@ public class IndirectPasswordResolver {
          return false;
       }
 
-      if (SpawnState.ACTIVE_CACHED_SPAWNSTATE.a(new Object[0]).contains(output)) {
+      if (((List<?>)SpawnState.ACTIVE_CACHED_SPAWNSTATE.a(new Object[0])).contains(output)) {
          return false;
       }
 
@@ -212,7 +214,7 @@ public class IndirectPasswordResolver {
          return false;
       } else if (!SpawnState.ACTIVE_SHARED_SPAWNSTATE.ar()) {
          return false;
-      } else if (SpawnState.ACTIVE_INCOMING_SPAWNSTATE.a(new Object[0]).contains(output)) {
+      } else if (((List<?>)SpawnState.ACTIVE_INCOMING_SPAWNSTATE.a(new Object[0])).contains(output)) {
          return false;
       } else if (SpawnState.ACTIVE_PRIVATE_SPAWNSTATE.ar() && input != null && input.fetchState()) {
          return false;
@@ -274,7 +276,7 @@ public class IndirectPasswordResolver {
          }
       }
 
-      return this.computeSpawnLookup(input, null, null, (boolean)output);
+      return this.computeSpawnLookup(input, null, null, (output != 0));
    }
 
    private boolean validateState(SpawnLookup target, SpawnLookup input, SpawnOption output) {
@@ -337,7 +339,7 @@ public class IndirectPasswordResolver {
          if (target instanceof VerifiedServerAdapter) {
             LimboCoordinator entry = this.passwordStore.loadLimboRegistry().loadLimboCoordinator((VerifiedServerAdapter)target);
             source = result.equalsIgnoreCase(entry.b(LenientMessageKind.INCOMING_LENIENTMESSAGEKIND))
-                  && request - entry.b(LenientMessageKind.OUTGOING_LENIENTMESSAGEKIND) <= TimeUnit.MINUTES.toMillis(2L)
+                  && request - (Long)entry.loadObject(LenientMessageKind.OUTGOING_LENIENTMESSAGEKIND) <= TimeUnit.MINUTES.toMillis(2L)
                ? 1
                : 0;
          } else {
@@ -371,7 +373,7 @@ public class IndirectPasswordResolver {
                               if (content != null) {
                                  ResultSet payload = content.resolveObject();
                                  int holder = 0;
-                                 ArrayList reference = new ArrayList();
+                                 List<SpawnLookup> reference = new ArrayList<>();
 
                                  while (payload.next()) {
                                     if (++holder == 4) {
@@ -550,7 +552,7 @@ public class IndirectPasswordResolver {
       if (output != null) {
          SecondaryConnectionContract value = this.passwordStore.loadInternalAccountHandler().retrieveSecondaryConnectionContract();
          data = value != null && !value.fetchState() ? SpawnOption.ACTIVE_SPAWNOPTION : SpawnOption.PENDING_SPAWNOPTION;
-         context = 1;
+         context = true;
       } else if (input != null) {
          data = SpawnOption.SPAWN_OPTION;
       } else {
@@ -579,7 +581,7 @@ public class IndirectPasswordResolver {
             entry = data;
             break;
          case ACTIVE_SPAWNOPTION:
-            if (context != 0) {
+            if (context) {
                request = OutgoingSpawnState.buildMessage(
                   "WHERE `%s` = ?" + result + " AND `%s` IS NULL LIMIT 3",
                   OutgoingSpawnState.ACTIVE_OUTGOINGSPAWNSTATE,
@@ -907,8 +909,6 @@ public class IndirectPasswordResolver {
             }
 
             return true;
-         } catch (SQLException source) {
-            PasswordHashContainer.handleMessage("Unable to delete the " + context + " account's [database modified manually?]", source);
          } catch (Exception entry) {
             PasswordHashContainer.handleMessage("Unable to delete the " + context + " account's [corrupted data?]", entry);
          }
@@ -1016,7 +1016,7 @@ public class IndirectPasswordResolver {
             }
          }
 
-         return value.isEmpty() || this.isState(target, value.toArray(new OutgoingSpawnState[0]));
+         return value.isEmpty() || this.isState(target, (OutgoingSpawnState[]) value.toArray(new OutgoingSpawnState[0]));
       }
    }
 
@@ -1033,10 +1033,10 @@ public class IndirectPasswordResolver {
             } else if (input.equals("127.0.0.1")
                || input.equals("localhost")
                || input.equals("172.18.0.1")
-               || QuickPremiumOption.DIRECT_QUICKPREMIUMOPTION.a(new Object[0]).stream().anyMatch(input::equals)) {
+               || ((List<String>)QuickPremiumOption.DIRECT_QUICKPREMIUMOPTION.a(new Object[0])).stream().anyMatch(input::equals)) {
                return LoudPremiumOption.LOUD_PREMIUM_OPTION;
             } else if (target.activeName != null
-               && QuickPremiumOption.SECONDARY_QUICKPREMIUMOPTION.a(new Object[0]).stream().anyMatch(targetValue -> target.activeName.equals(targetValue))) {
+               && ((List<String>)QuickPremiumOption.SECONDARY_QUICKPREMIUMOPTION.a(new Object[0])).stream().anyMatch(targetValue -> target.activeName.equals(targetValue))) {
                return LoudPremiumOption.LOUD_PREMIUM_OPTION;
             } else {
                return System.currentTimeMillis() - target.activeTimestamp > output * 60000L

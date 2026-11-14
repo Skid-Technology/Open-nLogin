@@ -1,5 +1,7 @@
 package com.nickuc.login.config;
 
+import java.util.Collection;
+
 import com.nickuc.login.api.enums.ServerConnectType;
 import com.nickuc.login.api.enums.event.EventEnum;
 import com.nickuc.login.api.event.bungee.connection.DefineAuthServerEvent;
@@ -61,7 +63,7 @@ public class IndirectBungeeLoader implements RootServerAdapter {
                         String source = request.resolveCachedPasswordHashHasher().handleObject("last-server");
                         if (source != null
                            && !this.BungeePlatform.isState(context, source)
-                           && !PrimaryMessageOption.REMOTE_PRIMARYMESSAGEOPTION.a(new Object[0]).contains(source)) {
+                           && !((List<?>)PrimaryMessageOption.REMOTE_PRIMARYMESSAGEOPTION.a(new Object[0])).contains(source)) {
                            ServerInfo entry = this.BungeePlatform.findProxyServer().getServerInfo(source);
                            if (entry != null) {
                               ServerPreConnectEvent record = this.passwordStore
@@ -75,8 +77,8 @@ public class IndirectBungeeLoader implements RootServerAdapter {
                      }
 
                      if (PrimaryMessageOption.CACHED_PRIMARYMESSAGEOPTION.ar()) {
-                        List payload = PrimaryMessageOption.STORED_PRIMARYMESSAGEOPTION
-                           .a(new Object[0])
+                        List payload = ((Collection<String>) PrimaryMessageOption.STORED_PRIMARYMESSAGEOPTION
+                           .a(new Object[0]))
                            .stream()
                            .map(targetValue -> this.BungeePlatform.findProxyServer().getServerInfo(targetValue))
                            .filter(Objects::nonNull)
@@ -114,8 +116,8 @@ public class IndirectBungeeLoader implements RootServerAdapter {
                         context.updateLenientMessageKind(LenientMessageKind.ACTIVE_VERIFIED_LENIENTMESSAGEKIND, value);
                      }
 
-                     List reference = PrimaryMessageOption.PRIMARY_MESSAGE_OPTION
-                        .a(new Object[0])
+                     List reference = ((Collection<String>) PrimaryMessageOption.PRIMARY_MESSAGE_OPTION
+                        .a(new Object[0]))
                         .stream()
                         .map(targetValue -> this.BungeePlatform.findProxyServer().getServerInfo(targetValue))
                         .filter(Objects::nonNull)

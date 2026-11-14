@@ -13,4 +13,10 @@ public enum VerifiedProxyCatalog {
    VerifiedProxyCatalog(boolean output) {
       this.enabled = output;
    }
+
+
+   public static boolean canState(VerifiedProxyCatalog cat) {
+      return cat != null && cat.enabled;
+   }
+
 }

@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class LimboKeeper {
-   private static final boolean enabled = (boolean)(LoginCheckpoint.handleMethod(Player.class, "hidePlayer", Plugin.class, Player.class) != null ? 1 : 0);
+   private static final boolean enabled = LoginCheckpoint.handleMethod(Player.class, "hidePlayer", Plugin.class, Player.class) != null;
 
    public static void processNLoginBukkit(BukkitPlatform instance, Player target) {
       try {

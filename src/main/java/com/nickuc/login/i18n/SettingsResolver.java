@@ -27,7 +27,7 @@ public class SettingsResolver {
 
       try {
          MessageProcessor.checkState(String.format("com/nickuc/login/config/messages/%s", instance), output);
-      } catch (IOException data) {
+      } catch (Exception data) {
          throw new RuntimeException("Cannot copy default language file " + instance + " to temporary file", data);
       }
 

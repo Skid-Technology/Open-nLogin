@@ -7,6 +7,7 @@ import com.nickuc.login.storage.floodgate.FloodgateGateway;
 import com.nickuc.login.storage.password.PasswordHashCollection;
 import com.nickuc.login.storage.password.PasswordHashGateway;
 import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.platform.listener.SharedListenerContract;
 
 public interface LenientConnectionContract {
    boolean validateState(PasswordStore target);
@@ -82,9 +83,12 @@ public interface LenientConnectionContract {
       }
    }
 
+   default boolean b(PasswordStore instance) {
+      return this.hasState(instance);
+   }
+
    String retrieveMessage();
 
-   void processPasswordStoreForValue(PasswordStore target);
 
    default void saveSharedListenerContract(SharedListenerContract target, String input, String output) {
       switch (target.resolveDirectNoticeCatalog()) {
@@ -98,5 +102,12 @@ public interface LenientConnectionContract {
          default:
             throw new IllegalArgumentException("Invalid database type! " + target.resolveDirectNoticeCatalog());
       }
+   }
+
+   default void a(SharedListenerContract target, String input, String output) {
+      this.saveSharedListenerContract(target, input, output);
+   }
+
+   default void processPasswordStoreForValue(PasswordStore target) {
    }
 }

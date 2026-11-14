@@ -12,4 +12,8 @@ public class LocalLoginListener {
       this.settingsListener = new SettingsListener(this);
       this.BukkitPlatform = target;
    }
+
+   public static BukkitPlatform createNLoginBukkit(LocalLoginListener listener) {
+      return listener.BukkitPlatform;
+   }
 }

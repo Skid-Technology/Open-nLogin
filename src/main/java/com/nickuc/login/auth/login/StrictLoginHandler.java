@@ -9,7 +9,7 @@ public class StrictLoginHandler<T> {
       return this.object;
    }
 
-   private StrictLoginHandler(T target) {
+   public StrictLoginHandler(T target) {
       this.object = (T)target;
    }
 }

@@ -85,7 +85,7 @@ public class DeadPasswordConverter extends StoredSettingsGateway {
    }
 
    @Override
-   public void performSet(ResultSet target) {
+   public void performSet(ResultSet target) throws java.sql.SQLException {
       this.activeName = target.getString("username");
       String input = target.getString("passwordHash");
       String output = target.getString("algo");

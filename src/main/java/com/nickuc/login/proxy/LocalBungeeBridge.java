@@ -85,4 +85,9 @@ public class LocalBungeeBridge implements StrictCommandHandler {
       this.scheduledTask = target.getProxy().getScheduler().runAsync(target, this.runnable);
       return this;
    }
+
+   @Override
+   public void run() {
+      this.performTask();
+   }
 }

@@ -37,7 +37,7 @@ public class VersionCompletionCommand implements StrictSenderAdapter {
 
    @Subscribe
    public void saveTabCompleteEvent(TabCompleteEvent target) {
-      List input = target.getSuggestions();
+      List<String> input = target.getSuggestions();
       if (!input.isEmpty()) {
          String output = target.getPartialMessage().trim();
          if (output.isEmpty() || output.charAt(0) == '/') {
@@ -49,7 +49,7 @@ public class VersionCompletionCommand implements StrictSenderAdapter {
                   return;
                }
 
-               int value = !data.i("nlogin.command.nlogin") && !data.i("nlogin.admin") ? 0 : 1;
+               boolean value = data.i("nlogin.command.nlogin") || data.i("nlogin.admin");
                input.removeIf(
                   outputValue -> {
                      if (outputValue.trim().isEmpty()) {
@@ -126,7 +126,7 @@ public class VersionCompletionCommand implements StrictSenderAdapter {
             if (this.passwordStore.getFloodgateResolver().verifyState(context, input)) {
                LimboCoordinator data = this.passwordStore.loadLimboRegistry().loadLimboCoordinator(context);
                if (output.getProtocolVersion().getProtocol() >= 759
-                  && (data.isState(LenientMessageKind.ACTIVE_REMOTE_LENIENTMESSAGEKIND) || data.d(LenientMessageKind.PENDING_LENIENTMESSAGEKIND))) {
+                  && (data.isState(LenientMessageKind.ACTIVE_REMOTE_LENIENTMESSAGEKIND) || data.isState(LenientMessageKind.PENDING_LENIENTMESSAGEKIND))) {
                   return;
                }
 
@@ -163,7 +163,7 @@ public class VersionCompletionCommand implements StrictSenderAdapter {
                   if (value == null) {
                      LimboCoordinator result = this.passwordStore.loadLimboRegistry().loadLimboCoordinator(data);
                      if (context.getProtocolVersion().getProtocol() >= 759
-                        && (result.isState(LenientMessageKind.ACTIVE_REMOTE_LENIENTMESSAGEKIND) || result.d(LenientMessageKind.PENDING_LENIENTMESSAGEKIND))) {
+                        && (result.isState(LenientMessageKind.ACTIVE_REMOTE_LENIENTMESSAGEKIND) || result.<Boolean>d(LenientMessageKind.PENDING_LENIENTMESSAGEKIND))) {
                         target.setResult(CommandResult.forwardToServer());
                         return;
                      }

@@ -4,6 +4,8 @@ import com.nickuc.login.premium.SpawnLookup;
 
 
 public class QuickDiscordHandler {
+   public final SpawnLookup spawnLookup;
+
    public String name;
    public String activeName;
 

@@ -20,15 +20,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Collections;
 import javax.annotation.Nullable;
+import com.nickuc.login.auth.login.InternalLoginHandler;
+import com.nickuc.login.auth.login.LiveLoginCheckpoint;
+import com.nickuc.login.auth.login.PrivateLoginHandler;
 
 public class UpdateBarrier {
    private static KeyPair createKeyPair(byte[] instance, byte[] target) {
-      KeyFactory input = KeyFactory.getInstance("RSA");
-      X509EncodedKeySpec output = new X509EncodedKeySpec(instance);
-      PublicKey context = input.generatePublic(output);
-      PKCS8EncodedKeySpec data = new PKCS8EncodedKeySpec(target);
-      PrivateKey value = input.generatePrivate(data);
-      return new KeyPair(context, value);
+      try {
+         KeyFactory input = KeyFactory.getInstance("RSA");
+         X509EncodedKeySpec output = new X509EncodedKeySpec(instance);
+         PublicKey context = input.generatePublic(output);
+         PKCS8EncodedKeySpec data = new PKCS8EncodedKeySpec(target);
+         PrivateKey value = input.generatePrivate(data);
+         return new KeyPair(context, value);
+      } catch (Exception e) {
+         throw new RuntimeException(e);
+      }
    }
 
    @Nullable
@@ -212,7 +219,7 @@ public class UpdateBarrier {
             }
          }
 
-         return new InternalLoginHandler(output, null);
+         return new InternalLoginHandler(output);
       } finally {
          if (Collections.singletonList(target).get(0) != null) {
             target.close();

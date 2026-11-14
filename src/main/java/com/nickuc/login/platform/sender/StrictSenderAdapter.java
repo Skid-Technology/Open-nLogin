@@ -2,6 +2,7 @@ package com.nickuc.login.platform.sender;
 
 import com.nickuc.login.loader.platform.VelocityLoader;
 import com.nickuc.login.proxy.DiscordForwarder;
+import com.nickuc.login.platform.account.OutgoingAccountHandler;
 
 public interface StrictSenderAdapter extends OutgoingAccountHandler {
    @Override

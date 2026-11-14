@@ -9,7 +9,7 @@ public class TitleFilter implements QuickConnectionContract {
    private final Method method;
    private final Constructor<?> constructor;
 
-   public TitleFilter() {
+   public TitleFilter() throws Exception {
       Class target = Class.forName("org.github.paperspigot.Title");
       this.constructor = target.getConstructor(String.class, String.class, int.class, int.class, int.class);
       this.method = Player.class.getMethod("sendTitle", target);

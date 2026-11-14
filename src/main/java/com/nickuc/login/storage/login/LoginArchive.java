@@ -22,4 +22,14 @@ public class LoginArchive implements DirectPacketAdapter<DatabaseType> {
    public Class<?> loadClass() {
       return DatabaseType.class;
    }
+
+   @Override
+   public JSONObject buildJSONObject(@Nonnull DatabaseType target) {
+      return this.createJSONObject(target);
+   }
+
+   @Override
+   public DatabaseType loadObject(@Nonnull JSONObject target) {
+      return this.buildDatabaseType(target);
+   }
 }

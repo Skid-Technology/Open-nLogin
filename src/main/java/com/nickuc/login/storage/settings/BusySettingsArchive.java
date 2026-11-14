@@ -16,6 +16,9 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
+import com.nickuc.login.storage.notice.DirectNoticeCatalog;
+import com.nickuc.login.storage.password.PasswordRepository;
+import com.nickuc.login.storage.login.LoginTable;
 
 public abstract class BusySettingsArchive implements SharedListenerContract {
    private final SharedListenerContract sharedListenerContract;
@@ -57,7 +60,7 @@ public abstract class BusySettingsArchive implements SharedListenerContract {
             }
 
             ReadySettingsTable item = new ReadySettingsTable(record);
-            this.sharedListenerContract = new LoginTable(target, item, null);
+            this.sharedListenerContract = new LoginTable(target, item);
             break;
          case ACTIVE_TIGHTSPAWNSTATE:
             ClassLoader request = this.getClass().getClassLoader();
@@ -78,7 +81,7 @@ public abstract class BusySettingsArchive implements SharedListenerContract {
             this.dispatchProperties(value, false);
             this.savePasswordRepository(output);
             String response = this.loadMessage(output);
-            this.sharedListenerContract = new DeadLoginGate(target, result, response, value, null);
+            this.sharedListenerContract = new DeadLoginGate(target, result, response, value);
             break;
          default:
             throw new UnsupportedOperationException("Unsupported mode! " + data);

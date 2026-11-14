@@ -8,6 +8,8 @@ import com.nickuc.login.platform.proxy.SilentProxyState;
 import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import com.nickuc.login.session.LimboCoordinator;
 import com.nickuc.login.updater.NoticeCatalog;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 public class ParentSessionDao extends DeletePurgeCommand {
    @Override

@@ -81,7 +81,7 @@ public class Pbkdf2Linker {
          upstreamLoginOption = UpstreamLoginOption.ACTIVE_UPSTREAMLOGINOPTION;
       }
 
-      String target = QuickPremiumOption.QUICK_PREMIUM_OPTION.a(new Object[0]).toUpperCase(Locale.ENGLISH);
+      String target = ((String)QuickPremiumOption.QUICK_PREMIUM_OPTION.a(new Object[0])).toUpperCase(Locale.ENGLISH);
 
       try {
          proxyState = ProxyState.valueOf(target);
@@ -92,7 +92,7 @@ public class Pbkdf2Linker {
          proxyState = ProxyState.valueOf((String)QuickPremiumOption.createObject(QuickPremiumOption.QUICK_PREMIUM_OPTION));
       }
 
-      String input = QuickPremiumOption.ACTIVE_QUICKPREMIUMOPTION.a(new Object[0]).toUpperCase(Locale.ENGLISH);
+      String input = ((String)QuickPremiumOption.ACTIVE_QUICKPREMIUMOPTION.a(new Object[0])).toUpperCase(Locale.ENGLISH);
 
       try {
          activeProxyState = ProxyState.valueOf(input);
@@ -158,7 +158,7 @@ public class Pbkdf2Linker {
    private static void sendTask() {
       SpawnState instance = SpawnState.PENDING_UPSTREAM_SPAWNSTATE;
       List target = instance.b(new Object[0]);
-      target.replaceAll(instanceValue -> {
+      ((List<String>) target).replaceAll(instanceValue -> {
          instanceValue = instanceValue.toLowerCase(Locale.ENGLISH);
          if (!instanceValue.startsWith("/")) {
             instanceValue = "/" + instanceValue;
@@ -217,7 +217,7 @@ public class Pbkdf2Linker {
    }
 
    private static void handleTask() {
-      String instance = SpawnState.PENDING_CACHED_SPAWNSTATE.a(new Object[0]).toUpperCase(Locale.ENGLISH);
+      String instance = ((String)SpawnState.PENDING_CACHED_SPAWNSTATE.a(new Object[0])).toUpperCase(Locale.ENGLISH);
 
       try {
          noticeKind = NoticeKind.valueOf(instance);
@@ -318,7 +318,7 @@ public class Pbkdf2Linker {
 
    public static LoudNoticeCatalog computeLoudNoticeCatalog(PasswordStore instance, boolean target, boolean input) {
       LiveLoginCheckpoint output = new LiveLoginCheckpoint();
-      PasswordHashLoader context = instance.a();
+      PasswordHashLoader context = instance.retrievePasswordHashLoader();
       if (!context.resolveStateForState()) {
          LoudNoticeCatalog data = SettingsLookup.loadLoudNoticeCatalog(instance, context, "config_%s.yml", target);
          if (!data.loadState()) {
@@ -378,12 +378,12 @@ public class Pbkdf2Linker {
       if (instance.loadState()) {
          PrimaryMessageOption.dispatchIndirectSessionHandler(instance, target);
          values = FastMessageHandler.buildPayload(instanceValue -> {
-            Set targetValue = Arrays.stream(SpawnState.values()).filter(instanceValue -> SpawnState.checkState(instanceValue)).collect(Collectors.toSet());
+            Set<com.nickuc.login.storage.spawn.SpawnState> targetSet = Arrays.stream(SpawnState.values()).filter(st -> SpawnState.checkState(st)).collect(Collectors.toSet());
             instanceValue.dispatchCount(4);
-            instanceValue.dispatchCount(targetValue.size());
-            targetValue.forEach(targetValue -> {
-               Object input = targetValue.g();
-               instanceValue.processMessage(targetValue.busyLoginProcessor.fetchNames()[0]);
+            instanceValue.dispatchCount(targetSet.size());
+            targetSet.forEach(elem -> {
+               Object input = elem.getObject();
+               instanceValue.processMessage(elem.retrieveBusyLoginProcessor().fetchNames()[0]);
                if (input instanceof String) {
                   instanceValue.performCount(0);
                   instanceValue.processMessage((String)input);
@@ -397,7 +397,7 @@ public class Pbkdf2Linker {
                   Collection output = (Collection)input;
                   instanceValue.performCount(3);
                   instanceValue.updateCount(output.size());
-                  output.forEach(instanceValue::processMessage);
+                  output.forEach(item -> instanceValue.processMessage(String.valueOf(item)));
                }
             });
          });
@@ -458,7 +458,7 @@ public class Pbkdf2Linker {
 
    private static void processPasswordStoreForValue(PasswordStore instance) {
       SpawnState target = SpawnState.ACTIVE_SECURE_SPAWNSTATE;
-      String input = target.a(new Object[0]).toUpperCase(Locale.ENGLISH);
+      String input = ((String)target.a(new Object[0])).toUpperCase(Locale.ENGLISH);
 
       try {
          upstreamSpawnState = UpstreamSpawnState.createUpstreamSpawnStateForUpstreamSpawnState(input);
@@ -498,7 +498,7 @@ public class Pbkdf2Linker {
 
    private static void savePasswordStore(PasswordStore instance) {
       SpawnState target = SpawnState.ACTIVE_SPAWNSTATE;
-      String input = target.a(new Object[0]).toUpperCase(Locale.ENGLISH);
+      String input = ((String)target.a(new Object[0])).toUpperCase(Locale.ENGLISH);
 
       try {
          directNoticeCatalog = DirectNoticeCatalog.valueOf(input);
@@ -532,7 +532,7 @@ public class Pbkdf2Linker {
                handleSpawnState(SpawnState.AUTHENTICATED_SPAWNSTATE, "last_login");
             }
          }
-      } catch (SQLException data) {
+      } catch (Exception data) {
          PasswordHashContainer.handleMessage("Cannot verify if the database is using old \"last_address\" column", data);
       }
    }
@@ -580,14 +580,14 @@ public class Pbkdf2Linker {
    private static void updatePasswordStore(PasswordStore instance) {
       ArrayList target = new ArrayList();
       ArrayList input = new ArrayList();
-      QuickPremiumOption.LOCAL_QUICKPREMIUMOPTION.a(new Object[0]).forEach(targetValue -> {
+      ((List<String>) QuickPremiumOption.LOCAL_QUICKPREMIUMOPTION.a(new Object[0])).forEach(targetValue -> {
          try {
             target.add(Pattern.compile(targetValue));
          } catch (PatternSyntaxException outputValue) {
             PasswordHashContainer.performMessage("Invalid pattern for premium domain \"" + targetValue + "\", please review your configuration");
          }
       });
-      QuickPremiumOption.STORED_QUICKPREMIUMOPTION.a(new Object[0]).forEach(targetValue -> {
+      ((List<String>) QuickPremiumOption.STORED_QUICKPREMIUMOPTION.a(new Object[0])).forEach(targetValue -> {
          try {
             input.add(Pattern.compile(targetValue));
          } catch (PatternSyntaxException outputValue) {
@@ -598,8 +598,8 @@ public class Pbkdf2Linker {
       activeEntries = input;
       activeEnabled = checkState("premium", QuickPremiumOption.MAIN_QUICKPREMIUMOPTION);
       pendingEnabled = checkState("offline", QuickPremiumOption.CACHED_QUICKPREMIUMOPTION);
-      String output = QuickPremiumOption.PRIMARY_QUICKPREMIUMOPTION.a(new Object[0]).trim();
-      String context = QuickPremiumOption.REMOTE_QUICKPREMIUMOPTION.a(new Object[0]).trim();
+      String output = ((String)QuickPremiumOption.PRIMARY_QUICKPREMIUMOPTION.a(new Object[0])).trim();
+      String context = ((String)QuickPremiumOption.REMOTE_QUICKPREMIUMOPTION.a(new Object[0])).trim();
       saveQuickPremiumOption(QuickPremiumOption.PRIMARY_QUICKPREMIUMOPTION, output);
       saveQuickPremiumOption(QuickPremiumOption.REMOTE_QUICKPREMIUMOPTION, context);
       if (activeEnabled == pendingEnabled && output.equals(context) || output.isEmpty() && context.isEmpty()) {
@@ -643,7 +643,7 @@ public class Pbkdf2Linker {
    }
 
    private static void dispatchPasswordStore(PasswordStore instance) {
-      PasswordHashLoader target = instance.a();
+      PasswordHashLoader target = instance.retrievePasswordHashLoader();
       String input = target.a("database.SQLITE.database-filename", target.a("Database.SQLITE.database-filename", "accounts.db"));
       if (!input.endsWith(".db")) {
          input = input + ".db";
@@ -665,9 +665,9 @@ public class Pbkdf2Linker {
    }
 
    private static void processTask() {
-      handleSpawnState(SpawnState.READY_SPAWNSTATE, SpawnState.READY_SPAWNSTATE.b(new Object[0]).stream().map(String::toLowerCase).collect(Collectors.toList()));
+      handleSpawnState(SpawnState.READY_SPAWNSTATE, ((List<String>)SpawnState.READY_SPAWNSTATE.b(new Object[0])).stream().map(String::toLowerCase).collect(Collectors.toList()));
       handleSpawnState(
-         SpawnState.LIVE_SPAWNSTATE, SpawnState.LIVE_SPAWNSTATE.b(new Object[0]).stream().map(LocalLocaleFlow::handleMessage).collect(Collectors.toList())
+         SpawnState.LIVE_SPAWNSTATE, ((List<String>)SpawnState.LIVE_SPAWNSTATE.b(new Object[0])).stream().map(LocalLocaleFlow::handleMessage).collect(Collectors.toList())
       );
    }
 

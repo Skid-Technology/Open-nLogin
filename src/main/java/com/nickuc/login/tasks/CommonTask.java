@@ -12,4 +12,9 @@ public abstract class CommonTask implements Runnable {
    public CommonTask(Runnable target) {
       this.runnable = target;
    }
+
+   @Override
+   public void run() {
+      this.updateTask();
+   }
 }

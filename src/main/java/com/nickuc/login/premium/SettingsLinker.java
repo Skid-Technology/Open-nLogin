@@ -214,7 +214,7 @@ public abstract class SettingsLinker {
             throw new IllegalStateException("Account \"" + input.getName() + "\" is not marked as premium! current type = " + context);
          }
 
-         if (!output.d(LenientMessageKind.PENDING_LENIENTMESSAGEKIND)) {
+         if (!output.<Boolean>d(LenientMessageKind.PENDING_LENIENTMESSAGEKIND)) {
             throw new IllegalStateException("Trying to log in automatically via premium account with an unencrypted connection! player = " + input.getName());
          }
 
@@ -238,7 +238,7 @@ public abstract class SettingsLinker {
          }
 
          SecondaryConnectionContract data = this.passwordStore.loadInternalAccountHandler().retrieveSecondaryConnectionContract();
-         if (data != null && output.d(LenientMessageKind.PRIMARY_LENIENTMESSAGEKIND)) {
+         if (data != null && output.isState(LenientMessageKind.PRIMARY_LENIENTMESSAGEKIND)) {
             if (this.isState(
                target, input, output, null, null, LoudProxyState.VERIFIED_LOUDPROXYSTATE, SharedLoginOption.VERIFIED_SHAREDLOGINOPTION, LoginType.BEDROCK
             )) {

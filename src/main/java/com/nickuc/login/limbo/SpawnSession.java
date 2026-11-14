@@ -191,9 +191,6 @@ public class SpawnSession implements IncomingAccountHandler {
             if (input.dataFile.exists()) {
                try {
                   this.limboTracker.processLimboStore(input, output);
-               } catch (IOException option) {
-                  PasswordHashContainer.handleMessage("Unable to load player limbo file for " + data.getName() + " [corrupted data?]", option);
-                  return false;
                } catch (Exception setting) {
                   PasswordHashContainer.handleMessage("Unable to load player limbo file for " + data.getName() + " " + input.dataFile, setting);
                   return false;
@@ -216,9 +213,6 @@ public class SpawnSession implements IncomingAccountHandler {
 
             try {
                this.limboTracker.saveLimboStore(input);
-            } catch (IOException reference) {
-               PasswordHashContainer.handleMessage("Unable to save player limbo file for " + input.player.getName() + " [insufficient permissions?]", reference);
-               return false;
             } catch (Exception subject) {
                PasswordHashContainer.handleMessage("Unable to save player limbo file for " + input.player.getName() + " " + input.dataFile, subject);
                return false;
@@ -281,7 +275,7 @@ public class SpawnSession implements IncomingAccountHandler {
             return true;
          }
 
-         byte value;
+         boolean value = false;
          try {
             if (!context.isOnline()) {
                return true;
@@ -329,12 +323,12 @@ public class SpawnSession implements IncomingAccountHandler {
                return true;
             }
 
-            value = 1;
+            value = true;
          } finally {
             input.privateNoticeKind = PrivateNoticeKind.PENDING_PRIVATENOTICEKIND;
          }
 
-         return (boolean)value;
+         return value;
       }
    }
 

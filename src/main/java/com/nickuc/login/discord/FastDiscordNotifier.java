@@ -85,9 +85,13 @@ public class FastDiscordNotifier implements RootListenerContract {
    public boolean loadState() {
       if (this.jDA != null) {
          this.jDA.shutdown();
-         if (!this.jDA.awaitShutdown(3L, TimeUnit.SECONDS)) {
-            this.jDA.shutdownNow();
-            this.jDA.awaitShutdown();
+         try {
+            if (!this.jDA.awaitShutdown(3L, TimeUnit.SECONDS)) {
+               this.jDA.shutdownNow();
+               this.jDA.awaitShutdown();
+            }
+         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
          }
       }
 
@@ -136,7 +140,7 @@ public class FastDiscordNotifier implements RootListenerContract {
    public void updateMessage(String target, MessageCreateData input, @Nullable Consumer<Message> output) {
       this.jDA.retrieveUserById(target).queue(inputValue -> {
          if (inputValue != null) {
-            inputValue.openPrivateChannel().queue(inputValue -> inputValue.sendMessage(input).queue(output));
+            inputValue.openPrivateChannel().queue(channel -> channel.sendMessage(input).queue(output));
          }
       });
    }

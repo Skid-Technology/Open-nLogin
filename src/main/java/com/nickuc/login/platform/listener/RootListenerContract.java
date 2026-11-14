@@ -1,6 +1,7 @@
 package com.nickuc.login.platform.listener;
 
 import com.nickuc.login.premium.SpawnLookup;
+import com.nickuc.login.platform.server.VerifiedServerAdapter;
 
 public interface RootListenerContract {
    void performSpawnLookup(SpawnLookup target, VerifiedServerAdapter input);

@@ -13,4 +13,10 @@ public enum SecondaryMessageKind {
    SecondaryMessageKind(String output) {
       this.values = output.toCharArray();
    }
+
+
+   public static char[] resolveValues(SecondaryMessageKind kind) {
+      return kind.values;
+   }
+
 }

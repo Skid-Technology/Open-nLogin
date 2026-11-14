@@ -22,6 +22,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+import com.nickuc.login.storage.notice.DirectNoticeCatalog;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.login.LoginGateway;
+import com.nickuc.login.storage.password.LocalPasswordTable;
+import com.nickuc.login.storage.password.PasswordHashRepository;
+import com.nickuc.login.storage.password.PasswordRepository;
+import com.nickuc.login.storage.spawn.SpawnState;
 
 
 public class LocalSettingsRepository {
@@ -38,7 +45,7 @@ public class LocalSettingsRepository {
 
       try {
          this.sharedListenerContract.executeTask();
-      } catch (SQLException input) {
+      } catch (Exception input) {
          PasswordHashContainer.handleMessage("Unable to shutdown nLogin database", input);
       }
    }
@@ -87,7 +94,7 @@ public class LocalSettingsRepository {
                }
             }
 
-            throw response;
+            throw new RuntimeException(response);
          }
 
          if (output != null) {
@@ -119,7 +126,7 @@ public class LocalSettingsRepository {
                }
             }
 
-            throw request;
+            throw new RuntimeException(request);
          }
 
          if (source != null) {
@@ -132,7 +139,7 @@ public class LocalSettingsRepository {
       switch (target) {
          case ACTIVE_DIRECTNOTICECATALOG:
          case DIRECT_NOTICE_CATALOG:
-            PasswordHashLoader data = instance.a();
+            PasswordHashLoader data = instance.retrievePasswordHashLoader();
             PasswordRepository context = LocalPasswordTable.buildPasswordRepository(data, target);
             if (input) {
                context.retrieveProperties().put("socketTimeout", "300000");
@@ -181,7 +188,7 @@ public class LocalSettingsRepository {
                   }
                }
 
-               throw result;
+               throw new RuntimeException(result);
             }
 
             if (input != null) {
@@ -368,7 +375,7 @@ public class LocalSettingsRepository {
                   }
                }
 
-               throw response;
+               throw new RuntimeException(response);
             }
 
             if (context != null) {
@@ -383,7 +390,7 @@ public class LocalSettingsRepository {
                }
             }
 
-            throw source;
+            throw new RuntimeException(source);
          }
 
          if (output != null) {
@@ -453,7 +460,7 @@ public class LocalSettingsRepository {
                         }
                      }
 
-                     throw subject;
+                     throw new RuntimeException(subject);
                   }
 
                   if (value != null) {
@@ -479,7 +486,7 @@ public class LocalSettingsRepository {
                }
             }
 
-            throw property;
+            throw new RuntimeException(property);
          }
 
          if (output != null) {
@@ -530,7 +537,7 @@ public class LocalSettingsRepository {
                }
             }
 
-            throw result;
+            throw new RuntimeException(result);
          }
 
          if (target != null) {

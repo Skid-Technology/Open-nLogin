@@ -46,6 +46,9 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
 
 import net.kyori.adventure.text.TextComponent;
+import com.nickuc.login.auth.locale.OpenLocaleBarrier;
+import com.nickuc.login.auth.login.RemoteLoginBarrier;
+import com.nickuc.login.auth.login.SafeLoginService;
 
 public class PasswordService {
    public final LowPasswordChallenge lowPasswordChallenge;
@@ -236,7 +239,7 @@ public class PasswordService {
       }
 
       Channel source = (Channel)target.getChannel();
-      source.attr(DialogHandler.attributeKey).set(new DialogHandler(result, (byte)1, null));
+      source.attr(DialogHandler.attributeKey).set(new DialogHandler(result, (byte)1));
    }
 
    public boolean validateState(User target, ChainedPlayerContract input) {
@@ -319,5 +322,17 @@ public class PasswordService {
             TimeUnit.SECONDS
          );
       return true;
+   }
+
+   public static PasswordStore resolvePasswordStore(PasswordService service) {
+      return service.passwordStore;
+   }
+
+   public static void processPasswordService(PasswordService service, User user) {
+      service.executeUser(user);
+   }
+
+   public static LoudPacketAdapter resolveLoudPacketAdapter(PasswordService service, User target, Channel input) {
+      return service.computeLoudPacketAdapter(target, input);
    }
 }

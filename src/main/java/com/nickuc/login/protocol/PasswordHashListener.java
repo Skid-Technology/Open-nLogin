@@ -78,7 +78,7 @@ public class PasswordHashListener implements VerifiedServerAdapter {
                   for (Object value : input) {
                      PacketListener.handlePlayer(this.player, value);
                   }
-               } catch (ReflectiveOperationException result) {
+               } catch (Exception result) {
                   throw new RuntimeException("Cannot send packet for " + this.getName(), result);
                }
             }

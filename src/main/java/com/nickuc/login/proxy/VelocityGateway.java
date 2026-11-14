@@ -1,5 +1,7 @@
 package com.nickuc.login.proxy;
 
+import com.velocitypowered.api.proxy.server.RegisteredServer;
+
 import com.nickuc.login.auth.login.IncomingLoginGate;
 import com.nickuc.login.config.PasswordHashContainer;
 import com.nickuc.login.listener.proxy.VelocityListener;
@@ -79,10 +81,10 @@ public class VelocityGateway implements CachedSessionHandler {
    @Override
    public void sendTask() {
       try {
-         Collection target = this.discordForwarder.findProxyServer().getAllServers();
+         Collection<RegisteredServer> target = this.discordForwarder.findProxyServer().getAllServers();
          if (target != null && !target.isEmpty()) {
-            List input = target.stream().map(instance -> {
-               ServerInfo targetValue = instance.getServerInfo();
+            List<String> input = target.stream().map(instance -> {
+               ServerInfo targetValue = ((RegisteredServer)instance).getServerInfo();
                return targetValue.getName() + ": " + targetValue.getAddress();
             }).collect(Collectors.toList());
             this.discordForwarder

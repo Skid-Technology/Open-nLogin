@@ -19,13 +19,13 @@ public class PasswordLink {
 
    private PasswordLink(PasswordStore target, PasswordHashHasher input) {
       this.passwordHashHasher = input;
-      input.updateMessage("nlogin:sync", new RedisSource(target, null));
+      input.updateMessage("nlogin:sync", new RedisSource(target));
    }
 
    @Nullable
    public static PasswordLink loadPasswordLink(PasswordStore instance) {
-      PasswordHashLoader target = instance.a();
-      if (!target.d("redis.enable") && !target.d("redis.enabled")) {
+      PasswordHashLoader target = instance.retrievePasswordHashLoader();
+      if (!target.checkState("redis.enable") && !target.checkState("redis.enabled")) {
          return null;
       }
 
@@ -43,7 +43,7 @@ public class PasswordLink {
          }
 
          List context = (List)input;
-         output = context.stream().map(Object::toString).collect(Collectors.toList());
+         output = (List<String>) (List<?>) context.stream().map(Object::toString).collect(Collectors.toList());
       }
 
       if (output.isEmpty()) {

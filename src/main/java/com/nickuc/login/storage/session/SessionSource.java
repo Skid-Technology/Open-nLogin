@@ -16,6 +16,8 @@ import com.nickuc.login.updater.NoticeCatalog;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 
 public class SessionSource implements SilentPacketAdapter {

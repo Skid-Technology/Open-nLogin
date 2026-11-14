@@ -8,9 +8,23 @@ public class ParentLoginHandler {
    private final SecureLoginGate secureLoginGate;
    private final InternalListenerContract internalListenerContract;
 
-   private ParentLoginHandler(InternalListenerContract target, SecureLoginGate input, Object output) {
+   public static Object computeObject(ParentLoginHandler handler) {
+      return handler.object;
+   }
+
+   public ParentLoginHandler(InternalListenerContract target, SecureLoginGate input, Object output) {
       this.internalListenerContract = target;
       this.secureLoginGate = input;
       this.object = output;
    }
+
+
+   public static com.nickuc.login.platform.listener.InternalListenerContract computeInternalListenerContract(ParentLoginHandler handler) {
+      return handler.internalListenerContract;
+   }
+
+   public static SecureLoginGate resolveSecureLoginGate(ParentLoginHandler handler) {
+      return handler.secureLoginGate;
+   }
+
 }

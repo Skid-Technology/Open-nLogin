@@ -1,10 +1,14 @@
 package com.nickuc.login.storage.settings;
 
+import java.util.List;
+
 import com.nickuc.login.account.MessageOption;
 import com.nickuc.login.config.PasswordHashContainer;
 import com.nickuc.login.config.PasswordHashLoader;
 import com.nickuc.login.platform.sender.OutgoingSenderAdapter;
 import java.util.Set;
+import com.nickuc.login.storage.password.PasswordHashRepository;
+import com.nickuc.login.storage.password.PasswordStore;
 
 public abstract class PendingSettingsGateway extends PasswordHashRepository {
    private final String name;
@@ -16,7 +20,7 @@ public abstract class PendingSettingsGateway extends PasswordHashRepository {
       Set output = input.loadSet(this.name);
       this.timestamp = output.size();
 
-      for (String data : output) {
+      for (String data : (List<String>) output) {
          try {
             String value = this.name + "." + data + ".";
             this.handlePasswordHashLoader(input, data, value);

@@ -3,6 +3,10 @@ package com.nickuc.login.auth.login;
 import com.nickuc.login.model.PremiumState;
 
 public class DeadLoginCheckpoint {
+   public static int[] values = new int[256];
+   public static int[] activeValues = new int[256];
+   public static int[] pendingValues = new int[256];
+
    static {
       try {
          values[PremiumState.CURRENT_PREMIUMSTATE.ordinal()] = 1;

@@ -20,7 +20,7 @@ import java.util.function.Consumer;
 
 public class PasswordLookup extends StoredSettingsGateway {
    @Override
-   public void performSet(ResultSet target) {
+   public void performSet(ResultSet target) throws java.sql.SQLException {
       this.activeName = target.getString("lastNickname");
       if (this.activeName != null) {
          UUID input = DeadLoginFlow.buildUniqueId(target.getString("uniqueId"));
@@ -62,7 +62,7 @@ public class PasswordLookup extends StoredSettingsGateway {
 
          Timestamp holder = payload;
          Timestamp source = content;
-         Consumer entry = outputValue -> {
+         Consumer<SpawnLookup> entry = outputValue -> {
             if (element != null) {
                outputValue.fetchQuickDiscordHandler().saveMessage(element);
             }
@@ -112,7 +112,7 @@ public class PasswordLookup extends StoredSettingsGateway {
             String response = target.b("storagePassword");
             List source = target.processCollection("storageProperties");
             Properties entry = new Properties();
-            source.forEach(targetValue -> {
+            ((List<String>) source).forEach(targetValue -> {
                String[] inputValue = targetValue.split("=");
                if (inputValue.length == 2) {
                   entry.setProperty(inputValue[0], inputValue[1]);

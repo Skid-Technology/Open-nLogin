@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import com.nickuc.login.storage.notice.DirectNoticeCatalog;
 
 public class LoginGateway extends NestedLoginHandler {
    private final String name;
@@ -59,14 +60,14 @@ public class LoginGateway extends NestedLoginHandler {
          try {
             return (Connection)this.constructor.newInstance("jdbc:sqlite:" + this.name, this.name, this.properties);
          } catch (ReflectiveOperationException input) {
-            if (input.getCause() instanceof SQLException) {
-               throw (SQLException)input.getCause();
-            } else {
-               throw new RuntimeException(input);
-            }
+            throw new RuntimeException(input);
          }
       } else {
-         return DriverManager.getConnection("jdbc:sqlite:" + this.name, this.properties);
+         try {
+            return DriverManager.getConnection("jdbc:sqlite:" + this.name, this.properties);
+         } catch (SQLException e) {
+            throw new RuntimeException(e);
+         }
       }
    }
 

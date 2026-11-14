@@ -3,8 +3,8 @@ package com.nickuc.login.auth.login;
 import com.nickuc.login.platform.listener.SharedListenerContract;
 import com.nickuc.login.storage.notice.DirectNoticeCatalog;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicInteger;
-
 
 public class LoginBarrier implements SharedListenerContract {
    private final int count;
@@ -15,7 +15,11 @@ public class LoginBarrier implements SharedListenerContract {
    @Override
    public void sendConnection(Connection target) {
       if (this.atomicInteger.get() > 0) {
-         target.commit();
+         try {
+            target.commit();
+         } catch (SQLException e) {
+            throw new RuntimeException(e);
+         }
       }
    }
 
@@ -23,7 +27,11 @@ public class LoginBarrier implements SharedListenerContract {
    public Connection resolveConnection() {
       if (this.atomicInteger.getAndIncrement() >= this.count) {
          this.atomicInteger.set(1);
-         this.connection.commit();
+         try {
+            this.connection.commit();
+         } catch (SQLException e) {
+            throw new RuntimeException(e);
+         }
       }
 
       return this.connection;
@@ -38,16 +46,28 @@ public class LoginBarrier implements SharedListenerContract {
       this.sharedListenerContract = target;
       this.count = input;
       this.connection = target.resolveConnection();
-      this.connection.setAutoCommit(false);
+      try {
+         this.connection.setAutoCommit(false);
+      } catch (SQLException e) {
+         throw new RuntimeException(e);
+      }
    }
 
    @Override
    public void executeTask() {
-      if (this.atomicInteger.get() > 0) {
-         this.connection.commit();
+      try {
+         if (this.atomicInteger.get() > 0) {
+            this.connection.commit();
+         }
+      } catch (SQLException e) {
+         throw new RuntimeException(e);
+      } finally {
+         try {
+            this.connection.close();
+         } catch (SQLException e) {
+            throw new RuntimeException(e);
+         }
       }
-
-      this.connection.close();
    }
 
    public int loadCount() {

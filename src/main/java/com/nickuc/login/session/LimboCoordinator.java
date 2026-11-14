@@ -113,6 +113,15 @@ public class LimboCoordinator implements IncomingSenderAdapter<LenientMessageKin
       return this.sessions.containsKey(target.findMessage());
    }
 
+   public <T> T d(LenientMessageKind target) {
+      return this.loadObject(target);
+   }
+
+   public <T> T a(LenientMessageKind target, T def) {
+      Object val = this.loadObject(target);
+      return val != null ? (T)val : def;
+   }
+
    public LoudPacketAdapter findLoudPacketAdapter() {
       LoudPacketAdapter target = (LoudPacketAdapter)this.loadObject(LenientMessageKind.MAIN_LENIENTMESSAGEKIND);
       if (target != null) {

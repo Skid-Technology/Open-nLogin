@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class LinkedPasswordVerifier extends StoredSettingsGateway {
    @Override
-   public void performSet(ResultSet target) {
+   public void performSet(ResultSet target) throws java.sql.SQLException {
       this.activeName = target.getString("name");
       UUID input = DeadLoginFlow.buildUniqueId(target.getString("uuid"));
       String output = target.getString("password");

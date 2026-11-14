@@ -64,4 +64,9 @@ public class LoginJob implements Runnable {
          this.strictCommandHandler.performTask();
       }
    }
+
+   @Override
+   public void run() {
+      this.updateTask();
+   }
 }

@@ -67,7 +67,7 @@ public abstract class FloodgateResolver {
             if (!this.passwordStore.getState()) {
                result = this.passwordStore.findIndirectPasswordHashVerifier().validateState(value);
             } else {
-               List request = SpawnState.PENDING_UPSTREAM_SPAWNSTATE.a(new Object[0]);
+               List<String> request = (List<String>) SpawnState.PENDING_UPSTREAM_SPAWNSTATE.a(new Object[0]);
                result = request.stream().noneMatch(targetValue -> !targetValue.isEmpty() && (targetValue.equals("*") || value.equals(targetValue)));
             }
 
@@ -130,7 +130,7 @@ public abstract class FloodgateResolver {
             if (!context.isEmpty()) {
                this.passwordStore
                   .processLinkedSessionHandler(true)
-                  .buildStrictCommandHandler(() -> this.passwordStore.findIndirectPasswordResolver().isState(output, context.toArray(new OutgoingSpawnState[0])));
+                  .buildStrictCommandHandler(() -> this.passwordStore.findIndirectPasswordResolver().isState(output, (OutgoingSpawnState[]) context.toArray(new OutgoingSpawnState[0])));
             }
          }
       }
@@ -266,7 +266,7 @@ public abstract class FloodgateResolver {
       VerifiedServerAdapter target, SpawnLookup input, String output, InetSocketAddress context, boolean data, boolean value, LoudPacketAdapter result
    ) {
       String request = target.getName();
-      if (input.fetchStateAndState() && data == 0) {
+      if (input.fetchStateAndState() && !data) {
          UpdateLookup response = this.passwordStore.a();
          int source = response.getCount();
          if (QuickPremiumOption.PRIVATE_QUICKPREMIUMOPTION.retrieveState() || !input.retrieveState() && (source == 9 || source == 1 || source == 23)) {
@@ -278,8 +278,8 @@ public abstract class FloodgateResolver {
                if (element != null && element.isLinked()) {
                   // Linked check via FloodgatePlayer (2.x)
                   // Previously used LinkedPlayer; now uses direct Java ID
-                  if (content.getJavaUniqueId() != null && content.getJavaUniqueId().equals(input.getMojangId())) {
-                     data = 1;
+                  if (element.getJavaUniqueId() != null && element.getJavaUniqueId().equals(input.getMojangId())) {
+                     data = true;
                      entry = 1;
                   }
                }
@@ -346,7 +346,7 @@ public abstract class FloodgateResolver {
       if (option != null && System.currentTimeMillis() < option) {
          return CachedSettingsGateway.computeMessage(LoudProxyState.ACTIVE_INTERNAL_LOUDPROXYSTATE, LocaleFlow.createMessage(option));
       } else if (!input.getState() || payload != null && (value || !payload.fetchState() && input.retrieveState())) {
-         this.passwordStore.loadLimboRegistry().loadLimboCoordinator(target, input, output, context, (boolean)data, value, result);
+         this.passwordStore.loadLimboRegistry().loadLimboCoordinator(target, input, output, context, (data), value, result);
          return null;
       } else {
          return CachedSettingsGateway.computeMessage(LoudProxyState.ACTIVE_OUTGOING_LOUDPROXYSTATE, request);

@@ -10,6 +10,8 @@ import com.nickuc.login.platform.packet.SilentPacketAdapter;
 import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import com.nickuc.login.session.LimboCoordinator;
 import com.nickuc.login.updater.NoticeCatalog;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 
 public class IncomingSessionCollection implements SilentPacketAdapter, DirectPlayerContract {
@@ -42,7 +44,7 @@ public class IncomingSessionCollection implements SilentPacketAdapter, DirectPla
       switch (data) {
          case ACTIVE_PRIVATELOGINOPTION:
          case PENDING_PRIVATELOGINOPTION:
-            this.a(output).updateProxyState(data == PrivateLoginOption.ACTIVE_PRIVATELOGINOPTION ? ProxyState.ACTIVE_PROXYSTATE : ProxyState.PROXY_STATE);
+            this.loadOpenPasswordHashProvider(output).updateProxyState(data == PrivateLoginOption.ACTIVE_PRIVATELOGINOPTION ? ProxyState.ACTIVE_PROXYSTATE : ProxyState.PROXY_STATE);
             DirectPlayerContract.super.a(target, input, output, context, data);
       }
    }

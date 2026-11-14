@@ -4,7 +4,7 @@ import com.nickuc.login.auth.login.LoginCheckpoint;
 import org.bukkit.entity.Player;
 
 public class BusyLoginFilter {
-   public static final boolean enabled = (boolean)(LoginCheckpoint.handleMethod(Player.class, "isGliding") != null ? 1 : 0);
+   public static final boolean enabled = LoginCheckpoint.handleMethod(Player.class, "isGliding") != null;
 
    public static boolean hasState(Player instance) {
       return enabled && instance.isGliding();

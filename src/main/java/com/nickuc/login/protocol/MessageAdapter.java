@@ -16,6 +16,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 
 public class MessageAdapter implements QuickCommandHandler {
+   public final LoginDao loginDao;
+
    @Override
    public void savePacketSendEvent(PacketSendEvent target) {
       if (SpawnState.PENDING_VERIFIED_SPAWNSTATE.ar()) {
@@ -63,7 +65,7 @@ public class MessageAdapter implements QuickCommandHandler {
       }
    }
 
-   private MessageAdapter(LoginDao target) {
+   public MessageAdapter(LoginDao target) {
       this.loginDao = target;
    }
 }

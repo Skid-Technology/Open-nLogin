@@ -49,7 +49,11 @@ public class SharedPasswordHashProvider {
          context.put(request, response);
       }
 
-      Object source = this.constructor.newInstance(target, input, context);
-      this.method.invoke(source);
+      try {
+         Object source = this.constructor.newInstance(target, input, context);
+         this.method.invoke(source);
+      } catch (ReflectiveOperationException e) {
+         throw new RuntimeException(e);
+      }
    }
 }

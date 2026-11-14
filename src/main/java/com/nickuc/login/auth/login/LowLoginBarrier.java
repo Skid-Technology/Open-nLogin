@@ -3,6 +3,10 @@ package com.nickuc.login.auth.login;
 import java.util.concurrent.TimeUnit;
 
 public class LowLoginBarrier {
+   public static int[] values = new int[256];
+   public static int[] activeValues = new int[256];
+   public static int[] pendingValues = new int[256];
+
    static {
       try {
          values[TimeUnit.NANOSECONDS.ordinal()] = 1;

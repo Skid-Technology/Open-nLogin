@@ -27,7 +27,7 @@ public class SettingsRegistry {
    private final BukkitPlatform BukkitPlatform;
    public final MojangBridge mojangBridge;
    private static final Method method;
-   public final FloodgateLinker floodgateLinker = new FloodgateLinker(this, null);
+   public final FloodgateLinker floodgateLinker = new FloodgateLinker(this);
    private static final Method activeMethod;
    private final PasswordStore passwordStore;
 
@@ -59,7 +59,7 @@ public class SettingsRegistry {
    }
 
    private SettingsRegistry(BukkitPlatform target, PasswordStore input, KeyPair output) {
-      this.mojangBridge = new MojangBridge(this, null);
+      this.mojangBridge = new MojangBridge(this);
       this.BukkitPlatform = target;
       this.passwordStore = input;
       this.keyPair = output;
@@ -100,5 +100,29 @@ public class SettingsRegistry {
 
    public SettingsRegistry(BukkitPlatform target) {
       this(target, target.fetchPasswordStore(), buildKeyPair(target.getServer()));
+   }
+
+   public static PasswordStore computePasswordStore(SettingsRegistry registry) {
+      return registry.passwordStore;
+   }
+
+   public static BukkitPlatform createNLoginBukkit(SettingsRegistry registry) {
+      return registry.BukkitPlatform;
+   }
+
+   public static KeyPair computeKeyPair(SettingsRegistry registry) {
+      return registry.keyPair;
+   }
+
+   public static Method getMethod() {
+      return activeMethod;
+   }
+
+   public static Method resolveMethod() {
+      return method;
+   }
+
+   public static void saveUser(User instance, WrapperLoginClientLoginStart target, String input) {
+      dispatchUser(instance, target, input);
    }
 }

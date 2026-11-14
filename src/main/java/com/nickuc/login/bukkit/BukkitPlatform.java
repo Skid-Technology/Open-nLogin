@@ -58,9 +58,9 @@ public class BukkitPlatform extends DiscordGuard implements ListenerContract {
       } catch (ClassNotFoundException output) {
       }
 
-      this.enabled = (boolean)(MojangCoordinator.activeEnabled || !BungeeWriter.resolveState() && !BungeeWriter.retrieveState() ? 0 : 1);
+      this.enabled = !(MojangCoordinator.activeEnabled || !BungeeWriter.resolveState() && !BungeeWriter.retrieveState());
       if (this.enabled) {
-         this.b(0);
+         this.buildObject(0);
       }
 
       super.dispatchTask();

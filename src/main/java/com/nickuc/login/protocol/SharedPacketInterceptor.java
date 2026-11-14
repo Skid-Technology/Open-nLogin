@@ -6,6 +6,8 @@ import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.nickuc.login.storage.settings.SettingsRepository;
 
 public class SharedPacketInterceptor implements QuickCommandHandler {
+   public final SettingsRepository settingsRepository;
+
    public SharedPacketInterceptor(SettingsRepository target) {
       this.settingsRepository = target;
    }

@@ -22,4 +22,14 @@ public class SpawnLocator implements DirectPacketAdapter<SpawnType> {
    public SpawnType resolveSpawnType(@Nonnull JSONObject target) {
       return (SpawnType)target.getEnum(SpawnType.class, "value");
    }
+
+   @Override
+   public JSONObject buildJSONObject(@Nonnull SpawnType target) {
+      return this.resolveJSONObject(target);
+   }
+
+   @Override
+   public SpawnType loadObject(@Nonnull JSONObject target) {
+      return this.resolveSpawnType(target);
+   }
 }

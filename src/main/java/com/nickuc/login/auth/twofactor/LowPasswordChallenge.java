@@ -1,5 +1,7 @@
 package com.nickuc.login.auth.twofactor;
 
+import java.util.List;
+
 import com.nickuc.login.account.LoudProxyState;
 import com.nickuc.login.account.QuickPremiumOption;
 import com.nickuc.login.account.SpawnOption;
@@ -35,6 +37,8 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 public class LowPasswordChallenge implements LenientCommandHandler {
+   public final PasswordService passwordService;
+
    private String loadMessage(User target, ResourceLocation input, NBT output, @Nullable Object context, Channel data, boolean value) {
       if (!(output instanceof NBTCompound)) {
          return "§4[nLogin] §cUnexpected dialog state: invalid NBT";
@@ -159,7 +163,7 @@ public class LowPasswordChallenge implements LenientCommandHandler {
                               SpawnOption payload = content.loadSpawnOption();
                               if (payload != SpawnOption.SPAWN_OPTION && payload != SpawnOption.PENDING_SPAWNOPTION) {
                                  String holder = ((InetSocketAddress)data.remoteAddress()).getAddress().getHostAddress();
-                                 if (SpawnState.ACTIVE_VERIFIED_SPAWNSTATE.ar() && !SpawnState.ACTIVE_INCOMING_SPAWNSTATE.a(new Object[0]).contains(holder)) {
+                                 if (SpawnState.ACTIVE_VERIFIED_SPAWNSTATE.ar() && !((List<?>)SpawnState.ACTIVE_INCOMING_SPAWNSTATE.a(new Object[0])).contains(holder)) {
                                     LocalAccountGate reference = PasswordService.resolvePasswordStore(this.passwordService)
                                        .findIndirectPasswordResolver()
                                        .createLocalAccountGate(holder);

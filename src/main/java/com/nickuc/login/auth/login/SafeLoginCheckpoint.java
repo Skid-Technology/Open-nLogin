@@ -10,11 +10,16 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import javax.annotation.CheckReturnValue;
+import com.nickuc.login.auth.message.MessageProcessor;
 
 public class SafeLoginCheckpoint {
    @CheckReturnValue
    public static PrintWriter processPrintWriter(File instance, Charset target, boolean input) {
-      return new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(instance, true), target)), input);
+      try {
+         return new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(instance, true), target)), input);
+      } catch (Exception e) {
+         throw new RuntimeException(e);
+      }
    }
 
    public static boolean isState(File instance, Charset target, String... input) {
@@ -55,7 +60,10 @@ public class SafeLoginCheckpoint {
             return true;
          } finally {
             if (Collections.singletonList(input).get(0) != null) {
-               input.close();
+               try {
+                  input.close();
+               } catch (Exception ignored) {
+               }
             }
          }
       } else {

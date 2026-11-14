@@ -10,6 +10,9 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.function.Consumer;
+import com.nickuc.login.storage.settings.StoredSettingsGateway;
+import com.nickuc.login.storage.login.LoginGateway;
+import com.nickuc.login.storage.notice.DirectNoticeCatalog;
 
 public class SafePasswordGateway extends StoredSettingsGateway {
    public SafePasswordGateway(PasswordStore target) {
@@ -42,7 +45,7 @@ public class SafePasswordGateway extends StoredSettingsGateway {
    }
 
    @Override
-   public void performSet(ResultSet target) {
+   public void performSet(ResultSet target) throws java.sql.SQLException {
       String input = target.getString("username");
       String output = target.getString("password");
       String context = target.getString("ip");

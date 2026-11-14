@@ -7,8 +7,8 @@ public abstract class LocalLoginHandler<T> extends StrictLoginHandler<T> impleme
    public final Connection connection;
    public final SharedListenerContract sharedListenerContract;
 
-   private LocalLoginHandler(SharedListenerContract target, Connection input, T output) {
-      super(output, null);
+   public LocalLoginHandler(SharedListenerContract target, Connection input, T output) {
+      super(output);
       this.sharedListenerContract = target;
       this.connection = input;
    }

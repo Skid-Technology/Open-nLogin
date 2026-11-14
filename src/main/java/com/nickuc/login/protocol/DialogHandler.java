@@ -14,7 +14,7 @@ public class DialogHandler {
    @Nullable
    public final ChainedPlayerContract chainedPlayerContract;
 
-   private DialogHandler(@Nullable ChainedPlayerContract target, byte input) {
+   public DialogHandler(@Nullable ChainedPlayerContract target, byte input) {
       this.chainedPlayerContract = target;
       this.mask = input;
    }

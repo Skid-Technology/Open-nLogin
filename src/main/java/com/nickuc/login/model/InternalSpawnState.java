@@ -1,5 +1,7 @@
 package com.nickuc.login.model;
 
+import java.io.File;
+
 import com.nickuc.login.auth.login.LiveLoginCheckpoint;
 import com.nickuc.login.auth.login.PrivateLoginGate;
 import com.nickuc.login.auth.login.RemoteLoginBarrier;
@@ -326,7 +328,7 @@ public enum InternalSpawnState implements TightSenderAdapter {
          PasswordHashContainer.dispatchMessage("Relocate process finished. Unlocking thread... (" + Thread.currentThread().getName() + ")");
       }
 
-      Collection connection = target.computeCollection(input);
+      Collection<File> connection = target.computeCollection(input);
       if (!connection.isEmpty()) {
          PasswordHashContainer.processMessage("§bRemoving unused dependencies (" + connection.size() + ")");
          connection.forEach(instanceValue -> {
@@ -383,7 +385,7 @@ public enum InternalSpawnState implements TightSenderAdapter {
          packet.shutdown();
       }
 
-      return (boolean)client;
+      return (client != 0);
    }
 
    InternalSpawnState(String output, String context, String data, String value, LoginLocator... result) {

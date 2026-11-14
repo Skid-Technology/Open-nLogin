@@ -3,6 +3,10 @@ package com.nickuc.login.auth.login;
 import com.nickuc.login.storage.notice.DirectNoticeCatalog;
 
 public class HighLoginCheckpoint {
+   public static int[] values = new int[256];
+   public static int[] activeValues = new int[256];
+   public static int[] pendingValues = new int[256];
+
    static {
       try {
          values[DirectNoticeCatalog.ACTIVE_DIRECTNOTICECATALOG.ordinal()] = 1;

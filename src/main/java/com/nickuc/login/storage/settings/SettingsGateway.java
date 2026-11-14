@@ -4,6 +4,8 @@ import com.nickuc.login.account.MessageOption;
 import com.nickuc.login.config.PasswordHashContainer;
 import com.nickuc.login.platform.sender.OutgoingSenderAdapter;
 import java.io.File;
+import com.nickuc.login.storage.password.PasswordHashRepository;
+import com.nickuc.login.storage.password.PasswordStore;
 
 public abstract class SettingsGateway extends PasswordHashRepository {
    private final String name;

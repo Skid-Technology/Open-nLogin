@@ -46,4 +46,22 @@ public class CachedLoginHandler implements Cloneable {
       this.timeUnit = output;
       this.count = context;
    }
+
+   public static int handleCount(CachedLoginHandler handler) {
+      return handler.count;
+   }
+
+   public static TimeUnit computeTimeUnit(CachedLoginHandler handler) {
+      return handler.timeUnit;
+   }
+
+   public static String buildMessage(CachedLoginHandler handler) {
+      return handler.activeName;
+   }
+
+
+   public static String processMessage(CachedLoginHandler handler) {
+      return handler.name;
+   }
+
 }

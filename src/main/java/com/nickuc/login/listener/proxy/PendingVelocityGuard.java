@@ -9,6 +9,8 @@ import com.nickuc.login.storage.spawn.SpawnArchive;
 import com.velocitypowered.api.proxy.Player;
 
 public class PendingVelocityGuard extends SecondaryMojangProcessor {
+   public final SpawnArchive spawnArchive;
+
    public void lockableEvent(LockableEvent target, byte input, byte output) {
       VelocityPlatform context = this.spawnArchive.passwordStore.findObject();
       if (input == 0) {

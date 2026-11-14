@@ -1,5 +1,7 @@
 package com.nickuc.login.storage.converter;
 
+import com.nickuc.login.premium.SpawnLookup;
+
 import com.nickuc.login.account.MessageOption;
 import com.nickuc.login.auth.login.DeadLoginFlow;
 import com.nickuc.login.config.PasswordHashLoader;
@@ -45,7 +47,7 @@ public class PasswordConverter extends StoredSettingsGateway {
    }
 
    @Override
-   public void performSet(ResultSet target) {
+   public void performSet(ResultSet target) throws java.sql.SQLException {
       UUID input = DeadLoginFlow.buildUniqueId(target.getString("uuid"));
       OfflinePlayer output = ((Server)this.passwordStore.b().c()).getOfflinePlayer(input);
       this.activeName = output.getName();
@@ -56,7 +58,7 @@ public class PasswordConverter extends StoredSettingsGateway {
       String request = target.getString("email");
       String response = processMessage(target.getLong("last_ipv4"));
       long source = target.getLong("last_login");
-      Consumer record = outputValue -> {
+      Consumer<SpawnLookup> record = outputValue -> {
          outputValue.executeLong(source, source);
          outputValue.fetchQuickDiscordHandler().saveMessage(request);
       };

@@ -13,12 +13,16 @@ public enum DirectProxyState {
       this.count = output;
    }
 
+   public static DirectProxyState handleDirectProxyState(String instance, int target) {
+      return loadDirectProxyState(instance, target);
+   }
+
    private static DirectProxyState loadDirectProxyState(String instance, int target) {
       boolean input = "AUTO".equalsIgnoreCase(instance);
 
       for (DirectProxyState value : values()) {
-         int result = input ? (value.count == target ? 1 : 0) : value.name().equalsIgnoreCase(instance);
-         if (result != 0) {
+         boolean result = input ? (value.count == target) : value.name().equalsIgnoreCase(instance);
+         if (result) {
             return value;
          }
       }

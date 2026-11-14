@@ -232,4 +232,10 @@ public class StrictSpawnGateway implements nLoginAPI {
    public List<AccountData> getAccountsByIp(@Nonnull String target) {
       return this.buildObject(LoginKind.PENDING_LOGINKIND, target);
    }
+
+
+   public static com.nickuc.login.bukkit.BukkitPlatform buildNLoginBukkit(StrictSpawnGateway gateway) {
+      return gateway.BukkitPlatform;
+   }
+
 }

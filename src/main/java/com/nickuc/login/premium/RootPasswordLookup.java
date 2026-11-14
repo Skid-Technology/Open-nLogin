@@ -175,7 +175,7 @@ public class RootPasswordLookup extends StoredSettingsGateway {
    }
 
    @Override
-   public void performSet(ResultSet target) {
+   public void performSet(ResultSet target) throws java.sql.SQLException {
       if (this.activeValue == null) {
          this.activeValue = LocalPasswordTable.isState(target, "salt");
       }
@@ -255,7 +255,7 @@ public class RootPasswordLookup extends StoredSettingsGateway {
                return;
             }
 
-            OutgoingPlatformCatalog payload = OutgoingPlatformCatalog.loadOutgoingPlatformCatalog(property[option].toUpperCase(Locale.ENGLISH));
+            OutgoingPlatformCatalog payload = OutgoingPlatformCatalog.loadOutgoingPlatformCatalog(((String)property[option]).toUpperCase(Locale.ENGLISH));
             if (payload == null) {
                this.executeMessage(this.activeName, context, null);
                return;
@@ -277,7 +277,7 @@ public class RootPasswordLookup extends StoredSettingsGateway {
 
          Timestamp holder = target.getTimestamp("joined");
          Timestamp reference = target.getTimestamp("last_seen");
-         Consumer setting = inputValue -> inputValue.executeLong(holder != null ? holder.getTime() : null, reference != null ? reference.getTime() : null);
+         Consumer<SpawnLookup> setting = inputValue -> inputValue.executeLong(holder != null ? holder.getTime() : null, reference != null ? reference.getTime() : null);
          if (output != null && output.version() != 4) {
             output = null;
          }

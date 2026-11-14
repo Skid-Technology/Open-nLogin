@@ -5,6 +5,7 @@ import com.nickuc.login.auth.message.FastMessageHandler;
 import com.nickuc.login.model.RemotePremiumState;
 import org.json.JSONObject;
 import java.nio.charset.StandardCharsets;
+import com.nickuc.login.platform.server.VerifiedServerAdapter;
 
 public interface TightConnectionContract {
    static byte[] createPayload(byte[] instance, boolean target) {

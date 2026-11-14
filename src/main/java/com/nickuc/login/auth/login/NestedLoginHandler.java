@@ -2,7 +2,7 @@ package com.nickuc.login.auth.login;
 
 import com.nickuc.login.platform.listener.SharedListenerContract;
 import java.sql.Connection;
-
+import java.sql.SQLException;
 
 public abstract class NestedLoginHandler implements SharedListenerContract {
    private Connection connection;
@@ -10,8 +10,13 @@ public abstract class NestedLoginHandler implements SharedListenerContract {
    @Override
    public synchronized void executeTask() {
       if (this.connection != null) {
-         this.connection.close();
-         this.connection = null;
+         try {
+            this.connection.close();
+         } catch (SQLException e) {
+            throw new RuntimeException(e);
+         } finally {
+            this.connection = null;
+         }
       }
    }
 
@@ -21,8 +26,12 @@ public abstract class NestedLoginHandler implements SharedListenerContract {
 
    @Override
    public synchronized Connection resolveConnection() {
-      if (this.connection == null || this.connection.isClosed()) {
-         this.connection = this.fetchConnection();
+      try {
+         if (this.connection == null || this.connection.isClosed()) {
+            this.connection = this.fetchConnection();
+         }
+      } catch (SQLException e) {
+         throw new RuntimeException(e);
       }
 
       return this.connection;

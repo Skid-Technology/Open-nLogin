@@ -23,7 +23,7 @@ public class NoticeCommand implements SecondaryAccountHandler {
 
    @Override
    public void executeMessage(String target, String input) {
-      this.d(target, null, input);
+      this.executeMessage(target, (String) null, input);
    }
 
    @Override
@@ -39,7 +39,7 @@ public class NoticeCommand implements SecondaryAccountHandler {
 
    @Override
    public void executeMessage(String target, @Nullable String input, @Nullable String output, @Nullable String context, @Nullable String data) {
-      Object value = this.processTextComponent(target, true);
+      Component value = this.processTextComponent(target, true);
       if (input != null) {
          value = value.hoverEvent(HoverEvent.showText(this.processTextComponent(input, false)));
       }

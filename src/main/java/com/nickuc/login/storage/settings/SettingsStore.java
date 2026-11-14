@@ -26,6 +26,10 @@ import java.util.Locale;
 
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import com.nickuc.login.storage.password.PasswordDao;
+import com.nickuc.login.storage.password.PasswordHashRepository;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.spawn.SpawnCollection;
 
 public class SettingsStore implements ServerAdapter {
    private final BukkitPlatform BukkitPlatform;
@@ -99,7 +103,7 @@ public class SettingsStore implements ServerAdapter {
       StoredProxyCatalog.saveNLoginBukkit(this.BukkitPlatform, false);
       IndirectPasswordHashVerifier input = target.findIndirectPasswordHashVerifier();
       input.performTask();
-      CachedSettingsProcessor.executeSilentProxyState(this.BukkitPlatform.b().retrieveSilentProxyState(), input);
+      CachedSettingsProcessor.executeSilentProxyState(this.BukkitPlatform.findIncomingLoginGate().retrieveSilentProxyState(), input);
       LoginMainQueueTask.dispatchPasswordStore(target);
       this.BukkitPlatform
          .b()

@@ -15,28 +15,11 @@ import javax.annotation.CheckReturnValue;
 public interface SharedListenerContract {
    default void saveMessage(String target, Object... input) {
       Connection output = this.resolveConnection();
-
-      try {
-         PreparedStatement context = output.prepareStatement(target);
-
-         try {
-            this.executePreparedStatement(context, input);
-            context.execute();
-         } catch (Throwable record) {
-            if (context != null) {
-               try {
-                  context.close();
-               } catch (Throwable entry) {
-                  record.addSuppressed(entry);
-               }
-            }
-
-            throw record;
-         }
-
-         if (context != null) {
-            context.close();
-         }
+      try (PreparedStatement context = output.prepareStatement(target)) {
+         this.executePreparedStatement(context, input);
+         context.execute();
+      } catch (SQLException e) {
+         throw new RuntimeException(e);
       } finally {
          this.sendConnection(output);
       }
@@ -50,34 +33,14 @@ public interface SharedListenerContract {
 
    default StrictLoginHandler<Integer> computeStrictLoginHandler(String target, Object... input) {
       Connection output = this.resolveConnection();
-
-      StrictLoginHandler data;
-      try {
-         PreparedStatement context = output.prepareStatement(target);
-
-         try {
-            this.executePreparedStatement(context, input);
-            data = new StrictLoginHandler(context.executeUpdate(), null);
-         } catch (Throwable record) {
-            if (context != null) {
-               try {
-                  context.close();
-               } catch (Throwable entry) {
-                  record.addSuppressed(entry);
-               }
-            }
-
-            throw record;
-         }
-
-         if (context != null) {
-            context.close();
-         }
+      try (PreparedStatement context = output.prepareStatement(target)) {
+         this.executePreparedStatement(context, input);
+         return new StrictLoginHandler<>(context.executeUpdate());
+      } catch (SQLException e) {
+         throw new RuntimeException(e);
       } finally {
          this.sendConnection(output);
       }
-
-      return data;
    }
 
    @CheckReturnValue
@@ -89,72 +52,60 @@ public interface SharedListenerContract {
          context = output.prepareStatement(target);
          this.executePreparedStatement(context, input);
          ResultSet data = context.executeQuery();
-         return new PrimaryLoginHandler(this, output, context, data, null);
+         return new PrimaryLoginHandler(this, output, context, data);
       } catch (SQLException value) {
          if (context != null) {
-            context.close();
+            try {
+               context.close();
+            } catch (SQLException e) {
+               value.addSuppressed(e);
+            }
          }
 
          this.sendConnection(output);
-         throw value;
+         throw new RuntimeException(value);
       }
    }
 
    @CheckReturnValue
    default PrivateLoginHandler getPrivateLoginHandler() {
-      return new PrivateLoginHandler(this, this.resolveConnection(), null);
+      return new PrivateLoginHandler(this, this.resolveConnection());
    }
 
    void sendConnection(Connection target);
 
    default StrictLoginHandler<Boolean> resolveStrictLoginHandler(String target, Object... input) {
       Connection output = this.resolveConnection();
-
-      StrictLoginHandler data;
-      try {
-         PreparedStatement context = output.prepareStatement(target);
-
-         try {
-            this.executePreparedStatement(context, input);
-            data = new StrictLoginHandler(context.execute(), null);
-         } catch (Throwable record) {
-            if (context != null) {
-               try {
-                  context.close();
-               } catch (Throwable entry) {
-                  record.addSuppressed(entry);
-               }
-            }
-
-            throw record;
-         }
-
-         if (context != null) {
-            context.close();
-         }
+      try (PreparedStatement context = output.prepareStatement(target)) {
+         this.executePreparedStatement(context, input);
+         return new StrictLoginHandler<>(context.execute());
+      } catch (SQLException e) {
+         throw new RuntimeException(e);
       } finally {
          this.sendConnection(output);
       }
-
-      return data;
    }
 
    default void executePreparedStatement(PreparedStatement target, Object[] input) {
-      for (int output = 0; output < input.length; output++) {
-         Object context = input[output];
-         if (context instanceof String) {
-            target.setString(output + 1, (String)context);
-         } else if (context instanceof Long) {
-            target.setLong(output + 1, (Long)context);
-         } else if (context instanceof Integer) {
-            target.setInt(output + 1, (Integer)context);
-         } else if (context instanceof Timestamp) {
-            target.setTimestamp(output + 1, (Timestamp)context);
-         } else if (context instanceof byte[]) {
-            target.setBytes(output + 1, (byte[])context);
-         } else {
-            target.setObject(output + 1, context);
+      try {
+         for (int output = 0; output < input.length; output++) {
+            Object context = input[output];
+            if (context instanceof String) {
+               target.setString(output + 1, (String)context);
+            } else if (context instanceof Long) {
+               target.setLong(output + 1, (Long)context);
+            } else if (context instanceof Integer) {
+               target.setInt(output + 1, (Integer)context);
+            } else if (context instanceof Timestamp) {
+               target.setTimestamp(output + 1, (Timestamp)context);
+            } else if (context instanceof byte[]) {
+               target.setBytes(output + 1, (byte[])context);
+            } else {
+               target.setObject(output + 1, context);
+            }
          }
+      } catch (SQLException e) {
+         throw new RuntimeException(e);
       }
    }
 
@@ -166,14 +117,18 @@ public interface SharedListenerContract {
       try {
          context = output.prepareStatement(target);
          this.executePreparedStatement(context, input);
-         return new LowLoginService(this, output, context, null);
+         return new LowLoginService(this, output, context);
       } catch (SQLException value) {
          if (context != null) {
-            context.close();
+            try {
+               context.close();
+            } catch (SQLException e) {
+               value.addSuppressed(e);
+            }
          }
 
          this.sendConnection(output);
-         throw value;
+         throw new RuntimeException(value);
       }
    }
 }

@@ -146,7 +146,7 @@ public abstract class PasswordHashDefinition implements LoaderBootstrap, Command
    public Object buildObject(int target) {
       switch (target) {
          case 0:
-            HashMap item = new HashMap();
+            Map<String, InetSocketAddress> item = new HashMap<>();
 
             try {
                PasswordHashLoader element = new PasswordHashLoader(new File(this.resolveFile().getParentFile().getParentFile(), "config.yml"));
@@ -248,5 +248,23 @@ public abstract class PasswordHashDefinition implements LoaderBootstrap, Command
    @Override
    public String retrieveMessage() {
       return this.parentDiscordNotifier.activeName;
+   }
+
+
+   @Override
+   public com.nickuc.login.platform.session.LinkedSessionHandler processLinkedSessionHandler(boolean target) {
+      return this.handleBungeeGateway(target);
+   }
+
+
+
+   @Override
+   public com.nickuc.login.loader.platform.BungeeLoader loadObject() {
+      return this.retrieveBungeeLoader();
+   }
+
+   @Override
+   public com.nickuc.login.platform.connection.TightConnectionContract resolveTightConnectionContract() {
+      return this.fetchProxyCodec();
    }
 }

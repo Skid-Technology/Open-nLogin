@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 public class QuickPasswordResolver extends StoredSettingsGateway {
    @Override
-   public void performSet(ResultSet target) {
+   public void performSet(ResultSet target) throws java.sql.SQLException {
       JSONObject input = new JSONObject(target.getString("json"));
       this.activeName = input.getString("realName");
       long output = input.getLong("firstLogin");
@@ -25,7 +25,7 @@ public class QuickPasswordResolver extends StoredSettingsGateway {
       String request = input.has("ip") ? input.getString("ip") : null;
       String response = input.has("password") ? input.getString("password") : null;
       String source = "$SHA256$" + response;
-      Consumer entry = context -> context.executeLong(output, data);
+      Consumer<SpawnLookup> entry = context -> context.executeLong(output, data);
       if (result) {
          this.updateMessage(this.activeName, source, request, null, null, entry);
       } else {

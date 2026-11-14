@@ -64,4 +64,8 @@ public enum SharedLoginOption implements SessionHandler {
       this.busyLoginProcessor = BusyLoginProcessor.handleBusyLoginProcessor(Arrays.stream(output).map(instance -> "title." + instance).toArray(String[]::new));
       this.enabled = false;
    }
+
+   public static SettingsPublisher loadSettingsPublisher() {
+      return settingsPublisher;
+   }
 }

@@ -7,6 +7,7 @@ import com.nickuc.login.platform.account.SecondaryAccountHandler;
 import com.nickuc.login.platform.account.UpstreamAccountHandler;
 import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import com.nickuc.login.session.LimboCoordinator;
+import com.nickuc.login.storage.password.PasswordStore;
 
 
 public class FastSessionSource implements UpstreamAccountHandler, QuickPacketAdapter {

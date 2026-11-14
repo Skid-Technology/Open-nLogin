@@ -31,14 +31,18 @@ public class MojangInterceptor {
                   continue;
                }
 
-               Object value = context.get(instance);
-               if (value != null) {
-                  Field result = LoginCheckpoint.handleField(value.getClass(), SpigotReflectionUtil.GAME_PROFILE_CLASS, 0);
-                  if (result != null) {
-                     activeField = context;
-                     field = result;
-                     return true;
+               try {
+                  Object value = context.get(instance);
+                  if (value != null) {
+                     Field result = LoginCheckpoint.handleField(value.getClass(), SpigotReflectionUtil.GAME_PROFILE_CLASS, 0);
+                     if (result != null) {
+                        activeField = context;
+                        field = result;
+                        return true;
+                     }
                   }
+               } catch (IllegalAccessException e) {
+                  continue;
                }
             }
          }

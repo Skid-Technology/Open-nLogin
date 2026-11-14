@@ -94,7 +94,7 @@ public class LowLoginResolver {
 
          String input;
          try {
-            Stream output = Files.lines(target);
+            Stream<String> output = Files.lines(target);
 
             try {
                input = output.filter(instance -> instance.startsWith("model name")).map(instance -> instance.replaceAll(".*: ", "")).findFirst().orElse("unknown");

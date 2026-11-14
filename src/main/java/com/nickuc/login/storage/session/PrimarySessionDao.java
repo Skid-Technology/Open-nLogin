@@ -9,6 +9,8 @@ import com.nickuc.login.platform.packet.SilentPacketAdapter;
 import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import com.nickuc.login.session.LimboCoordinator;
 import com.nickuc.login.updater.NoticeCatalog;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 
 public class PrimarySessionDao implements SilentPacketAdapter, DirectPlayerContract {
@@ -25,7 +27,7 @@ public class PrimarySessionDao implements SilentPacketAdapter, DirectPlayerContr
 
    @Override
    public boolean canState(PasswordStore target, VerifiedServerAdapter input, LimboCoordinator output) {
-      return target.a().getCount() == 9 && target.fetchLocalSettingsRepository().findState() && this.a(output).findState();
+      return target.a().getCount() == 9 && target.fetchLocalSettingsRepository().findState() && this.loadOpenPasswordHashProvider(output).findState();
    }
 
    @Override

@@ -7,6 +7,8 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jetbrains.annotations.NotNull;
 
 public class BusyMessageGuard implements PluginMessageListener {
+   public final LimboSupervisor limboSupervisor;
+
    public BusyMessageGuard(LimboSupervisor target) {
       this.limboSupervisor = target;
    }

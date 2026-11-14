@@ -7,6 +7,11 @@ import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import com.nickuc.login.session.LimboCoordinator;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+import com.nickuc.login.storage.login.LoginSource;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.notice.DirectNoticeCatalog;
+import com.nickuc.login.storage.password.PasswordHashRepository;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 public class PendingLocaleCollection extends LoginSource {
    private String loadMessage(boolean target) {
@@ -24,7 +29,7 @@ public class PendingLocaleCollection extends LoginSource {
          for (MessageOption result : MessageOption.findCollection()) {
             PasswordHashRepository request = result.retrievePasswordHashRepository();
             if (request != null && request.findState() && !result.resolveState()) {
-               String response = this.loadMessage((boolean)data);
+               String response = this.loadMessage((data != 0));
                context.executeMessage(
                   " §8⋆ " + response + result.getName(),
                   this.loadState() ? "§7Clique aqui para converter os dados deste plugin." : "§7Click here to convert the data for this plugin.",
@@ -35,9 +40,9 @@ public class PendingLocaleCollection extends LoginSource {
          }
 
          context.executeMessage("");
-         String item = this.loadMessage((boolean)data);
+         String item = this.loadMessage((data != 0));
          data = data == 0 ? 1 : 0;
-         String element = this.loadMessage((boolean)data);
+         String element = this.loadMessage((data != 0));
          if (this.loadState()) {
             String content = "§7Clique aqui para converter os dados para esta database.";
             context.executeMessage(" §8⋆ " + item + "MySQL §3» " + item + "SQLite", content, "nlogin converter mysqltosqlite");

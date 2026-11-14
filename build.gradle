@@ -89,7 +89,9 @@ dependencies {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
     options.release.set(17)
-    options.compilerArgs += ['-Xlint:-unchecked', '-Xlint:-deprecation']
+    options.fork = true
+    options.forkOptions.jvmArgs = ['-Xmx4g', '-XX:+UseG1GC']
+    options.compilerArgs += ['-Xlint:-unchecked', '-Xlint:-deprecation', '-Xmaxerrs', '100000']
 }
 
 processResources {

@@ -5,6 +5,8 @@ import com.nickuc.login.config.PasswordHashLoader;
 import org.json.JSONObject;
 import java.sql.ResultSet;
 import java.util.Properties;
+import com.nickuc.login.storage.settings.StoredSettingsGateway;
+import com.nickuc.login.storage.notice.DirectNoticeCatalog;
 
 public class PendingPasswordRepository extends StoredSettingsGateway {
    public PendingPasswordRepository(PasswordStore target) {
@@ -24,7 +26,7 @@ public class PendingPasswordRepository extends StoredSettingsGateway {
    }
 
    @Override
-   public void performSet(ResultSet target) {
+   public void performSet(ResultSet target) throws java.sql.SQLException {
       JSONObject input = new JSONObject(target.getString("json"));
       this.activeName = input.getString("username");
       String output = input.getString("password");

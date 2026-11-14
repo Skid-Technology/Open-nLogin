@@ -1,5 +1,7 @@
 package com.nickuc.login.storage.session;
 
+import net.kyori.adventure.text.Component;
+
 import com.nickuc.login.account.CachedProxyCatalog;
 import com.nickuc.login.auth.login.BusyLoginBarrier;
 import com.nickuc.login.model.LenientMessageKind;
@@ -8,6 +10,7 @@ import com.nickuc.login.platform.account.SecondaryAccountHandler;
 import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import com.nickuc.login.session.LimboCoordinator;
 import java.util.List;
+import com.nickuc.login.storage.password.PasswordStore;
 
 
 public class SessionGateway implements LoudPlayerContract {
@@ -31,7 +34,7 @@ public class SessionGateway implements LoudPlayerContract {
    public BusyLoginBarrier[] loadValues(PasswordStore target, VerifiedServerAdapter input, LimboCoordinator output, SecondaryAccountHandler context) {
       List data = output.loadObject(LenientMessageKind.AUTHENTICATED_LENIENTMESSAGEKIND);
       if (data != null) {
-         data.forEach(inputValue -> target.resolveRootMessageHandler().hasState(input, inputValue));
+         data.forEach(inputValue -> target.resolveRootMessageHandler().hasState(input, (Component)inputValue));
       }
 
       LoudPlayerContract.super.handlePasswordStore(target, input, output);

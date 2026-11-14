@@ -130,7 +130,7 @@ public class LoginMainQueueTask implements Runnable {
 
                         if (SpawnState.PENDING_REMOTE_SPAWNSTATE.ar()
                            && SpawnState.PENDING_LOCAL_SPAWNSTATE.ar()
-                           && result.d(LenientMessageKind.FAST_LENIENTMESSAGEKIND)) {
+                           && result.<Boolean>d(LenientMessageKind.FAST_LENIENTMESSAGEKIND)) {
                            int property = setting != 1 ? 1 : 0;
                            String attribute = CachedSettingsGateway.computeMessage(
                               property != 0 ? LoudProxyState.CURRENT_LOUDPROXYSTATE : LoudProxyState.PENDING_LOUDPROXYSTATE, data, setting
@@ -181,5 +181,10 @@ public class LoginMainQueueTask implements Runnable {
       if (!players.add(instance)) {
          throw new IllegalStateException("Already added in main login queue (race condition?)");
       }
+   }
+
+   @Override
+   public void run() {
+      this.updateTask();
    }
 }

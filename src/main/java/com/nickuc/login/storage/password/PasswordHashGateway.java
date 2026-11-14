@@ -1,5 +1,7 @@
 package com.nickuc.login.storage.password;
 
+import java.util.Map;
+
 import com.nickuc.login.auth.login.LiveLoginCheckpoint;
 import com.nickuc.login.auth.login.LocalLoginGate;
 import com.nickuc.login.auth.locale.OpenLocaleBarrier;
@@ -17,6 +19,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import com.nickuc.login.storage.settings.LocalSettingsRepository;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
+import com.nickuc.login.storage.spawn.SpawnState;
 
 public class PasswordHashGateway implements NestedSessionHandler {
    public static final PasswordHashGateway passwordHashGateway = new PasswordHashGateway();
@@ -29,32 +34,15 @@ public class PasswordHashGateway implements NestedSessionHandler {
             return false;
          }
 
-         PrimaryLoginHandler context = output.buildPrimaryLoginHandler(
+         try (PrimaryLoginHandler context = output.buildPrimaryLoginHandler(
             "SELECT 1 FROM `" + SpawnState.INCOMING_SPAWNSTATE.a(new Object[0]) + "` WHERE `" + SpawnState.SECONDARY_SPAWNSTATE.a(new Object[0]) + "` = ?",
             "server_uuid"
-         );
-
-         boolean value;
-         try {
+         )) {
             ResultSet data = context.resolveObject();
-            value = data.next();
-         } catch (Throwable request) {
-            if (context != null) {
-               try {
-                  context.close();
-               } catch (Throwable result) {
-                  request.addSuppressed(result);
-               }
-            }
-
-            throw request;
+            return data.next();
+         } catch (SQLException e) {
+            throw new RuntimeException(e);
          }
-
-         if (context != null) {
-            context.close();
-         }
-
-         return value;
       } else {
          return false;
       }
@@ -80,21 +68,10 @@ public class PasswordHashGateway implements NestedSessionHandler {
          PasswordHashContainer.performMessage("");
       }
 
-      PasswordHashContainer.performMessage("Renaming table...");
       String data = SpawnState.CURRENT_SPAWNSTATE.a(new Object[0]);
       String value = data + "_102";
       this.a(output, data, value);
-
-      try {
-         input.handleState(false);
-      } catch (Exception parameter) {
-         if (parameter.getMessage().contains("index") && parameter.getMessage().contains("already exists")) {
-            return;
-         }
-
-         throw parameter;
-      }
-
+      input.handleState(true);
       String[] result = new String[]{
          OutgoingSpawnState.OUTGOING_SPAWN_STATE.getName(),
          OutgoingSpawnState.ACTIVE_OUTGOINGSPAWNSTATE.getName(),
@@ -109,15 +86,27 @@ public class PasswordHashGateway implements NestedSessionHandler {
          OutgoingSpawnState.VERIFIED_OUTGOINGSPAWNSTATE.getName(),
          OutgoingSpawnState.AUTHENTICATED_OUTGOINGSPAWNSTATE.getName()
       };
-      PasswordHashContainer.performMessage("Cloning table...");
-      output.saveMessage(String.format("INSERT INTO `%s` (`%s`) SELECT `%s` FROM `%s`", data, String.join("`, `", result), String.join("`, `", result), value));
-      PasswordHashContainer.performMessage("Deleting old data...");
+      String[] request = new String[]{
+         OutgoingSpawnState.OUTGOING_SPAWN_STATE.getName(),
+         OutgoingSpawnState.ACTIVE_OUTGOINGSPAWNSTATE.getName(),
+         OutgoingSpawnState.PENDING_OUTGOINGSPAWNSTATE.getName(),
+         OutgoingSpawnState.CURRENT_OUTGOINGSPAWNSTATE.getName(),
+         OutgoingSpawnState.PRIMARY_OUTGOINGSPAWNSTATE.getName(),
+         OutgoingSpawnState.MAIN_OUTGOINGSPAWNSTATE.getName(),
+         OutgoingSpawnState.LOCAL_OUTGOINGSPAWNSTATE.getName(),
+         OutgoingSpawnState.REMOTE_OUTGOINGSPAWNSTATE.getName(),
+         OutgoingSpawnState.CACHED_OUTGOINGSPAWNSTATE.getName(),
+         OutgoingSpawnState.STORED_OUTGOINGSPAWNSTATE.getName(),
+         OutgoingSpawnState.VERIFIED_OUTGOINGSPAWNSTATE.getName(),
+         OutgoingSpawnState.AUTHENTICATED_OUTGOINGSPAWNSTATE.getName()
+      };
+      output.saveMessage(String.format("INSERT INTO " + data + " (%s) SELECT %s FROM " + value, String.join(", ", result), String.join(", ", request)));
       output.saveMessage(
          String.format("DELETE FROM `%s` WHERE `%s` = ?", SpawnState.INCOMING_SPAWNSTATE.a(new Object[0]), SpawnState.SECONDARY_SPAWNSTATE.a(new Object[0])),
          "server_uuid"
       );
       PasswordHashContainer.performMessage("Deleting duplicated accounts...");
-      Integer request = output.computeStrictLoginHandler(
+      Integer count = output.computeStrictLoginHandler(
             String.format(
                "DELETE FROM `" + data + "` WHERE `%s` IS NULL AND `%s` IS NULL AND `%s` IS NULL AND `%s` IS NULL OR `%s` = ?",
                OutgoingSpawnState.MAIN_OUTGOINGSPAWNSTATE.getName(),
@@ -129,10 +118,10 @@ public class PasswordHashGateway implements NestedSessionHandler {
             "transferred"
          )
          .resolveObject();
-      PasswordHashContainer.performMessage("Deleted " + OpenLocaleBarrier.resolveMessage(request.intValue()) + " duplicated accounts");
+      PasswordHashContainer.performMessage("Deleted " + OpenLocaleBarrier.resolveMessage(count.intValue()) + " duplicated accounts");
       PasswordHashContainer.performMessage("Fetching duplicated UUIDs...");
-      HashMap response = new HashMap();
-      PrimaryLoginHandler source = output.buildPrimaryLoginHandler(
+      Map<String, List<LocalLoginGate>> response = new HashMap<>();
+      try (PrimaryLoginHandler source = output.buildPrimaryLoginHandler(
          String.format(
             "SELECT `%s`, COUNT(`%s`) FROM " + data + " GROUP BY `%s` HAVING COUNT(`%s`) > 1",
             OutgoingSpawnState.PENDING_OUTGOINGSPAWNSTATE.getName(),
@@ -140,37 +129,22 @@ public class PasswordHashGateway implements NestedSessionHandler {
             OutgoingSpawnState.PENDING_OUTGOINGSPAWNSTATE.getName(),
             OutgoingSpawnState.PENDING_OUTGOINGSPAWNSTATE.getName()
          )
-      );
-
-      try {
+      )) {
          ResultSet entry = source.resolveObject();
 
          while (entry.next()) {
-            response.computeIfAbsent(entry.getString(1), instance -> new ArrayList());
+            response.computeIfAbsent(entry.getString(1), instance -> new ArrayList<>());
          }
-      } catch (Throwable notice) {
-         if (source != null) {
-            try {
-               source.close();
-            } catch (Throwable attribute) {
-               notice.addSuppressed(attribute);
-            }
-         }
-
-         throw notice;
-      }
-
-      if (source != null) {
-         source.close();
+      } catch (SQLException e) {
+         throw new RuntimeException(e);
       }
 
       PasswordHashContainer.performMessage("Fetching duplicated UUIDs accounts...");
       Connection event = output.resolveConnection();
-      PreparedStatement packet = null;
 
       try {
-         for (String element : new HashSet(response.keySet())) {
-            packet = event.prepareStatement(
+         for (String element : new HashSet<String>(response.keySet())) {
+            try (PreparedStatement packet = event.prepareStatement(
                String.format(
                   "SELECT `%s`, `%s`, `%s` FROM " + data + " WHERE `%s` = ?",
                   OutgoingSpawnState.OUTGOING_SPAWN_STATE.getName(),
@@ -178,32 +152,26 @@ public class PasswordHashGateway implements NestedSessionHandler {
                   OutgoingSpawnState.PRIMARY_OUTGOINGSPAWNSTATE.getName(),
                   OutgoingSpawnState.PENDING_OUTGOINGSPAWNSTATE.getName()
                )
-            );
-            packet.setString(1, element);
-            ResultSet content = packet.executeQuery();
+            )) {
+               packet.setString(1, element);
+               ResultSet content = packet.executeQuery();
 
-            while (content.next()) {
-               List payload = response.computeIfAbsent(element, instance -> new ArrayList());
-               payload.add(new LocalLoginGate(content.getLong(1), content.getString(2) != null, content.getString(3) != null, null));
+               while (content.next()) {
+                  List<LocalLoginGate> payload = response.computeIfAbsent(element, instance -> new ArrayList<>());
+                  payload.add(new LocalLoginGate(content.getLong(1), content.getString(2) != null, content.getString(3) != null));
+               }
             }
-
-            packet.close();
-            packet = null;
          }
       } catch (SQLException argument) {
-         throw argument;
+         throw new RuntimeException(argument);
       } finally {
-         if (packet != null) {
-            packet.close();
-         }
-
          output.sendConnection(event);
       }
 
       PasswordHashContainer.performMessage("Deleting duplicated UUIDs... (" + OpenLocaleBarrier.resolveMessage(response.size()) + ")");
 
       label178:
-      for (List account : response.values()) {
+      for (List<LocalLoginGate> account : response.values()) {
          Long player = null;
 
          for (LocalLoginGate identity : account) {

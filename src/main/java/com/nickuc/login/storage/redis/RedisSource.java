@@ -6,6 +6,8 @@ import com.nickuc.login.model.QuickMessageKind;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.function.Consumer;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.password.PasswordGateway;
 
 
 public class RedisSource implements Consumer<String> {
@@ -41,7 +43,16 @@ public class RedisSource implements Consumer<String> {
       }
    }
 
-   private RedisSource(PasswordStore target) {
+   public RedisSource(PasswordStore target) {
       this.passwordStore = target;
+   }
+
+   public RedisSource(PasswordStore target, Object ignored) {
+      this(target);
+   }
+
+   @Override
+   public void accept(String target) {
+      this.executeMessage(target);
    }
 }

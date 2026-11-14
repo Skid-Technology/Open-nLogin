@@ -8,7 +8,7 @@ import java.util.Locale;
 public final class ForceSetupCommand implements ConnectionContract {
    private final IndirectPasswordHashVerifier indirectPasswordHashVerifier;
 
-   private ForceSetupCommand(IndirectPasswordHashVerifier target) {
+   public ForceSetupCommand(IndirectPasswordHashVerifier target) {
       this.indirectPasswordHashVerifier = target;
    }
 

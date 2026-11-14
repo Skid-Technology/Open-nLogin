@@ -23,14 +23,14 @@ public class FastPasswordVerifier {
                   "Unable to identify " + output.retrieveMessage() + " account password algorithm! stored password = \"" + input + "\""
                );
             } else {
-               request = response.loadIndirectPlayerContract().verifyState(target, input);
+               request = (byte)(response.loadIndirectPlayerContract().verifyState(target, input) ? 1 : 0);
             }
 
             if (request != 0) {
                result = (byte)(response == value && !response.loadIndirectPlayerContract().canState(input) ? 0 : 1);
             }
 
-            return (boolean)request;
+            return (request != 0);
          } finally {
             PrimaryLoginService.savePremiumOption(PremiumOption.AUTHENTICATED_PREMIUMOPTION, context);
             if (result != 0) {

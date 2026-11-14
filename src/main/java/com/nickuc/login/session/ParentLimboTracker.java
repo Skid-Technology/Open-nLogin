@@ -35,8 +35,8 @@ public class ParentLimboTracker {
       List output = input ? SpawnState.PENDING_PRIVATE_SPAWNSTATE.a(new Object[0]) : SpawnState.PENDING_INTERNAL_SPAWNSTATE.a(new Object[0]);
       if (!output.isEmpty()) {
          Runnable context = () -> output.forEach(
-            inputValue -> {
-               inputValue = inputValue.trim();
+            (Object rawVal) -> {
+               String inputValue = ((String)rawVal).trim();
                if (!inputValue.isEmpty()) {
                   String outputValue = target.getName();
                   Object[] contextValue = new Object[]{false, true, 0, null};
@@ -82,7 +82,7 @@ public class ParentLimboTracker {
                   String element = value.toString().replace("@player", outputValue).replace("@address", target.resolveMessage());
                   if (!element.isEmpty()) {
                      boolean content = (Boolean)contextValue[0];
-                     int payload = this.passwordStore.loadState() && contextValue[1] ? 1 : 0;
+                     boolean payload = this.passwordStore.loadState() && Boolean.TRUE.equals(contextValue[1]);
                      int holder = Math.max((Integer)contextValue[2], 0) * 50;
                      String[] reference = (String[])contextValue[3];
                      Runnable record = () -> {

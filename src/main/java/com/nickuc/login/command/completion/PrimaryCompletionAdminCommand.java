@@ -22,7 +22,7 @@ public class PrimaryCompletionAdminCommand implements PacketAdapter {
          Player input = target.getPlayer();
          if (!input.hasPermission("nlogin.command.nlogin") && !input.hasPermission("nlogin.admin")) {
             Collection output = target.getCommands();
-            if (output.stream().noneMatch("nlogin"::equalsIgnoreCase)) {
+            if (output.stream().noneMatch(item -> "nlogin".equalsIgnoreCase(String.valueOf(item)))) {
                output.add("nlogin");
             }
          }

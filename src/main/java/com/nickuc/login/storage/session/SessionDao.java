@@ -12,6 +12,9 @@ import com.nickuc.login.platform.account.UpstreamAccountHandler;
 import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import com.nickuc.login.premium.SpawnLookup;
 import com.nickuc.login.session.LimboCoordinator;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.password.PasswordGateway;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 
 public class SessionDao implements UpstreamAccountHandler {

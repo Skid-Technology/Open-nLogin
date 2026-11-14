@@ -8,6 +8,10 @@ import com.nickuc.login.platform.sender.OutgoingSenderAdapter;
 import com.nickuc.login.platform.proxy.QuickProxyState;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+import com.nickuc.login.storage.login.LoginSource;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
+import com.nickuc.login.storage.spawn.SpawnState;
 
 public class LocaleGateway extends LoginSource {
    private static float factor = Float.intBitsToFloat(1077936128);

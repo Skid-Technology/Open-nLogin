@@ -2,6 +2,8 @@ package com.nickuc.login.storage.login;
 
 import com.nickuc.login.platform.listener.SharedListenerContract;
 import java.sql.Connection;
+import com.nickuc.login.storage.notice.DirectNoticeCatalog;
+import com.nickuc.login.storage.settings.ReadySettingsTable;
 
 
 public class LoginTable implements SharedListenerContract {
@@ -15,7 +17,11 @@ public class LoginTable implements SharedListenerContract {
 
    @Override
    public void sendConnection(Connection target) {
-      target.close();
+      try {
+         target.close();
+      } catch (Exception e) {
+         throw new RuntimeException(e);
+      }
    }
 
    @Override
@@ -28,7 +34,7 @@ public class LoginTable implements SharedListenerContract {
       this.readySettingsTable.executeTask();
    }
 
-   private LoginTable(DirectNoticeCatalog target, ReadySettingsTable input) {
+   public LoginTable(DirectNoticeCatalog target, ReadySettingsTable input) {
       this.directNoticeCatalog = target;
       this.readySettingsTable = input;
    }

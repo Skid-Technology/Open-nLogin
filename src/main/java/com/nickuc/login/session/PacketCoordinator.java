@@ -91,7 +91,7 @@ public class PacketCoordinator {
          return data;
       }
 
-      if (QuickPremiumOption.VERIFIED_QUICKPREMIUMOPTION.retrieveState() && input.d(LenientMessageKind.PRIMARY_LENIENTMESSAGEKIND)) {
+      if (QuickPremiumOption.VERIFIED_QUICKPREMIUMOPTION.retrieveState() && input.<Boolean>d(LenientMessageKind.PRIMARY_LENIENTMESSAGEKIND)) {
          return true;
       }
 
@@ -208,7 +208,7 @@ public class PacketCoordinator {
             return;
          }
 
-         if (QuickPremiumOption.VERIFIED_QUICKPREMIUMOPTION.retrieveState() && entry.getState() && input.d(LenientMessageKind.PRIMARY_LENIENTMESSAGEKIND)) {
+         if (QuickPremiumOption.VERIFIED_QUICKPREMIUMOPTION.retrieveState() && entry.getState() && input.<Boolean>d(LenientMessageKind.PRIMARY_LENIENTMESSAGEKIND)) {
             this.settingsLinker.processSpawnLookup(entry, target, input);
             return;
          }
@@ -275,7 +275,7 @@ public class PacketCoordinator {
             byte[] option = (byte[])input.d(LenientMessageKind.ACTIVE_SHARED_LENIENTMESSAGEKIND);
             if (reference != null && option != null) {
                int setting = !entry.resolveCachedPasswordHashHasher().hasState("addon.data") ? 1 : 0;
-               reference.processVerifiedServerAdapter(target, option, (boolean)setting, !item);
+               reference.processVerifiedServerAdapter(target, option, (setting != 0), !item);
             }
          }
       }

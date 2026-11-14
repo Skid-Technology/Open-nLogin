@@ -43,7 +43,7 @@ public class SharedDeletePurgeCommand implements RootServerAdapter {
 
    public SharedDeletePurgeCommand(PasswordHashDefinition target) {
       this.name = target.retrieveMessage().toLowerCase(Locale.ENGLISH);
-      HashSet input = new HashSet();
+      HashSet<String> input = new HashSet<>();
       input.add(this.name + 'c');
       input.add(this.name + ':' + this.name + 'c');
 
@@ -64,7 +64,7 @@ public class SharedDeletePurgeCommand implements RootServerAdapter {
          if (!input.isEmpty()) {
             String output = target.getCursor().trim();
             if (output.isEmpty() || output.charAt(0) == '/') {
-               input.removeIf(targetValue -> targetValue.startsWith('/' + this.name + ':') || this.isState(targetValue));
+               ((List<String>) input).removeIf(targetValue -> targetValue.startsWith('/' + this.name + ':') || this.isState(targetValue));
             }
          }
       }

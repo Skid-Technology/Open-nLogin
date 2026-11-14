@@ -18,7 +18,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class BungeeWriter {
-   private static final boolean enabled = (boolean)(LoginCheckpoint.handleMethod(Bukkit.class, "getGlobalRegionScheduler") != null ? 1 : 0);
+   private static final boolean enabled = LoginCheckpoint.handleMethod(Bukkit.class, "getGlobalRegionScheduler") != null;
    private static final Method method;
    private static final Field field;
    private static DiscordGuard discordGuard;

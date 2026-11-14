@@ -10,7 +10,9 @@ import java.util.Locale;
 
 
 public class LocaleAdapter implements LenientCommandHandler {
-   private LocaleAdapter(LoginDao target) {
+   public final LoginDao loginDao;
+
+   public LocaleAdapter(LoginDao target) {
       this.loginDao = target;
    }
 
@@ -47,7 +49,7 @@ public class LocaleAdapter implements LenientCommandHandler {
                            System.arraycopy(request, 1, source, 0, source.length);
                         }
 
-                        response.performVerifiedServerAdapter(output, context, request[0], source);
+                        response.dispatchVerifiedServerAdapter(output, context, request[0], source);
                      }
                   }
                }

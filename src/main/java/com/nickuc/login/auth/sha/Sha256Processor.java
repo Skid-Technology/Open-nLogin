@@ -5,7 +5,7 @@ import com.nickuc.login.platform.server.LinkedServerAdapter;
 import com.nickuc.login.security.hashing.Sha256Hasher;
 
 public class Sha256Processor implements LinkedServerAdapter {
-   private String computeMessage(String target) {
+   public String computeMessage(String target) {
       return ((Sha256Hasher)UpstreamSpawnState.REMOTE_UPSTREAMSPAWNSTATE.loadIndirectPlayerContract()).handleMessage(target);
    }
 

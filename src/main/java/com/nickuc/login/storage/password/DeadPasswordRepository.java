@@ -5,10 +5,13 @@ import com.nickuc.login.config.PasswordHashLoader;
 import java.io.File;
 import java.sql.ResultSet;
 import java.util.Properties;
+import com.nickuc.login.storage.settings.StoredSettingsGateway;
+import com.nickuc.login.storage.login.LoginGateway;
+import com.nickuc.login.storage.notice.DirectNoticeCatalog;
 
 public class DeadPasswordRepository extends StoredSettingsGateway {
    @Override
-   public void performSet(ResultSet target) {
+   public void performSet(ResultSet target) throws java.sql.SQLException {
       this.activeName = target.getString("last_name");
       String input = target.getString("password");
       int output = target.getInt("hashing_algorithm");

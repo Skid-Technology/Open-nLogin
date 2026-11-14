@@ -122,4 +122,9 @@ public class AccountHandler implements DirectPacketAdapter<AccountData> {
          throw new RuntimeException("Unable to decode " + AccountData.class.getCanonicalName() + " class!", result);
       }
    }
+
+   @Override
+   public AccountData loadObject(@Nonnull JSONObject target) {
+      return this.computeAccountData(target);
+   }
 }

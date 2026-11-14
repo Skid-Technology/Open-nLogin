@@ -32,9 +32,14 @@ public class StoredLoginHandler {
          }
       }
 
-      boolean result = this.countDownLatch.await(target, output);
-      this.countDownLatch = null;
-      return result;
+      try {
+         boolean result = this.countDownLatch.await(target, output);
+         this.countDownLatch = null;
+         return result;
+      } catch (InterruptedException e) {
+         Thread.currentThread().interrupt();
+         return false;
+      }
    }
 
    public void dispatchStrictCommandHandler(StrictCommandHandler target) {

@@ -115,7 +115,9 @@ public interface IncomingSenderAdapter<K> {
    }
 
    @Nullable
-   Object createObject(K target);
+   default Object createObject(K target) {
+      return null;
+   }
 
    @Nonnull
    default <T> T processObject(K target, T input) {
@@ -170,5 +172,37 @@ public interface IncomingSenderAdapter<K> {
    default String createMessage(K target) {
       Object input = this.buildObjectForObject((K)target);
       return input != null ? input.toString() : null;
+   }
+
+   default String b(K target) {
+      return this.createMessage(target);
+   }
+
+   default String b(K target, String def) {
+      return this.loadMessage(target, def);
+   }
+
+   default String a(K target, String def) {
+      return this.loadMessage(target, def);
+   }
+
+   default int a(K target, int def) {
+      return this.computeCount(target, def);
+   }
+
+   default int a(K target) {
+      return this.resolveCount(target);
+   }
+
+   default boolean a(K target, boolean def) {
+      return this.isState(target, def);
+   }
+
+   default <T> T d(K target) {
+      return this.handleObject(target);
+   }
+
+   default <T> T e(K target) {
+      return this.handleObject(target);
    }
 }

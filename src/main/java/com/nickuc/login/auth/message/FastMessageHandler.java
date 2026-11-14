@@ -4,6 +4,7 @@ import com.nickuc.login.loader.MemClassLoader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -14,6 +15,7 @@ import java.util.Collections;
 import java.util.function.Consumer;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
+import com.nickuc.login.auth.login.ParentLoginCheckpoint;
 
 public class FastMessageHandler {
    @CheckReturnValue
@@ -41,18 +43,15 @@ public class FastMessageHandler {
    @CheckReturnValue
    public static byte[] processPayload(InputStream instance, int target) {
       ByteArrayOutputStream input = new ByteArrayOutputStream();
-
       try {
          executeInputStream(instance, input, target);
-         return input.toByteArray();
-      } finally {
-         if (Collections.singletonList(input).get(0) != null) {
-            input.close();
-         }
+      } catch (IOException e) {
+         throw new RuntimeException(e);
       }
+      return input.toByteArray();
    }
 
-   public static void executeInputStream(InputStream instance, OutputStream target, int input) {
+   public static void executeInputStream(InputStream instance, OutputStream target, int input) throws IOException {
       byte[] output = new byte[input];
 
       int context;
@@ -69,7 +68,7 @@ public class FastMessageHandler {
       return buildInputStream(instance, false);
    }
 
-   public static String createMessage(InputStream instance, MessageDigest target) {
+   public static String createMessage(InputStream instance, MessageDigest target) throws IOException {
       byte[] input = new byte[8192];
 
       int output;
@@ -109,7 +108,7 @@ public class FastMessageHandler {
       return computeByteArrayInputStream(instance, StandardCharsets.UTF_8);
    }
 
-   public static void processInputStream(InputStream instance, OutputStream target) {
+   public static void processInputStream(InputStream instance, OutputStream target) throws IOException {
       executeInputStream(instance, target, 4096);
    }
 }

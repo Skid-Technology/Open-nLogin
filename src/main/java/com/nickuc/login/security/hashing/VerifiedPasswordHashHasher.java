@@ -1,5 +1,7 @@
 package com.nickuc.login.security.hashing;
 
+import java.util.Map;
+
 import com.nickuc.login.auth.locale.LocalLocaleFlow;
 import com.nickuc.login.auth.login.ParentLoginHandler;
 import com.nickuc.login.auth.login.RemoteLoginBarrier;
@@ -129,7 +131,7 @@ public abstract class VerifiedPasswordHashHasher {
       ParentLoginHandler[] result = values[target.count];
       int value = instance.fetchCount();
       if (value < result.length) {
-         result[value] = new ParentLoginHandler(instance, target, context, null);
+         result[value] = new ParentLoginHandler(instance, target, context);
       } else {
          throw new ArrayIndexOutOfBoundsException(String.format("Setting %s out of bounds! %s >= %s", instance, value, result.length));
       }
@@ -152,7 +154,7 @@ public abstract class VerifiedPasswordHashHasher {
          return target;
       }
 
-      HashMap input = new HashMap();
+      Map<String, JSONObject> input = new HashMap<>();
 
       for (ParentLoginHandler[] value : values) {
          for (ParentLoginHandler source : value) {

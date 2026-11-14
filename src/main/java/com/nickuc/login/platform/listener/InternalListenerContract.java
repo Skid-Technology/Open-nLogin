@@ -76,7 +76,7 @@ public interface InternalListenerContract {
    SecureLoginGate loadSecureLoginGate();
 
    default List<String> processCollection(SecureLoginGate target, Object... input) {
-      List output = this.processObject(target);
+      List<String> output = (List<String>) this.processObject(target);
       if (input != null && input.length > 0) {
          String[] context = output.toArray(new String[0]);
          boolean data = false;
@@ -163,5 +163,32 @@ public interface InternalListenerContract {
 
    default short resolveCode() {
       return this.loadCode(this.loadSecureLoginGate());
+   }
+
+   default <T> T a(Object... target) {
+      if (target != null && target.length > 0) {
+         return (T) this.resolveMessage(target);
+      }
+      return this.retrieveObject();
+   }
+
+   default String a(SecureLoginGate target, Object... input) {
+      return this.computeMessage(target, input);
+   }
+
+   default <T> T b(Object... target) {
+      return this.retrieveObject();
+   }
+
+   default <T> T b(SecureLoginGate target) {
+      return this.processObject(target);
+   }
+
+   default boolean ar() {
+      return this.retrieveState();
+   }
+
+   default int r() {
+      return this.retrieveCount();
    }
 }

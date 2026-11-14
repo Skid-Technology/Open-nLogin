@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import com.nickuc.login.platform.packet.DirectPacketAdapter;
 import java.util.List;
 import javax.annotation.Nonnull;
+import com.nickuc.login.auth.login.RemoteLoginBarrier;
 
 public class AccountGate implements DirectPacketAdapter<List<AccountData>> {
    public static AccountGate accountGate = new AccountGate();
@@ -36,5 +37,15 @@ public class AccountGate implements DirectPacketAdapter<List<AccountData>> {
       }
 
       return RemoteLoginBarrier.loadRemoteLoginBarrier(output);
+   }
+
+   @Override
+   public JSONObject buildJSONObject(@Nonnull List<AccountData> target) {
+      return this.loadJSONObject(target);
+   }
+
+   @Override
+   public List<AccountData> loadObject(@Nonnull JSONObject target) {
+      return this.handleCollection(target);
    }
 }

@@ -98,8 +98,8 @@ extends URLClassLoader {
     }
 
     public <T> LoaderBootstrap createLoader(String bootstrapClass, Class<T> loaderPluginType, T loaderPlugin) throws LoadingException {
-        Constructor<LoaderBootstrap> constructor;
-        Class<LoaderBootstrap> plugin;
+        Constructor<? extends LoaderBootstrap> constructor;
+        Class<? extends LoaderBootstrap> plugin;
         try {
             plugin = this.loadClass(bootstrapClass).asSubclass(LoaderBootstrap.class);
         }

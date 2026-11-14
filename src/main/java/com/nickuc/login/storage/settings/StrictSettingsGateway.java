@@ -14,6 +14,8 @@ import java.util.concurrent.TimeUnit;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.event.EventHandler;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.spawn.SpawnState;
 
 public class StrictSettingsGateway implements PacketAdapter {
    private final PasswordStore passwordStore;

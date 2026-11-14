@@ -65,7 +65,7 @@ public class VerifiedUnregisterBackupCommand implements PacketAdapter {
 
    public VerifiedUnregisterBackupCommand(DiscordGuard target) {
       this.name = target.retrieveMessage().toLowerCase(Locale.ENGLISH);
-      HashSet input = new HashSet();
+      HashSet<String> input = new HashSet<>();
       input.add(this.name + 'c');
       input.add(this.name + ':' + this.name + 'c');
 

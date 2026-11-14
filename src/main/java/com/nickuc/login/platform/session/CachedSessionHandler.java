@@ -1,6 +1,10 @@
 package com.nickuc.login.platform.session;
 
 import com.nickuc.login.auth.login.IncomingLoginGate;
+import com.nickuc.login.platform.account.OutgoingAccountHandler;
+import com.nickuc.login.platform.account.ParentAccountHandler;
+import com.nickuc.login.platform.connection.TightConnectionContract;
+import com.nickuc.login.platform.sender.TightSenderAdapter;
 
 public interface CachedSessionHandler {
    void performTask();

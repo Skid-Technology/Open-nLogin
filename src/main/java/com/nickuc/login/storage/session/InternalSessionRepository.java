@@ -10,6 +10,8 @@ import com.nickuc.login.platform.packet.SilentPacketAdapter;
 import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import com.nickuc.login.session.LimboCoordinator;
 import com.nickuc.login.updater.NoticeCatalog;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 
 public class InternalSessionRepository implements SilentPacketAdapter, DirectPlayerContract {
@@ -17,7 +19,7 @@ public class InternalSessionRepository implements SilentPacketAdapter, DirectPla
 
    @Override
    public boolean canState(PasswordStore target, VerifiedServerAdapter input, LimboCoordinator output) {
-      return target.fetchLocalSettingsRepository().findState() && this.a(output).retrieveNoticeKind() != NoticeKind.NOTICE_KIND;
+      return target.fetchLocalSettingsRepository().findState() && this.loadOpenPasswordHashProvider(output).retrieveNoticeKind() != NoticeKind.NOTICE_KIND;
    }
 
    @Override
@@ -27,7 +29,7 @@ public class InternalSessionRepository implements SilentPacketAdapter, DirectPla
       switch (data) {
          case SHARED_PRIVATELOGINOPTION:
          case PRIVATE_PRIVATELOGINOPTION:
-            this.a(output).executeNoticeKind(data == PrivateLoginOption.SHARED_PRIVATELOGINOPTION ? NoticeKind.ACTIVE_NOTICEKIND : NoticeKind.PENDING_NOTICEKIND);
+            this.loadOpenPasswordHashProvider(output).executeNoticeKind(data == PrivateLoginOption.SHARED_PRIVATELOGINOPTION ? NoticeKind.ACTIVE_NOTICEKIND : NoticeKind.PENDING_NOTICEKIND);
             DirectPlayerContract.super.a(target, input, output, context, data);
       }
    }

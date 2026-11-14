@@ -3,6 +3,10 @@ package com.nickuc.login.auth.login;
 import java.util.concurrent.TimeUnit;
 
 public class HighLoginHandler {
+   public static int[] values = new int[256];
+   public static int[] activeValues = new int[256];
+   public static int[] pendingValues = new int[256];
+
    static {
       try {
          values[TimeUnit.MICROSECONDS.ordinal()] = 1;

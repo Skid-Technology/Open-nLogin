@@ -9,4 +9,8 @@ public class BusyLoginGate extends RemoteLoginCheckpoint {
       super(target);
       this.values = input;
    }
+
+   public static byte[] loadPayload(BusyLoginGate gate) {
+      return gate.values;
+   }
 }

@@ -49,4 +49,42 @@ public class BungeeGateway implements LinkedSessionHandler {
    public LocalBungeeBridge computeLocalBungeeBridge(Consumer<StrictCommandHandler> target, long input, long context, TimeUnit value) {
       return new LocalBungeeBridge(this.storedLoginHandler, target).handleLocalBungeeBridge(this.plugin, input, context, value);
    }
+
+   @Override
+   public void run() {
+      this.dispatchTask();
+   }
+
+   @Override
+   public StrictCommandHandler loadStrictCommandHandler(Consumer<StrictCommandHandler> target, long input, long context, TimeUnit value) {
+      return this.computeLocalBungeeBridge(target, input, context, value);
+   }
+
+
+   @Override
+   public StrictCommandHandler loadStrictCommandHandler(Consumer<StrictCommandHandler> target) {
+      return this.processLocalBungeeBridge(target);
+   }
+
+
+
+   @Override
+   public StrictCommandHandler loadStrictCommandHandler(Consumer<StrictCommandHandler> target, long input, TimeUnit context) {
+      return this.createLocalBungeeBridge(target, input, context);
+   }
+
+   @Override
+   public StrictCommandHandler buildStrictCommandHandler(Runnable target) {
+      return this.handleLocalBungeeBridge(target);
+   }
+
+   @Override
+   public StrictCommandHandler loadStrictCommandHandler(Runnable target, long input, TimeUnit context) {
+      return this.createLocalBungeeBridge(target, input, context);
+   }
+
+   @Override
+   public StrictCommandHandler processStrictCommandHandler(Runnable target, long input, long context, TimeUnit value) {
+      return this.loadLocalBungeeBridge(target, input, context, value);
+   }
 }

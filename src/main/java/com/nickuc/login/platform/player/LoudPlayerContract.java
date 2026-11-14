@@ -13,6 +13,9 @@ import com.nickuc.login.storage.session.LocalSessionTable;
 import com.nickuc.login.storage.password.PasswordStore;
 import com.nickuc.login.storage.session.SessionGateway;
 import java.util.concurrent.TimeUnit;
+import com.nickuc.login.platform.account.SecondaryAccountHandler;
+import com.nickuc.login.platform.server.VerifiedServerAdapter;
+import com.nickuc.login.platform.account.UpstreamAccountHandler;
 
 public interface LoudPlayerContract {
    default void dispatchPasswordStore(
@@ -108,4 +111,16 @@ public interface LoudPlayerContract {
    }
 
    BusyLoginBarrier[] loadValues(PasswordStore target, VerifiedServerAdapter input, LimboCoordinator output, SecondaryAccountHandler context);
+
+   default void a(PasswordStore target, VerifiedServerAdapter input, LimboCoordinator output, SecondaryAccountHandler context, PrivateLoginOption data) {
+      this.dispatchPasswordStore(target, input, output, context, data);
+   }
+
+   default boolean a(LimboCoordinator target) {
+      return this.hasState(target);
+   }
+
+   default void b(PasswordStore target, VerifiedServerAdapter input, LimboCoordinator output) {
+      this.sendPasswordStore(target, input, output);
+   }
 }

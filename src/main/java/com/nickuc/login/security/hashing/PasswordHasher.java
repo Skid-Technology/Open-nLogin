@@ -10,12 +10,14 @@ import com.nickuc.login.protocol.LenientCommandHandler;
 import io.netty.channel.Channel;
 
 public class PasswordHasher implements LenientCommandHandler {
+   public final PasswordService passwordService;
+
    @Override
    public void dispatchPacketReceiveEvent(PacketReceiveEvent target) {
       if (Pbkdf2Linker.retrieveNoticeKind() == NoticeKind.ACTIVE_NOTICEKIND) {
          if (!target.getServerVersion().isOlderThan(ServerVersion.V_1_21_6)) {
             Channel input = (Channel)target.getChannel();
-            input.attr(DialogHandler.attributeKey).set(new DialogHandler(null, (byte)0, null));
+            input.attr(DialogHandler.attributeKey).set(new DialogHandler(null, (byte)0));
          }
       }
    }

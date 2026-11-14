@@ -56,7 +56,7 @@ public class IndirectPasswordHashVerifier implements IncomingAccountHandler {
    }
 
    private void saveInternalLoginOption(InternalLoginOption target) {
-      PasswordHashLoader input = this.passwordStore.a();
+      PasswordHashLoader input = this.passwordStore.retrievePasswordHashLoader();
       String output = target.findMessage();
       PasswordHashCommand context = target.fetchPasswordHashCommand();
       boolean data = target.resolveState();
@@ -66,7 +66,7 @@ public class IndirectPasswordHashVerifier implements IncomingAccountHandler {
       List request;
       String source;
       if (target != InternalLoginOption.INTERNAL_LOGIN_OPTION) {
-         result = input.a(value + ".enable", input.a(value + ".enabled", true));
+         result = (byte)(input.a(value + ".enable", input.a(value + ".enabled", true)) ? 1 : 0);
          request = input.processCollection(value + ".commands");
          response = input.b(value + ".permission");
          source = input.a(value + ".description", "Failed to load the command description");
@@ -113,13 +113,13 @@ public class IndirectPasswordHashVerifier implements IncomingAccountHandler {
          context.buildPasswordHashCommand((String)request.get(0));
          String content = '/' + this.passwordStore.retrieveMessage().toLowerCase(Locale.ENGLISH) + ':';
          this.activePlayers.add(content);
-         request.stream().map(instance -> instance.toLowerCase(Locale.ENGLISH)).forEach(contextValue -> {
+         ((List<String>)request).stream().map(instance -> instance.toLowerCase(Locale.ENGLISH)).forEach(contextValue -> {
             if (data) {
-               this.players.add('/' + contextValue);
+               this.players.add("/" + contextValue);
                this.players.add(content + contextValue);
             }
 
-            this.activePlayers.add('/' + contextValue);
+            this.activePlayers.add("/" + contextValue);
             this.activeSessions.put(contextValue, target);
          });
          synchronized (this.sessions) {
@@ -145,6 +145,6 @@ public class IndirectPasswordHashVerifier implements IncomingAccountHandler {
       }
 
       List input = SpawnState.PENDING_UPSTREAM_SPAWNSTATE.a(new Object[0]);
-      return input.stream().noneMatch(targetValue -> !targetValue.isEmpty() && (targetValue.equals("*") || target.equals(targetValue)));
+      return ((List<String>) input).stream().noneMatch(targetValue -> !targetValue.isEmpty() && (targetValue.equals("*") || target.equals(targetValue)));
    }
 }

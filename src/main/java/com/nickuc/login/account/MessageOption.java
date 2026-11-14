@@ -117,6 +117,14 @@ public enum MessageOption {
       return this.activeName;
    }
 
+   public static String handleMessage(MessageOption opt) {
+      return opt != null ? opt.activeName : null;
+   }
+
+   public static String buildMessage(MessageOption opt) {
+      return opt != null ? opt.name : null;
+   }
+
    @Nullable
    public static MessageOption processMessageOption(String instance) {
       for (MessageOption context : values()) {
@@ -152,4 +160,18 @@ public enum MessageOption {
    public String getName() {
       return this.name;
    }
+
+   public static String resolveMessage(MessageOption option) {
+      return option != null ? option.resolveMessage() : "";
+   }
+
+
+   public static boolean checkState(MessageOption opt) {
+      return opt != null && opt.enabled;
+   }
+
+   public static Class<? extends com.nickuc.login.storage.password.PasswordHashRepository> resolveClass(MessageOption opt) {
+      return opt != null ? opt.value : null;
+   }
+
 }

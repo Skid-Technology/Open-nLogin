@@ -227,8 +227,8 @@ public class LocaleLookup extends PasswordHashCommand<IndirectSessionHandler<?>>
                this.indirectSessionHandler
                   .fetchParentSettingsLookup()
                   .loadPrimaryPasswordHashVerifier()
-                  .createPrimaryPasswordHashVerifier("debug", (boolean)parameter);
-               PasswordHashContainer.saveState((boolean)parameter);
+                  .createPrimaryPasswordHashVerifier("debug", (parameter != 0));
+               PasswordHashContainer.saveState((parameter != 0));
                target.dispatchMessage(parameter != 0 ? "§aDebug mode enabled." : "§cDebug mode disabled.");
                break;
             case "url":

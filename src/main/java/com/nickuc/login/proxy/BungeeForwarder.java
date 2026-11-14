@@ -5,6 +5,8 @@ import com.nickuc.login.security.hashing.PasswordHashDigest;
 import net.md_5.bungee.protocol.DefinedPacket;
 
 public class BungeeForwarder implements ChainedSessionHandler {
+   public final PasswordHashDigest passwordHashDigest;
+
    public BungeeForwarder(PasswordHashDigest target) {
       this.passwordHashDigest = target;
    }

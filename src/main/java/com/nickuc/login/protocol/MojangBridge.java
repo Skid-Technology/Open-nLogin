@@ -35,6 +35,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 
 public class MojangBridge implements LenientCommandHandler, QuickCommandHandler {
+   public final SettingsRegistry settingsRegistry;
+
    public void saveUser(User target, Channel input, WrapperLoginClientEncryptionResponse output, PacketInterceptor context, boolean data) {
       if (this.validateState(target, output, context)) {
          byte[] value;
@@ -115,7 +117,7 @@ public class MojangBridge implements LenientCommandHandler, QuickCommandHandler 
                   return;
                }
 
-               if (!reference.canState(source, payload, content, setting, (boolean)holder)) {
+               if (!reference.canState(source, payload, content, setting, (holder != 0))) {
                   SettingsInterceptor.handleUser(target, CachedSettingsGateway.computeMessage(LoudProxyState.DIRECT_LOUDPROXYSTATE));
                   return;
                }
@@ -220,12 +222,16 @@ public class MojangBridge implements LenientCommandHandler, QuickCommandHandler 
    }
 
    private void performObject(Object target, SecretKey input) {
-      if (SettingsRegistry.getMethod() != null) {
-         Object output = SettingsRegistry.getMethod().invoke(null, 2, input);
-         Object context = SettingsRegistry.getMethod().invoke(null, 1, input);
-         SettingsRegistry.resolveMethod().invoke(target, output, context);
-      } else {
-         SettingsRegistry.resolveMethod().invoke(target, input);
+      try {
+         if (SettingsRegistry.getMethod() != null) {
+            Object output = SettingsRegistry.getMethod().invoke(null, 2, input);
+            Object context = SettingsRegistry.getMethod().invoke(null, 1, input);
+            SettingsRegistry.resolveMethod().invoke(target, output, context);
+         } else {
+            SettingsRegistry.resolveMethod().invoke(target, input);
+         }
+      } catch (Exception e) {
+         throw new RuntimeException(e);
       }
    }
 
@@ -280,7 +286,7 @@ public class MojangBridge implements LenientCommandHandler, QuickCommandHandler 
       }
    }
 
-   private MojangBridge(SettingsRegistry target) {
+   public MojangBridge(SettingsRegistry target) {
       this.settingsRegistry = target;
    }
 }

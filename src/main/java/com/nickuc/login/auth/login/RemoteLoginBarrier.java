@@ -44,4 +44,9 @@ public class RemoteLoginBarrier<T> extends AbstractList<T> {
    public static <T> RemoteLoginBarrier<T> createRemoteLoginBarrier(List<T> instance) {
       return new RemoteLoginBarrier<>(new ArrayList<>(instance));
    }
+
+   @Override
+   public T get(int target) {
+      return this.processObject(target);
+   }
 }

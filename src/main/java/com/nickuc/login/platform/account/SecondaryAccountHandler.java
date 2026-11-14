@@ -5,6 +5,7 @@ import com.nickuc.login.command.NoticeCommand;
 import com.nickuc.login.session.LimboCoordinator;
 import com.nickuc.login.storage.password.PasswordStore;
 import javax.annotation.Nullable;
+import com.nickuc.login.platform.server.VerifiedServerAdapter;
 
 public interface SecondaryAccountHandler {
    default void updateMessage(String target, String input) {

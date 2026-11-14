@@ -7,6 +7,8 @@ import com.nickuc.login.platform.account.UpstreamAccountHandler;
 import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import com.nickuc.login.session.LimboCoordinator;
 import java.util.concurrent.TimeUnit;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 public class ActiveSessionRepository {
    private final PasswordStore passwordStore;

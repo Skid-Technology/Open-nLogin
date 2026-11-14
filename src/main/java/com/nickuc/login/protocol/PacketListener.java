@@ -68,12 +68,16 @@ public class PacketListener {
 
       Object input = handleObject(instance);
       if (input != null) {
-         Object output = field.get(input);
-         if (LoginGuard.resolveLoginGuard().canState(LoginGuard.storedLoginGuard)) {
-            Object context = activeField.get(output);
-            LoginCheckpoint.buildObject(method, context, target);
-         } else {
-            LoginCheckpoint.buildObject(method, output, target);
+         try {
+            Object output = field.get(input);
+            if (LoginGuard.resolveLoginGuard().canState(LoginGuard.storedLoginGuard)) {
+               Object context = activeField.get(output);
+               LoginCheckpoint.buildObject(method, context, target);
+            } else {
+               LoginCheckpoint.buildObject(method, output, target);
+            }
+         } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
          }
       }
    }

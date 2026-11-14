@@ -46,8 +46,8 @@ public enum LoginKind {
    LoginKind(int output, String context, boolean data, DirectPacketAdapter<?> value, DirectPacketAdapter<?>... result) {
       this.count = output;
       this.enabled = data;
-      this.directPacketAdapter = value;
-      this.values = result;
+      this.directPacketAdapter = (DirectPacketAdapter) value;
+      this.values = (DirectPacketAdapter[]) result;
       Class[] request = Arrays.stream(result).map(DirectPacketAdapter::loadClass).toArray(Class[]::new);
 
       try {
@@ -77,7 +77,11 @@ public enum LoginKind {
    }
 
    public Object computeObject(nLoginAPI target, Object... input) {
-      return this.method.invoke(target, input);
+      try {
+         return this.method.invoke(target, input);
+      } catch (Exception e) {
+         throw new RuntimeException(e);
+      }
    }
 
    public DirectPacketAdapter<Object>[] fetchValues() {

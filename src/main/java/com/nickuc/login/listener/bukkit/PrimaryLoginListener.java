@@ -17,7 +17,7 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 
 public class PrimaryLoginListener implements PacketAdapter {
    private final BukkitPlatform BukkitPlatform;
-   public static final boolean enabled = (boolean)(LoginCheckpoint.handleMethod(AsyncPlayerPreLoginEvent.class, "getPlayerProfile") != null ? 1 : 0);
+   public static final boolean enabled = LoginCheckpoint.handleMethod(AsyncPlayerPreLoginEvent.class, "getPlayerProfile") != null;
 
    public PrimaryLoginListener(BukkitPlatform target) {
       this.BukkitPlatform = target;

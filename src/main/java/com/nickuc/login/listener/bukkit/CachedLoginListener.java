@@ -29,4 +29,14 @@ public class CachedLoginListener implements DirectPacketAdapter<Location> {
       input.put("encoded", VerifiedLoginGuard.createMessage(output));
       return input;
    }
+
+   @Override
+   public JSONObject buildJSONObject(@Nonnull Location target) {
+      return this.createJSONObject(target);
+   }
+
+   @Override
+   public Location loadObject(@Nonnull JSONObject target) {
+      return this.buildLocation(target);
+   }
 }

@@ -28,86 +28,34 @@ public class FastLoginLinker implements NestedSessionHandler {
       switch (output.resolveDirectNoticeCatalog()) {
          case DIRECT_NOTICE_CATALOG:
          case ACTIVE_DIRECTNOTICECATALOG:
-            PrimaryLoginHandler item = output.buildPrimaryLoginHandler("SHOW COLUMNS FROM `" + context + "`");
-
-            byte payload;
-            label89: {
-               try {
-                  ResultSet element = item.resolveObject();
-
-                  while (element.next()) {
-                     String content = element.getString("Field");
-                     if (content.equals("premium")) {
-                        payload = 1;
-                        break label89;
-                     }
+            try (PrimaryLoginHandler item = output.buildPrimaryLoginHandler("SHOW COLUMNS FROM `" + context + "`")) {
+               ResultSet element = item.resolveObject();
+               while (element.next()) {
+                  String content = element.getString("Field");
+                  if (content.equals("premium")) {
+                     return true;
                   }
-               } catch (Throwable record) {
-                  if (item != null) {
-                     try {
-                        item.close();
-                     } catch (Throwable source) {
-                        record.addSuppressed(source);
-                     }
-                  }
-
-                  throw record;
                }
-
-               if (item != null) {
-                  item.close();
-               }
-               break;
+            } catch (Exception e) {
+               throw new RuntimeException(e);
             }
-
-            if (item != null) {
-               item.close();
-            }
-
-            return (boolean)payload;
+            return false;
          case CURRENT_DIRECTNOTICECATALOG:
-            PrimaryLoginHandler data = output.buildPrimaryLoginHandler("PRAGMA table_info(" + context + ")");
-
-            byte request;
-            label77: {
-               try {
-                  ResultSet value = data.resolveObject();
-
-                  while (value.next()) {
-                     String result = value.getString("name");
-                     if ("premium".equals(result)) {
-                        request = 1;
-                        break label77;
-                     }
+            try (PrimaryLoginHandler data = output.buildPrimaryLoginHandler("PRAGMA table_info(" + context + ")")) {
+               ResultSet value = data.resolveObject();
+               while (value.next()) {
+                  String result = value.getString("name");
+                  if ("premium".equals(result)) {
+                     return true;
                   }
-               } catch (Throwable entry) {
-                  if (data != null) {
-                     try {
-                        data.close();
-                     } catch (Throwable response) {
-                        entry.addSuppressed(response);
-                     }
-                  }
-
-                  throw entry;
                }
-
-               if (data != null) {
-                  data.close();
-               }
-               break;
+            } catch (Exception e) {
+               throw new RuntimeException(e);
             }
-
-            if (data != null) {
-               data.close();
-            }
-
-            return (boolean)request;
+            return false;
          default:
             throw new IllegalArgumentException("Invalid database type! " + output.resolveDirectNoticeCatalog());
       }
-
-      return false;
    }
 
    @Override
@@ -134,7 +82,7 @@ public class FastLoginLinker implements NestedSessionHandler {
 
       this.a(output, data, value);
       input.handleState(false);
-      PasswordHashLoader result = target.a();
+      PasswordHashLoader result = target.retrievePasswordHashLoader();
       String[] request = new String[]{
          OutgoingSpawnState.OUTGOING_SPAWN_STATE.getName(),
          OutgoingSpawnState.ACTIVE_OUTGOINGSPAWNSTATE.getName(),

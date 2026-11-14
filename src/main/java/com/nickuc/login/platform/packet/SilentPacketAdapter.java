@@ -4,6 +4,7 @@ import com.nickuc.login.model.LenientMessageKind;
 import com.nickuc.login.premium.OpenPasswordHashProvider;
 import com.nickuc.login.session.LimboCoordinator;
 import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.platform.account.UpstreamAccountHandler;
 
 public interface SilentPacketAdapter extends UpstreamAccountHandler {
    default OpenPasswordHashProvider loadOpenPasswordHashProvider(LimboCoordinator target) {

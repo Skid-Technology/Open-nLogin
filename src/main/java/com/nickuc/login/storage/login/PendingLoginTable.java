@@ -1,6 +1,9 @@
 package com.nickuc.login.storage.login;
 
 import com.nickuc.login.account.MessageOption;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.update.UpdateGateway;
+import com.nickuc.login.storage.notice.DirectNoticeCatalog;
 
 public class PendingLoginTable extends UpdateGateway {
    public PendingLoginTable(PasswordStore target) {

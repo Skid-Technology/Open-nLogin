@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 import javax.annotation.Nullable;
+import com.nickuc.login.storage.notice.DirectNoticeCatalog;
 
 public class PrimaryLoginSource extends NestedLoginHandler {
    @Nullable
@@ -67,11 +68,7 @@ public class PrimaryLoginSource extends NestedLoginHandler {
             : this.constructor.newInstance(this.name, this.properties);
          return (Connection)target;
       } catch (ReflectiveOperationException input) {
-         if (input.getCause() instanceof SQLException) {
-            throw (SQLException)input.getCause();
-         } else {
-            throw new RuntimeException(input);
-         }
+         throw new RuntimeException(input);
       }
    }
 

@@ -20,14 +20,14 @@ import java.util.function.Consumer;
 
 public class SecurePasswordLookup extends StoredSettingsGateway {
    @Override
-   public void performSet(ResultSet target) {
+   public void performSet(ResultSet target) throws java.sql.SQLException {
       this.activeName = target.getString("realName");
       String input = target.getString("password");
       String output = target.getString("lastIp");
       long context = target.getLong("lastLogin");
       long value = target.getLong("regDate");
       boolean request = target.getBoolean("premium");
-      Consumer response = contextValue -> contextValue.executeLong(value, context);
+      Consumer<SpawnLookup> response = (SpawnLookup contextValue) -> contextValue.executeLong(value, context);
       String[] source = input.split("\\$");
       if (source.length > 1) {
          String entry = source[1].toUpperCase(Locale.ENGLISH);

@@ -3,6 +3,7 @@ package com.nickuc.login.auth.locale;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+import com.nickuc.login.auth.login.PrivateLoginCheckpoint;
 
 public class OpenLocaleBarrier {
    private static final DecimalFormat[] values = computeValues(5);

@@ -23,7 +23,7 @@ public class LoudPasswordResolver extends StoredSettingsGateway {
    }
 
    @Override
-   public void performSet(ResultSet target) {
+   public void performSet(ResultSet target) throws java.sql.SQLException {
       this.activeName = target.getString("name");
       String input = target.getString("uuid");
       if (!input.isEmpty() && input.charAt(input.length() - 1) == '.') {

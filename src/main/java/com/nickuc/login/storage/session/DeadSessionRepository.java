@@ -10,6 +10,8 @@ import com.nickuc.login.platform.packet.SilentPacketAdapter;
 import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import com.nickuc.login.session.LimboCoordinator;
 import com.nickuc.login.updater.NoticeCatalog;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 
 public class DeadSessionRepository implements SilentPacketAdapter, DirectPlayerContract {
@@ -42,7 +44,7 @@ public class DeadSessionRepository implements SilentPacketAdapter, DirectPlayerC
       switch (data) {
          case VERIFIED_PRIVATELOGINOPTION:
          case AUTHENTICATED_PRIVATELOGINOPTION:
-            this.a(output)
+            this.loadOpenPasswordHashProvider(output)
                .handleUpstreamSpawnState(
                   data == PrivateLoginOption.VERIFIED_PRIVATELOGINOPTION
                      ? UpstreamSpawnState.PENDING_UPSTREAMSPAWNSTATE

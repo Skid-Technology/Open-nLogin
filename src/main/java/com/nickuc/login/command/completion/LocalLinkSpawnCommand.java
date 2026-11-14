@@ -142,8 +142,8 @@ public class LocalLinkSpawnCommand implements RootServerAdapter {
                   return;
                }
 
-               int result = !value.i("nlogin.command.nlogin") && !value.i("nlogin.admin") ? 0 : 1;
-               context.removeIf(
+               boolean result = value.i("nlogin.command.nlogin") || value.i("nlogin.admin");
+               ((List<String>) context).removeIf(
                   outputValue -> {
                      if (outputValue.trim().isEmpty()) {
                         return false;

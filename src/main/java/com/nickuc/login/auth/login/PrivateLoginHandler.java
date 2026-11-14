@@ -17,7 +17,7 @@ public class PrivateLoginHandler implements AutoCloseable {
       return this.connection;
    }
 
-   private PrivateLoginHandler(SharedListenerContract target, Connection input) {
+   public PrivateLoginHandler(SharedListenerContract target, Connection input) {
       this.sharedListenerContract = target;
       this.connection = input;
    }

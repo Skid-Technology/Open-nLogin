@@ -5,6 +5,7 @@ import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import com.nickuc.login.protocol.LenientCommandHandler;
 import com.nickuc.login.session.LimboCoordinator;
+import com.nickuc.login.storage.password.PasswordStore;
 
 
 public class PacketArchive implements LenientCommandHandler {

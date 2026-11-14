@@ -126,8 +126,8 @@ public class QuickPasswordDigest extends PasswordChallenge {
          if (!context.isEmpty()) {
             int data = context.lastIndexOf(64);
             if (data != -1) {
-               List value = StrictPremiumOption.SECONDARY_STRICTPREMIUMOPTION.a(new Object[0]);
-               List result = StrictPremiumOption.DIRECT_STRICTPREMIUMOPTION.a(new Object[0]);
+               List<String> value = StrictPremiumOption.SECONDARY_STRICTPREMIUMOPTION.a(new Object[0]);
+               List<String> result = StrictPremiumOption.DIRECT_STRICTPREMIUMOPTION.a(new Object[0]);
                if (!value.isEmpty()) {
                   return value.stream()
                      .map(instance -> "@" + instance)

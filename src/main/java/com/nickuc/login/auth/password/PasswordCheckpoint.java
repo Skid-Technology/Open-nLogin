@@ -10,6 +10,7 @@ import com.nickuc.login.storage.settings.CachedSettingsGateway;
 import com.nickuc.login.storage.login.LoginSource;
 import com.nickuc.login.storage.password.PasswordStore;
 import java.util.Locale;
+import com.nickuc.login.auth.locale.OpenLocaleBarrier;
 
 public class PasswordCheckpoint extends LoginSource {
    public PasswordCheckpoint(PasswordStore target) {
@@ -92,8 +93,9 @@ public class PasswordCheckpoint extends LoginSource {
                   }
                   break;
                case "print-nickname":
-                  int value = MojangCoordinator.pendingEnabled = (boolean)(!MojangCoordinator.pendingEnabled ? 1 : 0);
-                  CachedSettingsGateway.handleOutgoingSenderAdapter(target, value != 0 ? "§aEnabled." : "§cDisabled.");
+                  MojangCoordinator.pendingEnabled = !MojangCoordinator.pendingEnabled;
+                  boolean value = MojangCoordinator.pendingEnabled;
+                  CachedSettingsGateway.handleOutgoingSenderAdapter(target, value ? "§aEnabled." : "§cDisabled.");
             }
          } catch (Exception item) {
             PasswordHashContainer.handleMessage("Unexpected error in debug command", item);

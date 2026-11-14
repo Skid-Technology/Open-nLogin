@@ -9,6 +9,8 @@ import com.nickuc.login.bungee.BungeePlatform;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class BungeeBridge extends SecondaryMojangProcessor {
+   public final SpawnGateway spawnGateway;
+
    public BungeeBridge(SpawnGateway target) {
       this.spawnGateway = target;
    }

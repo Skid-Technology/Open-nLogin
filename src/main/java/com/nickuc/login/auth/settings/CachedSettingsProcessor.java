@@ -11,11 +11,11 @@ public final class CachedSettingsProcessor {
       PasswordHashContainer.dispatchMessage("Starting logger filter...");
       switch (instance) {
          case SILENT_PROXY_STATE:
-            PasswordHashContainer.saveConnectionContract(new ForceSetupCommand(target, null));
+            PasswordHashContainer.saveConnectionContract(new ForceSetupCommand(target));
             break;
          case ACTIVE_SILENTPROXYSTATE:
          case PENDING_SILENTPROXYSTATE:
-            PasswordHashContainer.saveConnectionContract(new LinkSpawnCommand(target, null));
+            PasswordHashContainer.saveConnectionContract(new LinkSpawnCommand(target));
       }
    }
 }

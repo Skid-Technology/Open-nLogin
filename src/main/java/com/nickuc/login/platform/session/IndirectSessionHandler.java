@@ -9,6 +9,10 @@ import com.nickuc.login.discord.PasswordHashBridge;
 import com.nickuc.login.premium.ParentSettingsLookup;
 import com.nickuc.login.premium.UpdateLookup;
 import java.io.File;
+import com.nickuc.login.platform.account.OutgoingAccountHandler;
+import com.nickuc.login.platform.account.ParentAccountHandler;
+import com.nickuc.login.platform.connection.TightConnectionContract;
+import com.nickuc.login.platform.sender.SenderAdapter;
 
 public interface IndirectSessionHandler<Plugin> {
    Object buildObject(int target);
@@ -77,5 +81,21 @@ public interface IndirectSessionHandler<Plugin> {
 
    default void saveOutgoingAccountHandler(OutgoingAccountHandler target, OutgoingAccountHandler... input) {
       this.getParentDiscordNotifier().saveOutgoingAccountHandler(target, input);
+   }
+
+   default UpdateLookup a() {
+      return this.retrieveUpdateLookup();
+   }
+
+   default void a(DiscordNotifier target) {
+      this.getParentDiscordNotifier().processDiscordNotifier(target);
+   }
+
+   default void a(OutgoingAccountHandler target, OutgoingAccountHandler... input) {
+      this.saveOutgoingAccountHandler(target, input);
+   }
+
+   default ParentAccountHandler b() {
+      return this.retrieveParentAccountHandler();
    }
 }

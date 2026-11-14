@@ -19,6 +19,8 @@ import com.nickuc.login.session.LimboRegistry;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 public abstract class LocaleCollection extends PasswordHashCommand<PasswordStore> {
    public final InternalLoginOption internalLoginOption;
@@ -92,7 +94,7 @@ public abstract class LocaleCollection extends PasswordHashCommand<PasswordStore
          if (source != null) {
             String[] item = output.length <= entry ? new String[0] : Arrays.copyOfRange(output, entry, output.length);
             CancellableEvent element = this.indirectSessionHandler.loadObject(EventEnum.PRE_COMMAND_EXECUTE, context, source, input, item);
-            element.setCancelled((boolean)record);
+            element.setCancelled((record != 0));
             record = !this.indirectSessionHandler.callEvent(element) ? 1 : 0;
          }
 

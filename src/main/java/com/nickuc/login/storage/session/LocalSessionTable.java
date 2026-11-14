@@ -8,6 +8,7 @@ import com.nickuc.login.platform.account.UpstreamAccountHandler;
 import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import com.nickuc.login.session.LimboCoordinator;
 import javax.annotation.Nullable;
+import com.nickuc.login.storage.password.PasswordStore;
 
 
 public class LocalSessionTable {

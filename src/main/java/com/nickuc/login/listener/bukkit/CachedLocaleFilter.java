@@ -1,5 +1,7 @@
 package com.nickuc.login.listener.bukkit;
 
+import java.util.List;
+
 import com.nickuc.login.listener.PacketAdapter;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -22,7 +24,7 @@ public class CachedLocaleFilter implements PacketAdapter {
          if (!target.getCompletions().isEmpty()) {
             if (target.getBuffer().startsWith("/")) {
                ArrayList output = new ArrayList(target.getCompletions());
-               output.removeIf(targetValue -> {
+               ((List<String>) output).removeIf(targetValue -> {
                   String[] inputValue = targetValue.split(" ");
                   if (inputValue.length == 0) {
                      return false;

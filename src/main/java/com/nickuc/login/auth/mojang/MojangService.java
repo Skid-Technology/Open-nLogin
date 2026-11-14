@@ -2,6 +2,7 @@ package com.nickuc.login.auth.mojang;
 
 import java.util.UUID;
 import javax.annotation.Nullable;
+import com.nickuc.login.auth.login.BusyLoginHandler;
 
 
 public class MojangService extends BusyLoginHandler {

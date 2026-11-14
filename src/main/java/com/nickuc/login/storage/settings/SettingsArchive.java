@@ -5,10 +5,15 @@ import com.nickuc.login.config.PasswordHashLoader;
 import java.io.File;
 import java.sql.ResultSet;
 import java.util.Properties;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.login.LoginGateway;
+import com.nickuc.login.storage.notice.DirectNoticeCatalog;
+import com.nickuc.login.storage.password.PasswordRepository;
+import com.nickuc.login.storage.password.PrimaryPasswordDao;
 
 public class SettingsArchive extends StoredSettingsGateway {
    @Override
-   public void performSet(ResultSet target) {
+   public void performSet(ResultSet target) throws java.sql.SQLException {
       this.activeName = target.getString("player");
       String input = target.getString("senha");
       String output = target.getString("ip");

@@ -38,4 +38,8 @@ public class SharedAccountGate {
    public String toString() {
       return "PlayerIP.Account(ai=" + this.resolveTime() + ", realName=" + this.loadMessage() + ", type=" + this.loadSpawnOption() + ")";
    }
+
+   public static long loadTime(SharedAccountGate gate) {
+      return gate.timestamp;
+   }
 }

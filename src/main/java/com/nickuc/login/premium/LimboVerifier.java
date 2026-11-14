@@ -94,7 +94,7 @@ public class LimboVerifier extends StoredSettingsGateway {
    }
 
    @Override
-   public void performSet(ResultSet target) {
+   public void performSet(ResultSet target) throws java.sql.SQLException {
       this.activeName = target.getString("NICKNAME");
       String input = target.getString("HASH");
       String output = target.getString("IP");
@@ -105,7 +105,7 @@ public class LimboVerifier extends StoredSettingsGateway {
          input = input.replace("BCRYPT$", "$2a$");
       }
 
-      Consumer request = inputValue -> inputValue.executeLong(context, context);
+      Consumer<SpawnLookup> request = inputValue -> inputValue.executeLong(context, context);
       if (result != null && result.version() == 4) {
          this.updateMessage(this.activeName, input, output, value, result, request);
       } else {

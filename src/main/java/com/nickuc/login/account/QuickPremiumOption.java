@@ -67,4 +67,8 @@ public enum QuickPremiumOption implements InternalListenerContract {
    public boolean retrieveState() {
       return (!this.busyLoginProcessor.fetchState() || PasswordStore.resolvePasswordStore().a().getCount() == 9) && this.getState();
    }
+
+   public static Object createObject(QuickPremiumOption option) {
+      return option.object;
+   }
 }

@@ -24,6 +24,8 @@ import com.nickuc.login.storage.password.PasswordStore;
 import com.nickuc.login.storage.settings.StrictSettingsGateway;
 import com.nickuc.login.storage.spawn.VerifiedSpawnDao;
 import javax.annotation.Nullable;
+import com.nickuc.login.platform.account.OutgoingAccountHandler;
+import com.nickuc.login.platform.account.InternalAccountHandler;
 
 public enum StoredProxyCatalog {
    STORED_PROXY_CATALOG(true, LoginFilter.class, PasswordHashProvider.class),

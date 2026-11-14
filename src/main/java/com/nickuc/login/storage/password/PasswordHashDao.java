@@ -4,6 +4,7 @@ import com.nickuc.login.account.MessageOption;
 import com.nickuc.login.config.PasswordHashLoader;
 import com.nickuc.login.model.ProxyCatalog;
 import java.util.Locale;
+import com.nickuc.login.storage.settings.PendingSettingsGateway;
 
 public class PasswordHashDao extends PendingSettingsGateway {
    @Override

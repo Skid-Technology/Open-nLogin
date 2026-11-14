@@ -3,6 +3,9 @@ package com.nickuc.login.storage.settings;
 import com.nickuc.login.auth.login.PrivateLoginCheckpoint;
 import com.nickuc.login.config.PasswordHashContainer;
 import com.nickuc.login.platform.sender.OutgoingSenderAdapter;
+import com.nickuc.login.storage.login.LoginSource;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.login.LoginStore;
 
 public class SettingsDao extends LoginSource {
    @Override

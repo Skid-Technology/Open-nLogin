@@ -1,5 +1,7 @@
 package com.nickuc.login.storage.password;
 
+import com.nickuc.login.premium.SpawnLookup;
+
 import com.nickuc.login.account.MessageOption;
 import com.nickuc.login.config.PasswordHashContainer;
 import com.nickuc.login.config.PasswordHashLoader;
@@ -7,10 +9,13 @@ import com.nickuc.login.platform.proxy.SilentProxyState;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.function.Consumer;
+import com.nickuc.login.storage.settings.InternalSettingsGateway;
+import com.nickuc.login.storage.login.LoginGateway;
 
 public class BusyPasswordRepository extends InternalSettingsGateway {
    private final String[] names = new String[4];
@@ -31,27 +36,17 @@ public class BusyPasswordRepository extends InternalSettingsGateway {
       String input = target.a("database.FLAT.filePath", "accounts.db");
       File output = new File(this.retrieveFile(), input);
       int context = 0;
-      BufferedReader data = new BufferedReader(new FileReader(output));
-
-      try {
+      try (BufferedReader data = new BufferedReader(new FileReader(output))) {
          while (data.readLine() != null) {
             context++;
          }
-      } catch (Throwable property) {
-         try {
-            data.close();
-         } catch (Throwable reference) {
-            property.addSuppressed(reference);
-         }
-
-         throw property;
+      } catch (IOException e) {
+         throw new RuntimeException(e);
       }
 
-      data.close();
       this.timestamp = Math.max(0, context % 2 == 0 ? context / 2 : (context - 1) / 2);
-      BufferedReader value = new BufferedReader(new FileReader(output));
-
-      try {
+      try (BufferedReader value = new BufferedReader(new FileReader(output))) {
+         String attribute;
          while ((attribute = value.readLine()) != null) {
             if (!attribute.isEmpty()) {
                String[] result = attribute.split("\\|");
@@ -69,17 +64,9 @@ public class BusyPasswordRepository extends InternalSettingsGateway {
                }
             }
          }
-      } catch (Throwable setting) {
-         try {
-            value.close();
-         } catch (Throwable holder) {
-            setting.addSuppressed(holder);
-         }
-
-         throw setting;
+      } catch (IOException e) {
+         throw new RuntimeException(e);
       }
-
-      value.close();
    }
 
    public BusyPasswordRepository(PasswordStore target) {
@@ -140,7 +127,7 @@ public class BusyPasswordRepository extends InternalSettingsGateway {
 
    private void handleMessage(String target, String input) {
       if (input != null && !input.isEmpty()) {
-         Consumer output = instance -> {
+         Consumer<SpawnLookup> output = instance -> {
             instance.processTask();
             instance.handleUniqueId(null);
          };

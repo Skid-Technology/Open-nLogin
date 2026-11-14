@@ -14,7 +14,7 @@ import java.util.Properties;
 
 public class Sha256Adapter extends StoredSettingsGateway {
    @Override
-   public void performSet(ResultSet target) {
+   public void performSet(ResultSet target) throws java.sql.SQLException {
       JSONObject input = new JSONObject(target.getString("json"));
       this.activeName = input.getString("jogador");
       String output = input.getString("senha");

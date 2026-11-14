@@ -1,5 +1,7 @@
 package com.nickuc.login.storage.password;
 
+import java.util.List;
+
 import com.nickuc.login.auth.login.LiveLoginCheckpoint;
 import com.nickuc.login.auth.locale.OpenLocaleBarrier;
 import com.nickuc.login.auth.login.PrimaryLoginHandler;
@@ -9,9 +11,14 @@ import com.nickuc.login.platform.session.NestedSessionHandler;
 import com.nickuc.login.platform.listener.SharedListenerContract;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
+import com.nickuc.login.storage.settings.LocalSettingsRepository;
+import com.nickuc.login.storage.notice.DirectNoticeCatalog;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
+import com.nickuc.login.storage.spawn.SpawnState;
 
 public class PasswordHashCollection implements NestedSessionHandler {
    public static final PasswordHashCollection passwordHashCollection = new PasswordHashCollection();
@@ -38,7 +45,6 @@ public class PasswordHashCollection implements NestedSessionHandler {
 
       String data = SpawnState.CURRENT_SPAWNSTATE.a(new Object[0]);
       String value = LocalPasswordTable.validateState(output, data, "last_login") ? "last_login" : OutgoingSpawnState.REMOTE_OUTGOINGSPAWNSTATE.getName();
-      PasswordHashContainer.performMessage("Fetching column names...");
       String[] result = new String[]{
          OutgoingSpawnState.OUTGOING_SPAWN_STATE.getName(),
          OutgoingSpawnState.ACTIVE_OUTGOINGSPAWNSTATE.getName(),
@@ -80,9 +86,7 @@ public class PasswordHashCollection implements NestedSessionHandler {
       Connection source = output.resolveConnection();
 
       try {
-         Statement entry = source.createStatement();
-
-         try {
+         try (Statement entry = source.createStatement()) {
             if (output.resolveDirectNoticeCatalog() == DirectNoticeCatalog.ACTIVE_DIRECTNOTICECATALOG
                || output.resolveDirectNoticeCatalog() == DirectNoticeCatalog.DIRECT_NOTICE_CATALOG) {
                entry.addBatch("SET SESSION sql_mode = (SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
@@ -101,41 +105,17 @@ public class PasswordHashCollection implements NestedSessionHandler {
                )
             );
             entry.executeBatch();
-         } catch (Throwable option) {
-            if (entry != null) {
-               try {
-                  entry.close();
-               } catch (Throwable reference) {
-                  option.addSuppressed(reference);
-               }
-            }
-
-            throw option;
          }
-
-         if (entry != null) {
-            entry.close();
-         }
-      } catch (Throwable setting) {
-         if (source != null) {
-            try {
-               source.close();
-            } catch (Throwable holder) {
-               setting.addSuppressed(holder);
-            }
-         }
-
-         throw setting;
-      }
-
-      if (source != null) {
-         source.close();
+      } catch (SQLException e) {
+         throw new RuntimeException(e);
+      } finally {
+         output.sendConnection(source);
       }
 
       PasswordHashContainer.performMessage("Fetching duplicated UUIDs...");
       HashSet property = new HashSet();
       long attribute = 0L;
-      PrimaryLoginHandler item = output.buildPrimaryLoginHandler(
+      try (PrimaryLoginHandler item = output.buildPrimaryLoginHandler(
          String.format(
             "SELECT `%s`, COUNT(`%s`) FROM " + response + " GROUP BY `%s` HAVING COUNT(`%s`) > 1",
             OutgoingSpawnState.PENDING_OUTGOINGSPAWNSTATE.getName(),
@@ -143,26 +123,12 @@ public class PasswordHashCollection implements NestedSessionHandler {
             OutgoingSpawnState.PENDING_OUTGOINGSPAWNSTATE.getName(),
             OutgoingSpawnState.PENDING_OUTGOINGSPAWNSTATE.getName()
          )
-      );
-
-      try {
+      )) {
          for (ResultSet element = item.resolveObject(); element.next(); attribute += element.getInt(2)) {
             property.add(element.getString(1));
          }
-      } catch (Throwable subject) {
-         if (item != null) {
-            try {
-               item.close();
-            } catch (Throwable payload) {
-               subject.addSuppressed(payload);
-            }
-         }
-
-         throw subject;
-      }
-
-      if (item != null) {
-         item.close();
+      } catch (SQLException e) {
+         throw new RuntimeException(e);
       }
 
       PasswordHashContainer.performMessage(
@@ -173,7 +139,7 @@ public class PasswordHashCollection implements NestedSessionHandler {
             + ")"
       );
 
-      for (String argument : property) {
+      for (String argument : (List<String>) property) {
          output.saveMessage(
             String.format(
                "INSERT INTO `%s` (`%s`) SELECT `%s` FROM `%s` WHERE `%s` = ? ORDER BY `%s` DESC, `%s` DESC LIMIT 1",
@@ -207,116 +173,38 @@ public class PasswordHashCollection implements NestedSessionHandler {
       switch (output.resolveDirectNoticeCatalog()) {
          case DIRECT_NOTICE_CATALOG:
          case ACTIVE_DIRECTNOTICECATALOG:
-            PrimaryLoginHandler subject = output.buildPrimaryLoginHandler("SHOW COLUMNS FROM `" + context + "`");
-
-            byte attribute;
-            label136: {
-               try {
-                  ResultSet option = subject.resolveObject();
-
-                  while (option.next()) {
-                     String setting = option.getString("Field");
-                     String property = option.getString("Key");
-                     if (setting.equals(data) && !"UNI".equals(property)) {
-                        attribute = 1;
-                        break label136;
-                     }
+            try (PrimaryLoginHandler subject = output.buildPrimaryLoginHandler("SHOW COLUMNS FROM `" + context + "`")) {
+               ResultSet option = subject.resolveObject();
+               while (option.next()) {
+                  String setting = option.getString("Field");
+                  String prop = option.getString("Key");
+                  if (setting.equals(data) && !"UNI".equals(prop)) {
+                     return true;
                   }
-               } catch (Throwable reference) {
-                  if (subject != null) {
-                     try {
-                        subject.close();
-                     } catch (Throwable content) {
-                        reference.addSuppressed(content);
-                     }
-                  }
-
-                  throw reference;
                }
-
-               if (subject != null) {
-                  subject.close();
-               }
-
                return false;
+            } catch (SQLException e) {
+               throw new RuntimeException(e);
             }
-
-            if (subject != null) {
-               subject.close();
-            }
-
-            return (boolean)attribute;
          case CURRENT_DIRECTNOTICECATALOG:
-            PrimaryLoginHandler value = output.buildPrimaryLoginHandler("PRAGMA index_list(" + context + ")");
-
-            byte record;
-            label131: {
-               try {
-                  ResultSet result = value.resolveObject();
-
-                  while (result.next()) {
-                     String request = result.getString("name");
-                     PrimaryLoginHandler response = output.buildPrimaryLoginHandler("PRAGMA index_info(" + request + ")");
-
-                     label133: {
-                        try {
-                           ResultSet source = response.resolveObject();
-                           if (!source.next()) {
-                              break label133;
-                           }
-
-                           String entry = source.getString("name");
-                           if (!OutgoingSpawnState.PENDING_OUTGOINGSPAWNSTATE.getName().equals(entry)) {
-                              break label133;
-                           }
-
-                           record = 0;
-                        } catch (Throwable payload) {
-                           if (response != null) {
-                              try {
-                                 response.close();
-                              } catch (Throwable element) {
-                                 payload.addSuppressed(element);
-                              }
-                           }
-
-                           throw payload;
+            try (PrimaryLoginHandler value = output.buildPrimaryLoginHandler("PRAGMA index_list(" + context + ")")) {
+               ResultSet result = value.resolveObject();
+               while (result.next()) {
+                  String request = result.getString("name");
+                  try (PrimaryLoginHandler resp = output.buildPrimaryLoginHandler("PRAGMA index_info(" + request + ")")) {
+                     ResultSet src = resp.resolveObject();
+                     if (src.next()) {
+                        String entry = src.getString("name");
+                        if (OutgoingSpawnState.PENDING_OUTGOINGSPAWNSTATE.getName().equals(entry)) {
+                           return false;
                         }
-
-                        if (response != null) {
-                           response.close();
-                        }
-                        break label131;
-                     }
-
-                     if (response != null) {
-                        response.close();
                      }
                   }
-               } catch (Throwable holder) {
-                  if (value != null) {
-                     try {
-                        value.close();
-                     } catch (Throwable item) {
-                        holder.addSuppressed(item);
-                     }
-                  }
-
-                  throw holder;
                }
-
-               if (value != null) {
-                  value.close();
-               }
-
                return true;
+            } catch (SQLException e) {
+               throw new RuntimeException(e);
             }
-
-            if (value != null) {
-               value.close();
-            }
-
-            return (boolean)record;
          default:
             throw new IllegalArgumentException("Invalid database type! " + output.resolveDirectNoticeCatalog());
       }

@@ -64,7 +64,7 @@ public final class SecondarySettingsGuard implements CachedSessionHandler {
       LoginGuard target = LoginGuard.resolveLoginGuard();
       int input = target.resolveCount() == 1 && target.retrieveCount() <= 13 ? 1 : 0;
       int output = target.resolveCount() == 1 && target.retrieveCount() <= 17 ? 1 : 0;
-      PasswordHashContainer.handleIndirectSessionHandler(this.discordGuard, (boolean)input, (boolean)output);
+      PasswordHashContainer.handleIndirectSessionHandler(this.discordGuard, (input != 0), (output != 0));
    }
 
    @Override
@@ -144,6 +144,6 @@ public final class SecondarySettingsGuard implements CachedSessionHandler {
          input = 1;
       }
 
-      return (boolean)input;
+      return (input != 0);
    }
 }

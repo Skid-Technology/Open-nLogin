@@ -161,4 +161,12 @@ public enum SpawnState implements InternalListenerContract {
    public SecureLoginGate loadSecureLoginGate() {
       return secureLoginGate;
    }
+
+   public static Object buildObject(SpawnState state) {
+      return state.getObject();
+   }
+
+   public static boolean checkState(SpawnState state) {
+      return state.enabled;
+   }
 }

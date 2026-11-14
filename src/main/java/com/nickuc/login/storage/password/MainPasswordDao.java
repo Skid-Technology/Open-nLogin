@@ -1,5 +1,7 @@
 package com.nickuc.login.storage.password;
 
+import java.util.List;
+
 import com.nickuc.login.account.MessageOption;
 import com.nickuc.login.config.PasswordHashContainer;
 import com.nickuc.login.config.PasswordHashLoader;
@@ -19,6 +21,8 @@ import java.util.regex.Pattern;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
+import com.nickuc.login.storage.settings.InternalSettingsGateway;
+import com.nickuc.login.storage.login.LoginGateway;
 
 public class MainPasswordDao extends InternalSettingsGateway {
    private static final Pattern pattern = Pattern.compile("\\$2a\\$[0-9]+\\$[A-Za-z0-9/+._-]{53}");
@@ -52,7 +56,7 @@ public class MainPasswordDao extends InternalSettingsGateway {
       Set data = context.getKeys(false);
       this.timestamp = data.size();
 
-      for (String result : data) {
+      for (String result : (List<String>) data) {
          try {
             String request;
             if (context.isConfigurationSection(result)) {

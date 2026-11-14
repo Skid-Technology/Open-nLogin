@@ -6,6 +6,10 @@ import com.nickuc.login.storage.settings.CachedSettingsGateway;
 import java.util.TimerTask;
 
 public class ProxyDefinition extends TimerTask {
+   public final VerifiedServerAdapter verifiedServerAdapter;
+
+   public final LimboSupervisor limboSupervisor;
+
    public void updateTask() {
       int target = LimboSupervisor.computeCache(this.limboSupervisor).asMap().remove(this.verifiedServerAdapter) != null ? 1 : 0;
       if (target == 0) {
@@ -26,5 +30,10 @@ public class ProxyDefinition extends TimerTask {
    public ProxyDefinition(LimboSupervisor target, VerifiedServerAdapter input) {
       this.limboSupervisor = target;
       this.verifiedServerAdapter = input;
+   }
+
+   @Override
+   public void run() {
+      this.updateTask();
    }
 }

@@ -50,4 +50,14 @@ public class VelocityForwarder implements NestedServerAdapter, SimpleCommand {
       String context = output ? ((Player)input).getUsername() : "CONSOLE";
       this.passwordHashCommand.saveObject(input, context, output, target.alias(), (String[])target.arguments());
    }
+
+   @Override
+   public void execute(Invocation target) {
+      this.sendSimpleCommand(target);
+   }
+
+   @Override
+   public List<String> suggest(Invocation target) {
+      return this.processCollection(target);
+   }
 }

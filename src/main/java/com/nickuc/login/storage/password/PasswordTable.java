@@ -4,6 +4,8 @@ import com.nickuc.login.model.TightSpawnState;
 import com.zaxxer.hikari.HikariConfig;
 import com.nickuc.login.platform.session.IndirectSessionHandler;
 import java.util.function.Consumer;
+import com.nickuc.login.storage.settings.BusySettingsArchive;
+import com.nickuc.login.storage.notice.DirectNoticeCatalog;
 
 public class PasswordTable extends BusySettingsArchive {
    @Override

@@ -11,6 +11,9 @@ import java.util.Collections;
 import java.util.UUID;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
+import com.nickuc.login.auth.login.DeadLoginFlow;
+import com.nickuc.login.auth.login.OpenLoginBarrier;
+import com.nickuc.login.auth.login.StoredLoginFlow;
 
 public class PasswordProcessor extends SettingsGateway {
    @Override

@@ -30,7 +30,7 @@ public class PrimaryVelocityForwarder implements LinkedSessionHandler {
 
    @Override
    public void dispatchTask() {
-      this.f().forEach(StrictCommandHandler::performTask);
+      this.getCollection().forEach(StrictCommandHandler::performTask);
    }
 
    @Override
@@ -48,5 +48,43 @@ public class PrimaryVelocityForwarder implements LinkedSessionHandler {
 
    public VelocityLink processVelocityLink(Runnable target) {
       return new VelocityLink(this.storedLoginHandler, target).buildVelocityLink(this.velocityLoader);
+   }
+
+   @Override
+   public void run() {
+      this.dispatchTask();
+   }
+
+
+   @Override
+   public StrictCommandHandler loadStrictCommandHandler(Consumer<StrictCommandHandler> target, long input, long context, TimeUnit value) {
+      return this.handleVelocityLink(target, input, context, value);
+   }
+
+   @Override
+   public StrictCommandHandler loadStrictCommandHandler(Consumer<StrictCommandHandler> target) {
+      return this.handleVelocityLink(target);
+   }
+
+
+
+   @Override
+   public StrictCommandHandler loadStrictCommandHandler(Consumer<StrictCommandHandler> target, long input, TimeUnit context) {
+      return this.processVelocityLink(target, input, context);
+   }
+
+   @Override
+   public StrictCommandHandler buildStrictCommandHandler(Runnable target) {
+      return this.processVelocityLink(target);
+   }
+
+   @Override
+   public StrictCommandHandler loadStrictCommandHandler(Runnable target, long input, TimeUnit context) {
+      return this.buildVelocityLink(target, input, context);
+   }
+
+   @Override
+   public StrictCommandHandler processStrictCommandHandler(Runnable target, long input, long context, TimeUnit value) {
+      return this.computeVelocityLink(target, input, context, value);
    }
 }

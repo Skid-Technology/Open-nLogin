@@ -18,6 +18,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import com.nickuc.login.storage.password.PasswordStore;
 
 public class VerifiedSpawnDao implements PacketAdapter {
    private final PasswordStore passwordStore;

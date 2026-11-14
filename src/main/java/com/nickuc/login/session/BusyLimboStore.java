@@ -46,7 +46,7 @@ public class BusyLimboStore extends SettingsLinker {
             byte contextValue = 0;
 
             try {
-               contextValue = this.spawnSession.validateState(input, context);
+               contextValue = (byte)(this.spawnSession.validateState(input, context) ? 1 : 0);
             } catch (Exception valueValue) {
                PasswordHashContainer.handleMessage("Severe error during limbo process when cleaning player stats. (" + target.getName() + ")", valueValue);
             }

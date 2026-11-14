@@ -5,6 +5,8 @@ import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.nickuc.login.storage.settings.SettingsRepository;
 
 public class PacketBridge implements QuickCommandHandler {
+   public final SettingsRepository settingsRepository;
+
    public PacketBridge(SettingsRepository target) {
       this.settingsRepository = target;
    }

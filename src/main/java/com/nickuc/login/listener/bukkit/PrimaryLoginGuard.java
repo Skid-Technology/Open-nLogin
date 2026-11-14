@@ -107,4 +107,9 @@ public class PrimaryLoginGuard implements StrictCommandHandler {
 
       this.activeEnabled = true;
    }
+
+   @Override
+   public void run() {
+      this.performTask();
+   }
 }

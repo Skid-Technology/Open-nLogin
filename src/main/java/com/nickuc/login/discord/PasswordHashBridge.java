@@ -86,7 +86,7 @@ public class PasswordHashBridge {
             }
 
             context.close();
-            return (boolean)value;
+            return (value != 0);
          } catch (IOException response) {
             return false;
          }
@@ -111,9 +111,9 @@ public class PasswordHashBridge {
             return source;
          }
 
-         URL[] record = request.stream().map(this.activeSessions::get).map(instance -> {
+         URL[] record = (URL[]) request.stream().map(this.activeSessions::get).map(instance -> {
             try {
-               return instance.toUri().toURL();
+               return ((File)instance).toURI().toURL();
             } catch (MalformedURLException input) {
                throw new RuntimeException(input);
             }
@@ -351,7 +351,7 @@ public class PasswordHashBridge {
       File[] input = this.dataFile.listFiles();
       if (input != null && input.length != 0) {
          InternalSpawnState[] output = InternalSpawnState.values();
-         HashSet context = new HashSet(output.length + target.length);
+         HashSet<TightSenderAdapter> context = new HashSet<>(output.length + target.length);
          context.addAll(Arrays.asList(output));
          context.addAll(Arrays.asList(target));
          HashSet data = new HashSet<>(Arrays.asList(input));

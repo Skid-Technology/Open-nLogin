@@ -7,7 +7,10 @@ import com.nickuc.login.config.PasswordHashLoader;
 import com.nickuc.login.platform.sender.OutgoingSenderAdapter;
 import com.nickuc.login.platform.listener.SharedListenerContract;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.annotation.Nullable;
+import com.nickuc.login.storage.password.PasswordHashRepository;
+import com.nickuc.login.storage.password.PasswordStore;
 
 public abstract class StoredSettingsGateway extends PasswordHashRepository {
    public String name;
@@ -28,9 +31,8 @@ public abstract class StoredSettingsGateway extends PasswordHashRepository {
       }
 
       this.processMessage(this.pendingName);
-      PrimaryLoginHandler target = this.computePrimaryLoginHandler(this.sharedListenerContract);
 
-      try {
+      try (PrimaryLoginHandler target = this.computePrimaryLoginHandler(this.sharedListenerContract)) {
          ResultSet input = target.resolveObject();
 
          while (input.next() && this.passwordStore.resolveState()) {
@@ -45,24 +47,12 @@ public abstract class StoredSettingsGateway extends PasswordHashRepository {
                this.pendingTimestamp++;
             }
          }
-      } catch (Throwable record) {
-         if (target != null) {
-            try {
-               target.close();
-            } catch (Throwable response) {
-               record.addSuppressed(response);
-            }
-         }
-
-         throw record;
-      }
-
-      if (target != null) {
-         target.close();
+      } catch (Exception record) {
+         throw new RuntimeException(record);
       }
    }
 
-   public abstract void performSet(ResultSet target);
+   public abstract void performSet(ResultSet target) throws SQLException;
 
    public abstract void updatePasswordHashLoader(PasswordHashLoader target);
 

@@ -52,7 +52,7 @@ public enum PrimaryMessageOption implements InternalListenerContract {
       SettingsLookup.loadLoudNoticeCatalog(instance, input, "proxy/proxy_%s.yml", target);
       VerifiedPasswordHashHasher.performValues(values(), secureLoginGate, input);
       List output = STORED_PRIMARYMESSAGEOPTION.b(new Object[0]);
-      output.removeIf(instanceValue -> instanceValue == null || instanceValue.trim().isEmpty());
+      ((List<String>) output).removeIf(instanceValue -> instanceValue == null || instanceValue.trim().isEmpty());
       if (!output.isEmpty()) {
          VerifiedPasswordHashHasher.executeInternalListenerContract(STORED_PRIMARYMESSAGEOPTION, secureLoginGate, output);
       } else {

@@ -10,6 +10,8 @@ import com.nickuc.login.platform.packet.SilentPacketAdapter;
 import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import com.nickuc.login.session.LimboCoordinator;
 import com.nickuc.login.updater.NoticeCatalog;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 
 public class DeadSessionCollection implements SilentPacketAdapter, DirectPlayerContract {
@@ -28,7 +30,7 @@ public class DeadSessionCollection implements SilentPacketAdapter, DirectPlayerC
 
    @Override
    public boolean canState(PasswordStore target, VerifiedServerAdapter input, LimboCoordinator output) {
-      return target.a().getCount() == 9 && target.fetchLocalSettingsRepository().findState() && this.a(output).retrieveProxyState() != ProxyState.ACTIVE_PROXYSTATE;
+      return target.a().getCount() == 9 && target.fetchLocalSettingsRepository().findState() && this.loadOpenPasswordHashProvider(output).retrieveProxyState() != ProxyState.ACTIVE_PROXYSTATE;
    }
 
    @Override
@@ -38,7 +40,7 @@ public class DeadSessionCollection implements SilentPacketAdapter, DirectPlayerC
       switch (data) {
          case ACTIVE_PRIVATELOGINOPTION:
          case PENDING_PRIVATELOGINOPTION:
-            this.a(output).updateProxyState(data == PrivateLoginOption.ACTIVE_PRIVATELOGINOPTION ? ProxyState.PROXY_STATE : ProxyState.PENDING_PROXYSTATE);
+            this.loadOpenPasswordHashProvider(output).updateProxyState(data == PrivateLoginOption.ACTIVE_PRIVATELOGINOPTION ? ProxyState.PROXY_STATE : ProxyState.PENDING_PROXYSTATE);
             DirectPlayerContract.super.a(target, input, output, context, data);
       }
    }

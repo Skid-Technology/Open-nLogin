@@ -86,7 +86,7 @@ public class DeadBungeeForwarder implements ParentAccountHandler {
 
    @Override
    public Sha256Barrier[] retrieveValues() {
-      Collection target = this.proxyServer.getPluginManager().getPlugins();
+      Collection<Plugin> target = this.proxyServer.getPluginManager().getPlugins();
       Sha256Barrier[] input = new Sha256Barrier[target.size()];
       int output = 0;
 

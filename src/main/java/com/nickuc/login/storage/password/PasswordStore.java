@@ -43,6 +43,8 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import com.nickuc.login.storage.settings.LocalSettingsRepository;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 
 public class PasswordStore extends DiscordNotifier {
@@ -423,7 +425,7 @@ public class PasswordStore extends DiscordNotifier {
 
       try {
          BungeeHandler.handleIndirectSessionHandler(this, input);
-      } catch (IOException request) {
+      } catch (Exception request) {
          PasswordHashContainer.handleMessage("Unable to detect and clean old nLogin logs.", request);
       }
 
@@ -437,7 +439,7 @@ public class PasswordStore extends DiscordNotifier {
 
       try {
          PasswordHashContainer.handleFile(context);
-      } catch (IOException result) {
+      } catch (Exception result) {
          PasswordHashContainer.handleMessage("Unable to configure logs in " + context.getAbsolutePath() + " path", result);
       }
    }
@@ -504,7 +506,7 @@ public class PasswordStore extends DiscordNotifier {
 
    @Override
    public void dispatchTask() {
-      ParentSettingsLookup target = this.a();
+      ParentSettingsLookup target = this.fetchParentSettingsLookup();
       PrimaryPasswordHashVerifier input = target.loadPrimaryPasswordHashVerifier();
       byte[] output = input.createPayload("autoUpdate");
       if (output != null && output.length != 1) {

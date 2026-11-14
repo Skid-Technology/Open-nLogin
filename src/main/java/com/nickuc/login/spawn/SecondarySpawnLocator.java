@@ -3,6 +3,10 @@ package com.nickuc.login.spawn;
 import com.nickuc.login.api.enums.SpawnType;
 
 public class SecondarySpawnLocator {
+   public static int[] values = new int[256];
+   public static int[] activeValues = new int[256];
+   public static int[] pendingValues = new int[256];
+
    static {
       try {
          values[SpawnType.JOIN.ordinal()] = 1;

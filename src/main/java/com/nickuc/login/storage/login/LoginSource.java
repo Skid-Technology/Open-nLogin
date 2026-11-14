@@ -7,6 +7,8 @@ import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 
 public abstract class LoginSource {

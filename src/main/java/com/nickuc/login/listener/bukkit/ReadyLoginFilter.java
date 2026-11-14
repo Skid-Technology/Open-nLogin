@@ -19,10 +19,8 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 
 public class ReadyLoginFilter implements PacketAdapter {
-   public static final boolean enabled = (boolean)(LoginGuard.resolveLoginGuard().canState(LoginGuard.outgoingLoginGuard)
-         && ChildLoginCheckpoint.validateState("io.papermc.paper.event.player.PlayerServerFullCheckEvent")
-      ? 1
-      : 0);
+   public static final boolean enabled = LoginGuard.resolveLoginGuard().canState(LoginGuard.outgoingLoginGuard)
+         && ChildLoginCheckpoint.validateState("io.papermc.paper.event.player.PlayerServerFullCheckEvent");
    private final BukkitPlatform BukkitPlatform;
    private final PasswordHashProvider passwordHashProvider;
    private final boolean activeEnabled;

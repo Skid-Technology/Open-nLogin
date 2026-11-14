@@ -9,6 +9,8 @@ import com.nickuc.login.platform.player.LoudPlayerContract;
 import com.nickuc.login.platform.account.SecondaryAccountHandler;
 import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import com.nickuc.login.session.LimboCoordinator;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 
 public abstract class PendingSessionDao implements LoudPlayerContract {

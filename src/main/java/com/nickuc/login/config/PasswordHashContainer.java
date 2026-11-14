@@ -99,7 +99,7 @@ public final class PasswordHashContainer {
          throw new IllegalStateException("Logger already set!");
       }
 
-      int output = instance.findIncomingLoginGate().retrieveSilentProxyState() == SilentProxyState.SILENT_PROXY_STATE ? 1 : 0;
+      boolean output = instance.findIncomingLoginGate().retrieveSilentProxyState() == SilentProxyState.SILENT_PROXY_STATE;
       String context = instance.retrieveMessage();
       players.add(
          (inputValue, outputValue, contextValue) -> {
@@ -212,7 +212,7 @@ public final class PasswordHashContainer {
       }
    }
 
-   public static void handleFile(File instance) {
+   public static void handleFile(File instance) throws IOException {
       if (printWriter != null) {
          throw new IllegalStateException("Logger already configured!");
       }
@@ -234,5 +234,9 @@ public final class PasswordHashContainer {
 
    public static void performMessage(String instance, Object... target) {
       processMessage(instance, null, target);
+   }
+
+   public static String fetchMessage() {
+      return name;
    }
 }

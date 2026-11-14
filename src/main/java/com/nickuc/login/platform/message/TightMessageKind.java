@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.Arrays;
+import com.nickuc.login.platform.listener.InternalListenerContract;
 
 public enum TightMessageKind implements InternalListenerContract {
    TIGHT_MESSAGE_KIND("check-ack-message", true);
@@ -49,7 +50,7 @@ public enum TightMessageKind implements InternalListenerContract {
 
    public static boolean canState(BukkitPlatform instance, boolean target) {
       LiveLoginCheckpoint input = new LiveLoginCheckpoint();
-      PasswordHashLoader output = instance.a();
+      PasswordHashLoader output = instance.retrievePasswordHashLoader();
       if (!output.resolveStateForState()) {
          output.hasStateForState("com/nickuc/login/config/proxy/proxymode.yml");
       } else if (!target && !output.loadState()) {

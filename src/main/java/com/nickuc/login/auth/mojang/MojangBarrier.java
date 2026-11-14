@@ -5,6 +5,8 @@ import org.json.JSONObject;
 import com.nickuc.login.platform.packet.DirectPacketAdapter;
 import java.util.UUID;
 import javax.annotation.Nonnull;
+import com.nickuc.login.auth.login.DeadLoginFlow;
+import com.nickuc.login.auth.login.RemoteLoginProcessor;
 
 public class MojangBarrier implements DirectPacketAdapter<Identity> {
    public static final MojangBarrier mojangBarrier = new MojangBarrier();
@@ -56,5 +58,10 @@ public class MojangBarrier implements DirectPacketAdapter<Identity> {
          default:
             throw new IllegalArgumentException("The provided type is not supported! " + input);
       }
+   }
+
+   @Override
+   public Identity loadObject(@Nonnull JSONObject target) {
+      return this.processIdentity(target);
    }
 }

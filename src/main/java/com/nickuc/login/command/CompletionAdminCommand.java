@@ -50,7 +50,7 @@ public class CompletionAdminCommand extends PasswordChallenge {
    private void executeVerifiedServerAdapter(VerifiedServerAdapter target, LimboCoordinator input, String output, String context) {
       String data = "/link code:" + context;
       SecondaryAccountHandler value = input.getSecondaryAccountHandler();
-      Consumer result = inputValue -> {
+      Consumer<String> result = inputValue -> {
          String outputValue = inputValue.trim();
          if (outputValue.length() > 3 && outputValue.charAt(0) == '[' && outputValue.charAt(outputValue.length() - 1) == ']') {
             int contextValue = 0;

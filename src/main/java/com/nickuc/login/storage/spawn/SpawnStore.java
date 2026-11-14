@@ -4,6 +4,7 @@ import com.nickuc.login.platform.sender.SecondarySenderAdapter;
 import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import com.nickuc.login.premium.SettingsLinker;
 import com.nickuc.login.session.LimboCoordinator;
+import com.nickuc.login.storage.password.PasswordStore;
 
 public class SpawnStore extends SettingsLinker {
    private final SecondarySenderAdapter secondarySenderAdapter;

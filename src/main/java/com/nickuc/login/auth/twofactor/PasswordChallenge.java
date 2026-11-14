@@ -210,11 +210,11 @@ public abstract class PasswordChallenge extends LocaleCollection {
          QuickDiscordHandler result = input.fetchQuickDiscordHandler();
          switch (this.strictMessageKind) {
             case STRICT_MESSAGE_KIND:
-               result.executeState((boolean)value);
+               result.executeState((value != 0));
                this.indirectSessionHandler.findIndirectPasswordResolver().isState(input, OutgoingSpawnState.AUTHENTICATED_OUTGOINGSPAWNSTATE);
                break;
             case ACTIVE_STRICTMESSAGEKIND:
-               result.processState((boolean)value);
+               result.processState((value != 0));
                this.indirectSessionHandler.findIndirectPasswordResolver().isState(input, OutgoingSpawnState.AUTHENTICATED_OUTGOINGSPAWNSTATE);
                break;
             default:
@@ -369,14 +369,14 @@ public abstract class PasswordChallenge extends LocaleCollection {
             int response = this.strictMessageKind.fetchState() && !input.fetchStateAndState() && !input.getState() ? 1 : 0;
             switch (this.strictMessageKind) {
                case STRICT_MESSAGE_KIND:
-                  request.executeState((boolean)response);
+                  request.executeState((response != 0));
                   request.dispatchMessage(value);
                   this.indirectSessionHandler
                      .findIndirectPasswordResolver()
                      .isState(input, OutgoingSpawnState.VERIFIED_OUTGOINGSPAWNSTATE, OutgoingSpawnState.AUTHENTICATED_OUTGOINGSPAWNSTATE);
                   break;
                case ACTIVE_STRICTMESSAGEKIND:
-                  request.processState((boolean)response);
+                  request.processState((response != 0));
                   request.saveMessage(value);
                   this.indirectSessionHandler
                      .findIndirectPasswordResolver()

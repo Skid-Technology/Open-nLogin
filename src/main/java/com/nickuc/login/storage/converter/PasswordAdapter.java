@@ -67,7 +67,7 @@ public class PasswordAdapter extends StoredSettingsGateway {
    }
 
    @Override
-   public void performSet(ResultSet target) {
+   public void performSet(ResultSet target) throws java.sql.SQLException {
       this.activeName = target.getString(this.names[0]);
       String input = target.getString(this.names[1]);
       String output = target.getString(this.names[2]);

@@ -101,7 +101,7 @@ public class PasswordHashLoader implements IncomingSenderAdapter<String>, ChildL
             input.close();
          }
 
-         return (boolean)result;
+         return (result != 0);
       } catch (Exception source) {
          PasswordHashContainer.handleMessage("Cannot load " + this.activeDataFile + " config file, aborting load", source);
          return false;
@@ -154,7 +154,7 @@ public class PasswordHashLoader implements IncomingSenderAdapter<String>, ChildL
 
          try {
             MessageProcessor.checkState(target, this.activeDataFile);
-         } catch (IOException data) {
+         } catch (Exception data) {
             throw new RuntimeException(data);
          }
       }
@@ -234,7 +234,7 @@ public class PasswordHashLoader implements IncomingSenderAdapter<String>, ChildL
       }
 
       List output = this.pendingPasswordHashProvider.resolveCollection(target, null);
-      return output == null ? input : output.stream().map(instance -> instance != null ? instance.toString() : "null").collect(Collectors.toList());
+      return output == null ? input : (List<String>) (List<?>) output.stream().map(instance -> instance != null ? instance.toString() : "null").collect(Collectors.toList());
    }
 
    public synchronized boolean validateState(String target) {
@@ -253,7 +253,7 @@ public class PasswordHashLoader implements IncomingSenderAdapter<String>, ChildL
       Collection input = target.isEmpty()
          ? this.pendingPasswordHashProvider.resolveCollection()
          : this.pendingPasswordHashProvider.buildPendingPasswordHashProvider(target).resolveCollection();
-      input.removeIf(String::isEmpty);
+      input.removeIf(s -> s == null || s.toString().isEmpty());
       return new LinkedHashSet<>(input);
    }
 
@@ -288,4 +288,16 @@ public class PasswordHashLoader implements IncomingSenderAdapter<String>, ChildL
    public PasswordHashLoader(String target, boolean input) {
       this(new File(dataFile, target), input);
    }
+
+   @Override
+   public Object createObject(String target) {
+      return this.buildObject(target);
+   }
+
+
+   @Override
+   public boolean isState(String target) {
+      return this.canState(target);
+   }
+
 }

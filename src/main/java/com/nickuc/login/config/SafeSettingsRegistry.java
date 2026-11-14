@@ -37,7 +37,7 @@ public class SafeSettingsRegistry implements SilentPacketAdapter, DirectPlayerCo
    ) {
       if (data == PrivateLoginOption.ACTIVE_PRIVATELOGINOPTION) {
          try {
-            this.a(output).updatePasswordStore(target);
+            this.loadOpenPasswordHashProvider(output).updatePasswordStore(target);
          } catch (Exception result) {
             PasswordHashContainer.handleMessage("Unable to save configuration", result);
             CachedSettingsGateway.handleOutgoingSenderAdapter(input, "§cUnable to save configuration. Please check the console for more information.");

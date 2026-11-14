@@ -22,4 +22,14 @@ public class AccountCheckpoint implements DirectPacketAdapter<AccountType> {
    public Class<?> loadClass() {
       return AccountType.class;
    }
+
+   @Override
+   public JSONObject buildJSONObject(@Nonnull AccountType target) {
+      return this.processJSONObject(target);
+   }
+
+   @Override
+   public AccountType loadObject(@Nonnull JSONObject target) {
+      return this.resolveAccountType(target);
+   }
 }

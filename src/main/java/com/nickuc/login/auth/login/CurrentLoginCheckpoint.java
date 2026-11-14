@@ -3,6 +3,10 @@ package com.nickuc.login.auth.login;
 import com.nickuc.login.platform.proxy.SilentProxyState;
 
 public class CurrentLoginCheckpoint {
+   public static int[] values = new int[256];
+   public static int[] activeValues = new int[256];
+   public static int[] pendingValues = new int[256];
+
    static {
       try {
          values[SilentProxyState.PENDING_SILENTPROXYSTATE.ordinal()] = 1;

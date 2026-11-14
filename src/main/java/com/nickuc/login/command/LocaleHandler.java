@@ -1,5 +1,7 @@
 package com.nickuc.login.command;
 
+import java.util.List;
+
 import com.nickuc.login.account.InternalLoginOption;
 import com.nickuc.login.account.LoudProxyState;
 import com.nickuc.login.account.SharedLoginOption;
@@ -56,7 +58,7 @@ public class LocaleHandler extends LocaleCollection {
             SpawnOption result = value.loadSpawnOption();
             if (result != SpawnOption.SPAWN_OPTION && result != SpawnOption.PENDING_SPAWNOPTION) {
                String request = context.resolveMessage();
-               if (SpawnState.ACTIVE_VERIFIED_SPAWNSTATE.ar() && !SpawnState.ACTIVE_INCOMING_SPAWNSTATE.a(new Object[0]).contains(request)) {
+               if (SpawnState.ACTIVE_VERIFIED_SPAWNSTATE.ar() && !((List<?>)SpawnState.ACTIVE_INCOMING_SPAWNSTATE.a(new Object[0])).contains(request)) {
                   LocalAccountGate response = this.indirectSessionHandler.findIndirectPasswordResolver().createLocalAccountGate(request);
                   if (response == null) {
                      CachedSettingsGateway.executeOutgoingSenderAdapter(context, LoudProxyState.DIRECT_LOUDPROXYSTATE);

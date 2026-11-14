@@ -31,7 +31,7 @@ public class MessageCoordinator extends LocaleCollection {
          } else {
             LimboCoordinator value = data.loadLimboCoordinator(context);
             SpawnLookup result = value.loadSpawnLookup();
-            List request = createCollection(result);
+            List<StrictMessageKind> request = createCollection(result);
             switch (request.size()) {
                case 0:
                   CachedSettingsGateway.executeOutgoingSenderAdapter(target, LoudProxyState.PENDING_PRIMARY_LOUDPROXYSTATE, "2FA");

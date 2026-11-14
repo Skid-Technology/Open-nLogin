@@ -6,9 +6,13 @@ import java.util.concurrent.Callable;
 public class LocalLoginProcessor {
    public static <T, V> T processObject(Map<T, V> instance, Callable<T> target) {
       Object input;
-      do {
-         input = target.call();
-      } while (instance.containsKey(input));
+      try {
+         do {
+            input = target.call();
+         } while (instance.containsKey(input));
+      } catch (Exception e) {
+         throw new RuntimeException(e);
+      }
 
       return (T)input;
    }

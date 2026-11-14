@@ -105,7 +105,7 @@ public abstract class DiscordForwarder implements LoaderBootstrap, CommandHandle
    public Object buildObject(int target) {
       switch (target) {
          case 0:
-            Collection input = this.findProxyServer().getAllServers();
+            Collection<RegisteredServer> input = this.findProxyServer().getAllServers();
             if (input != null && !input.isEmpty()) {
                StringBuilder output = new StringBuilder();
 
@@ -192,5 +192,23 @@ public abstract class DiscordForwarder implements LoaderBootstrap, CommandHandle
    @Override
    public String toString() {
       return this.parentDiscordNotifier.toString();
+   }
+
+
+   @Override
+   public com.nickuc.login.platform.session.LinkedSessionHandler processLinkedSessionHandler(boolean target) {
+      return this.resolvePrimaryVelocityForwarder(target);
+   }
+
+
+
+   @Override
+   public com.nickuc.login.loader.platform.VelocityLoader loadObject() {
+      return this.fetchVelocityLoader();
+   }
+
+   @Override
+   public com.nickuc.login.platform.connection.TightConnectionContract resolveTightConnectionContract() {
+      return this.retrieveVelocityListener();
    }
 }

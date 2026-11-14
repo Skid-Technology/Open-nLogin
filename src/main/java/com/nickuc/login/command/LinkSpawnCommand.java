@@ -19,7 +19,7 @@ public final class LinkSpawnCommand implements ConnectionContract {
       }
    }
 
-   private LinkSpawnCommand(IndirectPasswordHashVerifier target) {
+   public LinkSpawnCommand(IndirectPasswordHashVerifier target) {
       this.indirectPasswordHashVerifier = target;
    }
 }

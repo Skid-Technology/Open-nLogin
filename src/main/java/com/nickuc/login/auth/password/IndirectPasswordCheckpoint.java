@@ -1,5 +1,6 @@
 package com.nickuc.login.auth.password;
 
+import com.nickuc.login.premium.SpawnLookup;
 import com.nickuc.login.account.MessageOption;
 import com.nickuc.login.config.PasswordHashLoader;
 import com.nickuc.login.storage.login.LoginGateway;
@@ -7,6 +8,7 @@ import com.nickuc.login.storage.password.PasswordStore;
 import com.nickuc.login.storage.settings.StoredSettingsGateway;
 import java.io.File;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class IndirectPasswordCheckpoint extends StoredSettingsGateway {
@@ -26,12 +28,16 @@ public class IndirectPasswordCheckpoint extends StoredSettingsGateway {
    }
 
    @Override
-   public void performSet(ResultSet target) {
-      this.activeName = target.getString("realname");
-      String input = target.getString("password");
-      String output = target.getString("address");
-      long context = target.getLong("lastlogin");
-      long value = target.getLong("regdate");
-      this.executeMessage(this.activeName, input, output, null, contextValue -> contextValue.executeLong(value, context));
+   public void performSet(ResultSet target) throws java.sql.SQLException {
+      try {
+         this.activeName = target.getString("realname");
+         String input = target.getString("password");
+         String output = target.getString("address");
+         long context = target.getLong("lastlogin");
+         long value = target.getLong("regdate");
+         this.executeMessage(this.activeName, input, output, null, (SpawnLookup contextValue) -> contextValue.executeLong(value, context));
+      } catch (SQLException e) {
+         throw new RuntimeException(e);
+      }
    }
 }

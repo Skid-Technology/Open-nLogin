@@ -63,15 +63,13 @@ public class PurgeUnregisterCommand extends LoginSource {
    }
 
    private static String computeMessage(PasswordStore instance, IndirectLoginKind target) {
-      int input = target == IndirectLoginKind.MAIN_INDIRECTLOGINKIND
+      boolean input = target == IndirectLoginKind.MAIN_INDIRECTLOGINKIND
          ? (
             instance.a().loadPrimaryPasswordHashVerifier().hasState(IndirectLoginKind.INDIRECT_LOGIN_KIND.fetchMessage())
                   && instance.a().loadPrimaryPasswordHashVerifier().isState(target.fetchMessage())
-               ? 1
-               : 0
          )
          : instance.a().loadPrimaryPasswordHashVerifier().hasState(target.fetchMessage());
-      return input != 0 ? "§a✔" : "§c✖";
+      return input ? "§a✔" : "§c✖";
    }
 
    private void updateVerifiedServerAdapter(VerifiedServerAdapter target, SecondaryAccountHandler input, IndirectLoginKind output) {

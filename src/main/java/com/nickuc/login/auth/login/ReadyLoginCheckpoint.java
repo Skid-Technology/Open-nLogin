@@ -12,4 +12,12 @@ public class ReadyLoginCheckpoint extends RemoteLoginCheckpoint {
       this.jSONObject = input;
       this.count = input.toString().length();
    }
+
+   public static JSONObject buildJSONObject(ReadyLoginCheckpoint checkpoint) {
+      return checkpoint.jSONObject;
+   }
+
+   public static int buildCount(ReadyLoginCheckpoint checkpoint) {
+      return checkpoint.count;
+   }
 }

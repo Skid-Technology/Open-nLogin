@@ -47,8 +47,8 @@ public class LoudDiscordNotifier extends LoginSource {
                   CachedSettingsGateway.executeOutgoingSenderAdapter(target, LoudProxyState.INCOMING_LOUDPROXYSTATE);
                   CachedSettingsGateway.processOutgoingSenderAdapter(target, QuickProxyState.ACTIVE_PRIMARY_QUICKPROXYSTATE);
                } else {
-                  Function notice = targetValue -> String.format(
-                     " §8⋆ §7%s %s", targetValue.getName(), targetValue.loadSpawnOption().buildMessage(this.loadState(), (instance, targetValue) -> instance + "(" + targetValue + ")")
+                  Function<com.nickuc.login.auth.account.SharedAccountGate, String> notice = targetValue -> String.format(
+                     " §8⋆ §7%s %s", targetValue.getName(), targetValue.loadSpawnOption().buildMessage(this.loadState(), (inst, val) -> inst + "(" + val + ")")
                   );
                   CachedSettingsGateway.handleOutgoingSenderAdapter(
                      target,
@@ -60,7 +60,7 @@ public class LoudDiscordNotifier extends LoginSource {
                      .stream()
                      .limit(20L)
                      .<String>map(notice)
-                     .forEach(targetValue -> CachedSettingsGateway.handleOutgoingSenderAdapter(target, targetValue));
+                     .forEach(targetValue -> CachedSettingsGateway.handleOutgoingSenderAdapter(target, String.valueOf(targetValue)));
                }
             } else if (!value.fetchState()) {
                CachedSettingsGateway.executeOutgoingSenderAdapter(target, LoudProxyState.INCOMING_LOUDPROXYSTATE);
@@ -96,13 +96,13 @@ public class LoudDiscordNotifier extends LoginSource {
                      subject = "§b(random)";
                   }
 
-                  Function option = targetValue -> String.format(
-                     "§f%s %s", targetValue.getName(), targetValue.loadSpawnOption().buildMessage(this.loadState(), (instance, targetValue) -> instance + "(" + targetValue + ")")
+                  Function<com.nickuc.login.auth.account.SharedAccountGate, String> option = targetValue -> String.format(
+                     "§f%s %s", targetValue.getName(), targetValue.loadSpawnOption().buildMessage(this.loadState(), (inst, val) -> inst + "(" + val + ")")
                   );
                   int setting = request != null && this.passwordStore.loadLimboRegistry().canState(request) ? 1 : 0;
                   if (this.loadState()) {
                      CachedSettingsGateway.handleOutgoingSenderAdapter(target, "");
-                     CachedSettingsGateway.handleOutgoingSenderAdapter(target, " §8⋆ §7Autenticado: " + this.processMessage((boolean)setting, "sim", "não"));
+                     CachedSettingsGateway.handleOutgoingSenderAdapter(target, " §8⋆ §7Autenticado: " + this.processMessage((setting != 0), "sim", "não"));
                      CachedSettingsGateway.handleOutgoingSenderAdapter(target, " §8⋆ §7Tipo: " + value.loadSpawnOption().buildMessage(true));
                      CachedSettingsGateway.handleOutgoingSenderAdapter(target, "");
                      CachedSettingsGateway.handleOutgoingSenderAdapter(
@@ -148,7 +148,7 @@ public class LoudDiscordNotifier extends LoginSource {
                      );
                   } else {
                      CachedSettingsGateway.handleOutgoingSenderAdapter(target, "");
-                     CachedSettingsGateway.handleOutgoingSenderAdapter(target, " §8⋆ §7Authenticated: " + this.processMessage((boolean)setting, "yes", "no"));
+                     CachedSettingsGateway.handleOutgoingSenderAdapter(target, " §8⋆ §7Authenticated: " + this.processMessage((setting != 0), "yes", "no"));
                      CachedSettingsGateway.handleOutgoingSenderAdapter(target, " §8⋆ §7Type: " + value.loadSpawnOption().buildMessage(false));
                      CachedSettingsGateway.handleOutgoingSenderAdapter(target, "");
                      CachedSettingsGateway.handleOutgoingSenderAdapter(

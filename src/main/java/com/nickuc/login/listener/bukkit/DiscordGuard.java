@@ -133,4 +133,18 @@ public abstract class DiscordGuard implements LoaderBootstrap, CommandHandler, I
          this.parentDiscordNotifier.<DiscordNotifier>loadDiscordNotifier().dispatchTask();
       }
    }
+
+
+   @Override
+   public com.nickuc.login.loader.platform.BukkitLoader loadObject() {
+      return this.retrieveBukkitLoader();
+   }
+
+
+
+   @Override
+   public com.nickuc.login.platform.connection.TightConnectionContract resolveTightConnectionContract() {
+      return this.findMessageListener();
+   }
+
 }

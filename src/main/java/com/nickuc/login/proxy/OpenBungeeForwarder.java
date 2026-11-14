@@ -64,7 +64,7 @@ public final class OpenBungeeForwarder implements CachedSessionHandler {
          input = 1;
       }
 
-      return (boolean)input;
+      return (input != 0);
    }
 
    @Override
@@ -72,9 +72,9 @@ public final class OpenBungeeForwarder implements CachedSessionHandler {
       try {
          Map target = this.passwordHashDefinition.fetchTable();
          if (target != null && !target.isEmpty()) {
-            List input = target.entrySet()
+            List<String> input = ((Map<?, ?>)target).entrySet()
                .stream()
-               .map(instance -> (String)instance.getKey() + ": " + ((ServerInfo)instance.getValue()).getSocketAddress())
+               .map(instance -> (String)((Map.Entry<?, ?>)instance).getKey() + ": " + ((ServerInfo)((Map.Entry<?, ?>)instance).getValue()).getSocketAddress())
                .collect(Collectors.toList());
             this.passwordHashDefinition
                .parentDiscordNotifier

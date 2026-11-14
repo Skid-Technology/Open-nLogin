@@ -7,6 +7,7 @@ import com.nickuc.login.storage.password.PasswordStore;
 import java.util.UUID;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
+import com.nickuc.login.auth.login.DeadLoginFlow;
 
 public class PasswordBarrier extends SettingsDefinition {
    public PasswordBarrier(PasswordStore target) {

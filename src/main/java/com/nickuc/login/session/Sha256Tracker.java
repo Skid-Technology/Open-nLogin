@@ -57,7 +57,7 @@ public class Sha256Tracker {
       try {
          byte[] instance = FastMessageHandler.handlePayload(FastMessageHandler.createInputStream("yggdrasil_session_pubkey.der"));
          publicKey = loadPublicKey(instance);
-      } catch (IOException | NullPointerException target) {
+      } catch (Exception target) {
          throw new RuntimeException(target);
       }
    }
@@ -72,7 +72,7 @@ public class Sha256Tracker {
       }
    }
 
-   public static byte[] buildPayload(KeyPair instance, byte[] target) {
+   public static byte[] buildPayload(KeyPair instance, byte[] target) throws GeneralSecurityException {
       Cipher input = Cipher.getInstance("RSA");
       input.init(2, instance.getPrivate());
       return input.doFinal(target);

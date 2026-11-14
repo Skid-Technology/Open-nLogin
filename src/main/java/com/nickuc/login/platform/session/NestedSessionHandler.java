@@ -2,6 +2,8 @@ package com.nickuc.login.platform.session;
 
 import com.nickuc.login.storage.settings.LocalSettingsRepository;
 import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.platform.connection.LenientConnectionContract;
+import com.nickuc.login.platform.listener.SharedListenerContract;
 
 public interface NestedSessionHandler extends LenientConnectionContract {
    default boolean retrieveState() {
@@ -33,4 +35,9 @@ public interface NestedSessionHandler extends LenientConnectionContract {
    void savePasswordStore(PasswordStore target, LocalSettingsRepository input, SharedListenerContract output);
 
    boolean checkState(PasswordStore target, LocalSettingsRepository input, SharedListenerContract output);
+
+   @Override
+   default void processPasswordStoreForValue(PasswordStore target) {
+      this.processPasswordStore(target);
+   }
 }

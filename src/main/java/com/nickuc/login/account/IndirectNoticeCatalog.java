@@ -52,4 +52,8 @@ public enum IndirectNoticeCatalog implements InternalListenerContract {
    public String toString() {
       return "nLoginV2Converter.ExtraSettings." + this.name() + "(key=" + this.busyLoginProcessor + ")";
    }
+
+   public static BusyLoginProcessor computeBusyLoginProcessor(IndirectNoticeCatalog catalog) {
+      return catalog.busyLoginProcessor;
+   }
 }

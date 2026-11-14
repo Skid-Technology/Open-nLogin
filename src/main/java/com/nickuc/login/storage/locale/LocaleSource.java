@@ -10,6 +10,9 @@ import com.nickuc.login.security.hashing.PrimaryPasswordHashVerifier;
 import com.nickuc.login.updater.AuthenticatedNoticeKind;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
+import com.nickuc.login.storage.login.LoginSource;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 public class LocaleSource extends LoginSource {
    private static float factor = Float.intBitsToFloat(1097859072);
@@ -73,7 +76,7 @@ public class LocaleSource extends LoginSource {
             case "confirm":
                if (this.atomicBoolean.getAndSet(true)) {
                   try {
-                     ParentSettingsLookup record = this.passwordStore.a();
+                     ParentSettingsLookup record = this.passwordStore.fetchParentSettingsLookup();
                      CachedLoginBarrier element = record.findCachedLoginBarrier();
                      if (element.getState() || !this.passwordStore.a().loadLinkedPasswordHashVerifier().findState()) {
                         this.passwordStore.a().processTask();
@@ -122,7 +125,7 @@ public class LocaleSource extends LoginSource {
                }
                break;
             case "auto":
-               ParentSettingsLookup result = this.passwordStore.a();
+               ParentSettingsLookup result = this.passwordStore.fetchParentSettingsLookup();
                PrimaryPasswordHashVerifier request = result.loadPrimaryPasswordHashVerifier();
                boolean response = request.hasState("autoUpdate", true);
                if (response) {

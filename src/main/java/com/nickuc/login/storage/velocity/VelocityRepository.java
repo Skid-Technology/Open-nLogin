@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import com.nickuc.login.storage.password.PasswordStore;
 
 
 public class VelocityRepository implements StrictSenderAdapter {
@@ -50,7 +51,7 @@ public class VelocityRepository implements StrictSenderAdapter {
       if (!output.findState()) {
          LimboCoordinator context = this.passwordStore.loadLimboRegistry().loadLimboCoordinator(output);
          if (!context.loadTightPlatformCatalog().isState(TightPlatformCatalog.MAIN_TIGHTPLATFORMCATALOG)) {
-            Optional data = target.getInitialServer();
+            Optional<RegisteredServer> data = target.getInitialServer();
             String value = data.<String>map(instance -> instance.getServerInfo().getName()).orElse("???");
             SpawnLookup result = context.loadSpawnLookup();
             boolean request = this.passwordStore
@@ -63,7 +64,7 @@ public class VelocityRepository implements StrictSenderAdapter {
                   String response = result.resolveCachedPasswordHashHasher().handleObject("last-server");
                   if (response != null
                      && !this.VelocityPlatform.isState(context, response)
-                     && !PrimaryMessageOption.REMOTE_PRIMARYMESSAGEOPTION.a(new Object[0]).contains(response)) {
+                     && !((List<?>)PrimaryMessageOption.REMOTE_PRIMARYMESSAGEOPTION.a(new Object[0])).contains(response)) {
                      Optional source = this.VelocityPlatform.findProxyServer().getServer(response);
                      if (source.isPresent()) {
                         RegisteredServer entry = (RegisteredServer)source.get();
@@ -78,9 +79,7 @@ public class VelocityRepository implements StrictSenderAdapter {
                }
 
                if (PrimaryMessageOption.CACHED_PRIMARYMESSAGEOPTION.ar()) {
-                  List content = PrimaryMessageOption.STORED_PRIMARYMESSAGEOPTION
-                     .a(new Object[0])
-                     .stream()
+                  List content = ((List<String>) PrimaryMessageOption.STORED_PRIMARYMESSAGEOPTION.a(new Object[0])).stream()
                      .map(targetValue -> this.VelocityPlatform.findProxyServer().getServer(targetValue))
                      .map(instance -> (RegisteredServer)instance.orElse(null))
                      .filter(Objects::nonNull)
@@ -118,9 +117,7 @@ public class VelocityRepository implements StrictSenderAdapter {
                data.<String>map(instance -> instance.getServerInfo().getName())
                   .filter(inputValue -> !this.VelocityPlatform.isState(context, inputValue))
                   .ifPresent(targetValue -> context.updateLenientMessageKind(LenientMessageKind.ACTIVE_VERIFIED_LENIENTMESSAGEKIND, targetValue));
-               List holder = PrimaryMessageOption.PRIMARY_MESSAGE_OPTION
-                  .a(new Object[0])
-                  .stream()
+               List holder = ((List<String>) PrimaryMessageOption.PRIMARY_MESSAGE_OPTION.a(new Object[0])).stream()
                   .map(targetValue -> this.VelocityPlatform.findProxyServer().getServer(targetValue))
                   .map(instance -> (RegisteredServer)instance.orElse(null))
                   .filter(Objects::nonNull)
@@ -191,7 +188,7 @@ public class VelocityRepository implements StrictSenderAdapter {
                Optional data = target.getResult().getServer();
                if (!data.isPresent()
                   || !this.VelocityPlatform.isState(context, ((RegisteredServer)data.get()).getServerInfo().getName())
-                     && !context.d(LenientMessageKind.ACTIVE_CURRENT_LENIENTMESSAGEKIND)) {
+                     && !context.<Boolean>d(LenientMessageKind.ACTIVE_CURRENT_LENIENTMESSAGEKIND)) {
                   target.setResult(ServerResult.denied());
                }
             } catch (Throwable value) {

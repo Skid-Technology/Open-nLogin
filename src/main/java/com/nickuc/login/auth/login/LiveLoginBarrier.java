@@ -7,9 +7,21 @@ public class LiveLoginBarrier {
    private final long timestamp;
    private final long activeTimestamp;
 
-   private LiveLoginBarrier(String target, long input, long context) {
+   public LiveLoginBarrier(String target, long input, long context) {
       this.name = target;
       this.timestamp = input;
       this.activeTimestamp = context;
+   }
+
+   public static String buildMessage(LiveLoginBarrier barrier) {
+      return barrier.name;
+   }
+
+   public static long processTime(LiveLoginBarrier barrier) {
+      return barrier.timestamp;
+   }
+
+   public static long processTimeForTime(LiveLoginBarrier barrier) {
+      return barrier.activeTimestamp;
    }
 }

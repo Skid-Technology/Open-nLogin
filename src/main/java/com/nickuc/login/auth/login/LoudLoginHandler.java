@@ -15,14 +15,14 @@ public class LoudLoginHandler {
    static {
       try {
          quickConnectionContract = new PrimaryTitleFilter();
-      } catch (ReflectiveOperationException input) {
+      } catch (Throwable input) {
       }
 
       try {
          if (quickConnectionContract == null) {
             quickConnectionContract = new TitleFilter();
          }
-      } catch (ReflectiveOperationException target) {
+      } catch (Throwable target) {
       }
 
       if (quickConnectionContract == null) {

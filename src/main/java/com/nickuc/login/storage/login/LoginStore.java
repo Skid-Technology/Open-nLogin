@@ -5,6 +5,7 @@ import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 import org.bukkit.entity.Player;
+import com.nickuc.login.storage.password.PasswordStore;
 
 public class LoginStore {
    public static int count = -1;
@@ -22,7 +23,7 @@ public class LoginStore {
             if (!instance.resolveState()) {
                targetValue.performTask();
             } else {
-               Collection input = instance.b().fetchCollection();
+               Collection<VerifiedServerAdapter> input = instance.b().fetchCollection();
                if (-1 == -1) {
                   input.forEach(instanceValue -> instanceValue.saveMessage("§c§lRESTART", "§cRestart cancelled.", 0, 30, 6));
                   targetValue.performTask();

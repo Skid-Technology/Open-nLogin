@@ -6,6 +6,8 @@ import org.yaml.snakeyaml.representer.Representer;
 import com.nickuc.login.security.hashing.PendingPasswordHashProvider;
 
 public class SettingsBarrier extends Representer {
+   public final PasswordHashLoader passwordHashLoader;
+
    public SettingsBarrier(PasswordHashLoader target, DumperOptions input) {
       super(input);
       this.passwordHashLoader = target;

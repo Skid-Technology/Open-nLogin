@@ -19,6 +19,8 @@ import java.util.function.Consumer;
 import javax.annotation.Nullable;
 
 import org.bukkit.entity.Player;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.spawn.SpawnState;
 
 public class CachedSettingsGateway {
    private static float factor = Float.intBitsToFloat(1097859072);
@@ -167,7 +169,7 @@ public class CachedSettingsGateway {
       LimboCoordinator context = input != null ? PasswordStore.resolvePasswordStore().loadLimboRegistry().buildLimboCoordinator(input) : null;
       LenientPremiumOption data = context != null ? context.fetchLenientPremiumOption() : loadLenientPremiumOption();
       List value = handleSettingsWriter(data).loadCollection(instance, output);
-      value.replaceAll(targetValue -> targetValue.replace("@player", target));
+      value.replaceAll(targetValue -> ((String)targetValue).replace("@player", target));
       return value;
    }
 

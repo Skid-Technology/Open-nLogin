@@ -1,6 +1,7 @@
 package com.nickuc.login.auth.login;
 
 import com.nickuc.login.platform.server.AuthenticatedServerAdapter;
+import com.nickuc.login.auth.locale.LocalLocaleFlow;
 
 
 public class InternalLoginFlow implements AuthenticatedServerAdapter {

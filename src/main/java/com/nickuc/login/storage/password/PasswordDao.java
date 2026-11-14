@@ -7,6 +7,7 @@ import com.nickuc.login.config.PasswordHashContainer;
 import com.nickuc.login.platform.connection.LenientConnectionContract;
 import java.io.File;
 import java.io.IOException;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 public class PasswordDao implements LenientConnectionContract {
    public static final PasswordDao passwordDao = new PasswordDao();
@@ -23,7 +24,7 @@ public class PasswordDao implements LenientConnectionContract {
 
          try {
             MessageProcessor.isState(context);
-         } catch (IOException value) {
+         } catch (Exception value) {
             throw new RuntimeException(value);
          }
       }

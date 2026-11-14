@@ -8,6 +8,8 @@ import com.nickuc.login.proxy.StrictSpawnGateway;
 import org.bukkit.entity.Player;
 
 public class ProxyGuard extends SecondaryMojangProcessor {
+   public final StrictSpawnGateway strictSpawnGateway;
+
    public void lockableEvent(LockableEvent target, byte input, byte output) {
       if (input == 0) {
          LoginRequestEvent context = (LoginRequestEvent)target;

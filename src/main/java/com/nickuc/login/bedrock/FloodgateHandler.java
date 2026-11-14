@@ -75,7 +75,7 @@ public class FloodgateHandler implements StrictSenderAdapter {
 
    @Subscribe(order = PostOrder.LAST)
    public void sendGameProfileRequestEvent(GameProfileRequestEvent target) {
-      Consumer input = targetValue -> VerifiedVelocityForwarder.updateInboundConnection(target.getConnection(), SafeLoginService.resolveTextComponent(targetValue));
+      Consumer<String> input = targetValue -> VerifiedVelocityForwarder.updateInboundConnection(target.getConnection(), SafeLoginService.resolveTextComponent(targetValue));
 
       try {
          this.performGameProfileRequestEvent(target, input);
@@ -103,7 +103,7 @@ public class FloodgateHandler implements StrictSenderAdapter {
             }
          }
 
-         String request = this.passwordStore.getFloodgateResolver().resolveMessage(output, context, Boolean.valueOf((boolean)value));
+         String request = this.passwordStore.getFloodgateResolver().resolveMessage(output, context, Boolean.valueOf((value != 0)));
          if (request != null) {
             target.setResult(PreLoginComponentResult.denied(SafeLoginService.resolveTextComponent(request)));
          }
@@ -173,14 +173,14 @@ public class FloodgateHandler implements StrictSenderAdapter {
                }
             }
 
-            byte message = QuickPremiumOption.CURRENT_QUICKPREMIUMOPTION.retrieveState();
-            if (message == (value.sharedNoticeKind == null ? 1 : 0)) {
+            boolean message = QuickPremiumOption.CURRENT_QUICKPREMIUMOPTION.retrieveState();
+            if (message == (value.sharedNoticeKind == null)) {
                String event = "Invalid state for username appender, please rejoin";
                input.accept(event);
             } else {
                String holder;
                String reference;
-               if (value.floodgateBarrier == null && message != 0) {
+               if (value.floodgateBarrier == null && message) {
                   Optional packet = output.getVirtualHost();
                   if (!packet.isPresent()) {
                      throw new IllegalStateException("Missing virtual hosting for " + response);
@@ -308,7 +308,7 @@ public class FloodgateHandler implements StrictSenderAdapter {
                      return;
                   }
 
-                  if (!item.canState(element, source, holder, account, (boolean)content)) {
+                  if (!item.canState(element, source, holder, account, (content != 0))) {
                      input.accept(CachedSettingsGateway.computeMessage(LoudProxyState.DIRECT_LOUDPROXYSTATE));
                      return;
                   }
@@ -369,8 +369,8 @@ public class FloodgateHandler implements StrictSenderAdapter {
          String holder = value != null ? value : target.getUsername();
          InetAddress response = output.getRemoteAddress().getAddress();
          PrimaryLoginProcessor source;
-         if (Pbkdf2Linker.findProxyState() != ProxyState.PENDING_PROXYSTATE && output.getProtocolVersion().compareTo(ProtocolVersion.MINECRAFT_1_19_1) >= 0) {
-            source = new PrimaryLoginProcessor(target.getUniqueId());
+         if (Pbkdf2Linker.findProxyState() != ProxyState.PENDING_PROXYSTATE && output.getProtocolVersion().compareTo(ProtocolVersion.getProtocolVersion(760)) >= 0) {
+            source = new PrimaryLoginProcessor(result);
          } else {
             source = null;
          }

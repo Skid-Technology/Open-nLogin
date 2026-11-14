@@ -100,7 +100,7 @@ public class DiscordLookup implements SilentPacketAdapter, DirectPlayerContract 
          File value = new File(data, "2fa");
          new File(value, "discord.yml").delete();
          new File(value, "email.yml").delete();
-         SettingsLookup.computeLoudNoticeCatalog(target, target.a(), "config_%s.yml", context, false);
+         SettingsLookup.computeLoudNoticeCatalog(target, new com.nickuc.login.config.PasswordHashLoader("config.yml", data), "config_%s.yml", context, false);
          Pbkdf2Linker.loadLoudNoticeCatalog(target);
       }
    }

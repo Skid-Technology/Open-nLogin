@@ -1,5 +1,7 @@
 package com.nickuc.login.storage.password;
 
+import com.nickuc.login.premium.SpawnLookup;
+
 import com.nickuc.login.account.MessageOption;
 import com.nickuc.login.auth.login.DeadLoginFlow;
 import com.nickuc.login.config.PasswordHashLoader;
@@ -7,6 +9,7 @@ import java.sql.ResultSet;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.UUID;
+import com.nickuc.login.storage.settings.StoredSettingsGateway;
 
 public class SafePasswordRepository extends StoredSettingsGateway {
    @Override
@@ -22,7 +25,7 @@ public class SafePasswordRepository extends StoredSettingsGateway {
    }
 
    @Override
-   public void performSet(ResultSet target) {
+   public void performSet(ResultSet target) throws java.sql.SQLException {
       this.activeName = target.getString("name");
       UUID input = DeadLoginFlow.buildUniqueId(target.getString("uuid"));
       String output = target.getString("password");
@@ -40,7 +43,7 @@ public class SafePasswordRepository extends StoredSettingsGateway {
             String record = target.getString("ip");
             long item = target.getLong("first_login");
             long response = target.getLong("last_login");
-            this.executeMessage(this.activeName, output, record, input, contextValue -> contextValue.executeLong(item, response));
+            this.executeMessage(this.activeName, output, record, input, (SpawnLookup contextValue) -> contextValue.executeLong(item, response));
             return;
          default:
             this.executeMessage(this.activeName, output, data);
@@ -59,7 +62,7 @@ public class SafePasswordRepository extends StoredSettingsGateway {
 
       PasswordHashLoader target = this.computePasswordHashLoader("config.yml");
       return target.canState("data-storage.enable")
-         && target.d("data-storage.enable")
+         && target.checkState("data-storage.enable")
          && target.canState("data-storage.host")
          && target.canState("data-storage.port")
          && target.canState("data-storage.database")

@@ -1,6 +1,7 @@
 package com.nickuc.login.auth.login;
 
 import java.util.concurrent.TimeUnit;
+import com.nickuc.login.auth.locale.OpenLocaleBarrier;
 
 
 public class LiveLoginCheckpoint {

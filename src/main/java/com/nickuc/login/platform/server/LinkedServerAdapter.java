@@ -1,5 +1,7 @@
 package com.nickuc.login.platform.server;
 
+import com.nickuc.login.platform.player.IndirectPlayerContract;
+
 public interface LinkedServerAdapter extends IndirectPlayerContract {
    @Override
    default boolean canState(String target) {

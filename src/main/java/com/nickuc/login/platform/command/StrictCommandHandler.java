@@ -1,6 +1,8 @@
 package com.nickuc.login.platform.command;
 
-public interface StrictCommandHandler extends ChildListenerContract {
+import com.nickuc.login.platform.listener.ChildListenerContract;
+
+public interface StrictCommandHandler extends ChildListenerContract, Runnable {
    boolean fetchState();
 
    String loadMessage();

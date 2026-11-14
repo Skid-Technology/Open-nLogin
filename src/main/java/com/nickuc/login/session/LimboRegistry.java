@@ -1,5 +1,7 @@
 package com.nickuc.login.session;
 
+import java.util.List;
+
 import com.nickuc.login.auth.login.DeadLoginFlow;
 import com.nickuc.login.model.LenientMessageKind;
 import com.nickuc.login.model.TightPlatformCatalog;
@@ -99,8 +101,8 @@ public class LimboRegistry {
    public boolean canState(String target, @Nullable UUID input) {
       int output = target.length();
       return output > 1 && target.charAt(0) == '[' && target.charAt(output - 1) == ']'
-         || SpawnState.READY_SPAWNSTATE
-            .a(new Object[0])
+         || ((List<String>) SpawnState.READY_SPAWNSTATE
+            .a(new Object[0]))
             .stream()
             .anyMatch(inputValue -> inputValue.equalsIgnoreCase(target) || input != null && inputValue.equalsIgnoreCase(input.toString()));
    }

@@ -125,4 +125,9 @@ public class IncomingLoginGuard implements StrictCommandHandler {
 
       this.activeEnabled = true;
    }
+
+   @Override
+   public void run() {
+      this.performTask();
+   }
 }

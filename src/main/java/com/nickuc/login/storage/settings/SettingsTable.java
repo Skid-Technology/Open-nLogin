@@ -2,6 +2,7 @@ package com.nickuc.login.storage.settings;
 
 import com.nickuc.login.account.MessageOption;
 import com.nickuc.login.config.PasswordHashLoader;
+import com.nickuc.login.storage.password.PasswordStore;
 
 public class SettingsTable extends PendingSettingsGateway {
    private final String name;

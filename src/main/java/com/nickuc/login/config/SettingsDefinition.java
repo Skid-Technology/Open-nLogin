@@ -11,7 +11,7 @@ import java.util.List;
 public class SettingsDefinition extends PasswordHashRepository {
    private final String name;
 
-   private String processMessage(String target) {
+   public String cleanMessage(String target) {
       target = target.trim();
       if (target.length() >= 2 && target.charAt(0) == ' ') {
          target = target.substring(1);
@@ -45,13 +45,13 @@ public class SettingsDefinition extends PasswordHashRepository {
       List output = StoredLoginFlow.resolveCollection(input);
       this.timestamp = output.size();
 
-      for (String data : output) {
+      for (String data : (List<String>) output) {
          Object value = null;
 
          try {
             String[] result = data.split(":");
             if (result.length >= 2) {
-               this.processMessage(result[0], this.processMessage(result[1]));
+               this.processMessage(result[0], this.cleanMessage(result[1]));
             }
          } catch (Exception entry) {
             PasswordHashContainer.processMessage(

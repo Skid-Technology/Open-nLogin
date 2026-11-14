@@ -2,6 +2,7 @@ package com.nickuc.login.listener.bukkit;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 import org.bukkit.Bukkit;
@@ -11,7 +12,7 @@ import org.bukkit.World;
 public class SharedLoginGuard {
    @CheckReturnValue
    @Nullable
-   public Location handleLocation(DataInputStream target) {
+   public Location handleLocation(DataInputStream target) throws IOException {
       String input = target.readUTF();
       double output = target.readDouble();
       double data = target.readDouble();
@@ -22,7 +23,7 @@ public class SharedLoginGuard {
       return entry != null ? new Location(entry, output, data, result, response, source) : null;
    }
 
-   public void executeLocation(Location target, DataOutputStream input) {
+   public void executeLocation(Location target, DataOutputStream input) throws IOException {
       World output = target.getWorld();
       if (output == null) {
          throw new IllegalArgumentException("World is null!");

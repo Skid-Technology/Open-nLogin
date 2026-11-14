@@ -1,5 +1,7 @@
 package com.nickuc.login.command.completion;
 
+import java.util.List;
+
 import com.nickuc.login.listener.PacketAdapter;
 import com.nickuc.login.platform.server.VerifiedServerAdapter;
 import com.nickuc.login.premium.IndirectPasswordHashVerifier;
@@ -27,9 +29,9 @@ public class UnregisterBackupCommand implements PacketAdapter {
          if (!target.getCompletions().isEmpty()) {
             if (target.getBuffer().startsWith("/")) {
                VerifiedServerAdapter output = this.passwordStore.b().processVerifiedServerAdapter(input);
-               int context = !output.i("nlogin.command.nlogin") && !output.i("nlogin.admin") ? 0 : 1;
+               boolean context = output.i("nlogin.command.nlogin") || output.i("nlogin.admin");
                ArrayList data = new ArrayList(target.getCompletions());
-               data.removeIf(outputValue -> {
+               ((List<String>) data).removeIf(outputValue -> {
                   if (outputValue.trim().isEmpty()) {
                      return false;
                   }

@@ -1,6 +1,8 @@
 package com.nickuc.login.storage.backup;
 
 import com.nickuc.login.platform.sender.OutgoingSenderAdapter;
+import com.nickuc.login.storage.login.LoginSource;
+import com.nickuc.login.storage.password.PasswordStore;
 
 public class BackupRepository extends LoginSource {
    @Override

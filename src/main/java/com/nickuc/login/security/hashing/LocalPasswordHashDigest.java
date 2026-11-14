@@ -42,7 +42,7 @@ public class LocalPasswordHashDigest implements StrictSenderAdapter {
 
    public LocalPasswordHashDigest(DiscordForwarder target) {
       this.name = target.retrieveMessage().toLowerCase(Locale.ENGLISH);
-      HashSet input = new HashSet();
+      HashSet<String> input = new HashSet<>();
       input.add(this.name + 'c');
       input.add(this.name + ':' + this.name + 'c');
 
@@ -62,7 +62,7 @@ public class LocalPasswordHashDigest implements StrictSenderAdapter {
       if (!input.isEmpty()) {
          String output = target.getPartialMessage().trim();
          if (output.isEmpty() || output.charAt(0) == '/') {
-            input.removeIf(targetValue -> targetValue.startsWith('/' + this.name + ':') || this.isState(targetValue));
+            ((List<String>) input).removeIf(targetValue -> targetValue.startsWith('/' + this.name + ':') || this.isState(targetValue));
          }
       }
    }

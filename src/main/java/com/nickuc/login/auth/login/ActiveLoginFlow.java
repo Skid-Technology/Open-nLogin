@@ -101,7 +101,7 @@ public class ActiveLoginFlow {
          throw new IllegalArgumentException("Performance position was not marked!");
       }
 
-      this.values[this.count++] = new LiveLoginBarrier(target, this.value, System.nanoTime(), null);
+      this.values[this.count++] = new LiveLoginBarrier(target, this.value, System.nanoTime());
       this.value = null;
    }
 

@@ -145,7 +145,7 @@ public class PasswordHashCodec implements VerifiedServerAdapter {
          case ACTIVE_REMOTEPREMIUMSTATE:
             this.player.getCurrentServer().ifPresent(inputValue -> {
                if (!inputValue.getServer().getPlayersConnected().isEmpty()) {
-                  inputValue.sendPluginMessage(data, context);
+                  inputValue.sendPluginMessage((ChannelIdentifier)data, context);
                }
             });
             break;
@@ -194,7 +194,7 @@ public class PasswordHashCodec implements VerifiedServerAdapter {
          output = 0;
       }
 
-      return new PasswordHashCodec(instance, input, target, (boolean)output);
+      return new PasswordHashCodec(instance, input, target, (output != 0));
    }
 
    @Override

@@ -3,6 +3,7 @@ package com.nickuc.login.storage.settings;
 import com.nickuc.login.account.MessageOption;
 import com.nickuc.login.config.PasswordHashLoader;
 import java.io.File;
+import com.nickuc.login.storage.password.PasswordStore;
 
 public class SecondarySettingsSource extends SettingsGateway {
    public SecondarySettingsSource(PasswordStore target) {

@@ -210,7 +210,7 @@ public class PasswordHashAdapter {
                   }
 
                   if (targetValue.length > 0) {
-                     HashSet request = new HashSet();
+                     HashSet<VerifiedServerAdapter> request = new HashSet<>();
 
                      for (ReadyLoginCheckpoint value : targetValue) {
                         request.add(value.verifiedServerAdapter);
@@ -218,7 +218,7 @@ public class PasswordHashAdapter {
 
                      for (VerifiedServerAdapter source : request) {
                         ReadyLoginCheckpoint[] entry = Arrays.stream(targetValue)
-                           .filter(targetValue -> targetValue.verifiedServerAdapter.equals(source))
+                           .filter(chk -> chk.verifiedServerAdapter.equals(source))
                            .toArray(ReadyLoginCheckpoint[]::new);
                         this.processVerifiedServerAdapter(source, entry, 0);
                      }
@@ -249,7 +249,7 @@ public class PasswordHashAdapter {
 
                if (!context.isEmpty()) {
                   synchronized (this.players) {
-                     context.stream().filter(instance -> instance instanceof ReadyLoginCheckpoint).forEach(targetValue -> this.players.add(targetValue));
+                     context.stream().filter(instance -> instance instanceof ReadyLoginCheckpoint).forEach(targetValue -> this.players.add((ReadyLoginCheckpoint) targetValue));
                   }
 
                   context.stream().filter(instance -> instance instanceof BusyLoginGate).forEach(inputValue -> {

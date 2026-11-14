@@ -14,6 +14,8 @@ import com.nickuc.login.premium.UpdateLookup;
 import com.nickuc.login.session.LimboCoordinator;
 import com.nickuc.login.updater.AuthenticatedNoticeKind;
 import com.nickuc.login.updater.NoticeCatalog;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.settings.CachedSettingsGateway;
 
 
 public class PendingUpdateStore implements DirectPlayerContract {

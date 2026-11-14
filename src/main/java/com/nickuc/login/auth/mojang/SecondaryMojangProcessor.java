@@ -4,6 +4,7 @@ import com.nickuc.login.api.enums.AccountType;
 import com.nickuc.login.api.nLoginAPI.nLoginInternal;
 import com.nickuc.login.api.types.Identity;
 import java.util.UUID;
+import com.nickuc.login.auth.login.RemoteLoginProcessor;
 
 public abstract class SecondaryMojangProcessor implements nLoginInternal {
    public Identity createIdentityFromKnownName(String target) {

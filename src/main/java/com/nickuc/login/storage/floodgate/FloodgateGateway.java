@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import org.geysermc.floodgate.api.FloodgateApi;
+import com.nickuc.login.storage.password.PasswordStore;
+import com.nickuc.login.storage.settings.LocalSettingsRepository;
 
 public class FloodgateGateway implements NestedSessionHandler {
    public static FloodgateGateway floodgateGateway = new FloodgateGateway();
@@ -58,7 +60,7 @@ public class FloodgateGateway implements NestedSessionHandler {
                output.close();
             }
          }
-      } catch (IOException entry) {
+      } catch (Exception entry) {
          throw new RuntimeException("Unable to read " + target + " file.", entry);
       }
 
@@ -68,7 +70,7 @@ public class FloodgateGateway implements NestedSessionHandler {
             instance.a().loadState();
             SettingsLookup.validateState(instance);
          }
-      } catch (IOException response) {
+      } catch (Exception response) {
          throw new RuntimeException("Unable to write " + target + " file.", response);
       }
    }

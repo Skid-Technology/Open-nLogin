@@ -71,7 +71,7 @@ public abstract class DeletePurgeCommand implements SilentPacketAdapter, DirectP
       this.name = input;
    }
 
-   public String at() {
+   public String getName() {
       return this.name;
    }
 

@@ -5,7 +5,7 @@ import java.util.Objects;
 import org.bukkit.entity.Player;
 
 public class PrimaryTitleFilter implements QuickConnectionContract {
-   public PrimaryTitleFilter() {
+   public PrimaryTitleFilter() throws NoSuchMethodException {
       Class[] switchSelector = new Class[]{String.class, String.class, int.class, int.class, int.class};
       Objects.requireNonNull(Player.class.getMethod("resetTitle"));
    }
